@@ -1,0 +1,88 @@
+laundry_room_stage_light:
+  module: stage_light
+  class: StageLight
+  actuator_entity: light.laundry_room_light_switch_level
+  brightness: 5
+  delay: 300
+  sensor_entity: binary_sensor.centralite_3326l_0b5c6f47_1
+  tracking_entity: input_select.laundry_room_status
+  constraint_input_boolean: input_boolean.home_occupancy,on
+  
+laundry_room_light:
+  module: sensorlight
+  class: SensorLight
+  actuator_entity: light.laundry_room_light_switch_level
+  brightness: 100
+  delay: 300
+  max_run_seconds: 5400
+  sensor_entity: binary_sensor.laundry_room_motion_sensor_sensor
+  tracking_entity: input_select.laundry_room_status
+
+pantry_light:
+  module: sensorlight
+  class: SensorLight
+  actuator_entity: switch.pantry_light_switch_switch
+  brightness: null
+  delay: 0
+  max_run_seconds: 5400
+  sensor_entity: binary_sensor.pantry_door_sensor_sensor
+  tracking_entity: input_select.pantry_status
+
+utility_room_light:
+  module: sensorlight
+  class: SensorLight
+  actuator_entity: switch.utility_room_light_switch_switch
+  brightness: null
+  delay: 0
+  max_run_seconds: 5400
+  sensor_entity: binary_sensor.utility_room_door_sensor_sensor
+  tracking_entity: input_select.utility_room_status
+
+bar_light:
+  module: switchlight
+  class: SwitchLight
+  actuator_entity: switch.bar_light_switch_switch
+  brightness: 100
+  light_group: light.bar
+
+fireplace_light:
+  module: switchlight
+  class: SwitchLight
+  actuator_entity: switch.fireplace_light_switch_switch
+  brightness: 100
+  light_group: light.fireplace
+
+kitchen_sink_double_tap:
+  module: homeseer_switch
+  class: HomeseerSwitch
+  actuator_entity: light.kitchen_sink_light_switch_level
+  scene_id: 3
+  zwave_entity: zwave.kitchen_sink_light_switch
+
+kitchen_table_double_tap:
+  module: homeseer_switch
+  class: HomeseerSwitch
+  actuator_entity: light.kitchen_table_light_switch_level
+  scene_id: 3
+  zwave_entity: zwave.kitchen_table_light_switch
+
+laundry_room_double_tap:
+  module: homeseer_switch
+  class: HomeseerSwitch
+  actuator_entity: light.laundry_room_light_switch_level
+  scene_id: 7860
+  zwave_entity: zwave.laundry_room_light_switch
+
+kitchen_double_tap:
+  module: homeseer_switch
+  class: HomeseerSwitch
+  actuator_entity: light.kitchen_light_switch_level
+  scene_id: 7860
+  zwave_entity: zwave.kitchen_light_switch
+
+kitchen_triple_tap:
+  module: homeseer_switch
+  class: HomeseerSwitch
+  actuator_entity: light.kitchen_light_switch_level
+  scene_id: 7920
+  zwave_entity: zwave.kitchen_light_switch
