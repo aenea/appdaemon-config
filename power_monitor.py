@@ -31,7 +31,7 @@ class PowerMonitor(hass.Hass):
             if self.idle_timer is not None:
                 self.cancel_timer(self.idle_timer)
 
-            self.log("{} is running.".format(self.entity), level='INFO')
+            self.log("{} is running.".format(self.sensor_entity), level='INFO')
 
     def entity_idle(self, kwargs):
 
@@ -42,6 +42,6 @@ class PowerMonitor(hass.Hass):
             # mark the entity as idle
             self.select_option(self.tracking_entity, 'Idle')
 
-            self.log("{} is running.".format(self.entity_idle), level='INFO')
+            self.log("{} is running.".format(self.sensor_entity), level='INFO')
 
                 
