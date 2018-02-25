@@ -25,7 +25,7 @@ class PowerMonitor(hass.Hass):
 
             # start an idle timer if one is not already running
             if self.idle_timer is not None:
-                self.idle_timer = self.run_int(self.entity_idle, self.max_idle_seconds)
+                self.idle_timer = self.run_in(self.entity_idle, self.max_idle_seconds)
         
         elif float(new) >= self.on_load and entity_state == 'Idle':
             # mark the entity as running
