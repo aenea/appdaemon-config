@@ -63,15 +63,19 @@ class SensorLight(hass.Hass):
             self.turn_off_actuator(self)
 
     def turn_off_warning(self, kwargs):
-        
-        # dim the lights to warn about an impending turn off
-        current_brightness = self.get_state(self.actuator, attribute='brightness')
-        self.turn_on(self.actuator, brightness=int(current_brightness * .6))
-        self.log("{} dimmed by turn off warning".format(self.actuator), level='INFO')
 
-        # schedule the final turn off
-        self.off_timer = self.run_in(self.turn_off_actuator, 30)
-        self.select_option(self.tracker, 'Warning')
+        # get the state of the lighting flag
+        lighting_state = self.get_state(self.tracker, attribute='state')
+
+        if lighting_state != "Off":        
+            # dim the lights to warn about an impending turn off
+            current_brightness = self.get_state(self.actuator, attribute='brightness')
+            self.turn_on(self.actuator, brightness=int(current_brightness * .6))
+            self.log("{} dimmed by turn off warning".format(self.actuator), level='INFO')
+
+            # schedule the final turn off
+            self.off_timer = self.run_in(self.turn_off_actuator, 30)
+            self.select_option(self.tracker, 'Warning')
 
     def turn_off_actuator(self, kwargs):
         
