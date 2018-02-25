@@ -2,6 +2,10 @@ washing_machine_power_monitor:
   module: power_monitor
   class: PowerMonitor
   max_idle_seconds: 180
+  notify: True
+  notify_message: "The washing machine cycle has completed. "
+  notify_target: "notify/pushbullet_scott"
+  notify_title: "Washing machine cycle complete"
   off_load: 1
   on_load: 30
   sensor_entity: sensor.washing_machine_outlet_power
