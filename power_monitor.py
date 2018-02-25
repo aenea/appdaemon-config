@@ -27,6 +27,8 @@ class PowerMonitor(hass.Hass):
             # mark the entity as running
             self.select_option(self.tracking_entity, 'Running')
 
+            self.call_service('notify/pushbullet_scott', title='washing machine', message='done')
+
             # cancel any running idle timers
             if self.idle_timer is not None:
                 self.cancel_timer(self.idle_timer)
