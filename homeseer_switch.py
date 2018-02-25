@@ -1,9 +1,8 @@
 import appdaemon.plugins.hass.hassapi as hass
 #
-# Provides scene support for the hs-wd100+
+# Provides scene support for the Homeseer dimmer
+# switches
 #
-# Args: asdf
-#asf
 
 class HomeseerSwitch(hass.Hass):
     
@@ -23,15 +22,16 @@ class HomeseerSwitch(hass.Hass):
         if self.scene_id == 3 or self.scene_id == 7860:
             # The top paddle has been double tapped. Turn the brightness to 100%
             self.turn_on(self.actuator, brightness_pct=100)
-            self.log(self.actuator + " double tapped on")
+            self.log(self.actuator + " double tapped on", level='INFO')
         
     def scene_off(self, event_name, data, kwargs):
         
         if self.scene_id == 3 or self.scene_id == 7860:
             # The bottom paddle has been double tapped. Turn the brightness to 2%
             self.turn_on(self.actuator, brightness_pct=2)
-            self.log(self.actuator + " double tapped off")
-        elif self.scene_id == 4 or self.scene_id == 7920:
+            self.log(self.actuator + " double tapped off", level='INFO')
+
+        elif self.scene_id == 4 or self.scene_id == 7920: 
             # The bottom paddle has been triple tapped. Turn on the bed time routine
             self.turn_on('input_boolean.bed_time')
             self.log("{} triple tapped off".format(self.actuator), level='INFO')

@@ -1,3 +1,12 @@
+washing_machine_power_monitor:
+  module: power_monitor
+  class: PowerMonitor
+  max_idle_seconds: 180
+  off_load: 1
+  on_load: 30
+  sensor_entity: sensor.washing_machine_outlet_power
+  tracking_entity: input_select.washing_machine_status
+
 laundry_room_stage_light:
   module: stage_light
   class: StageLight

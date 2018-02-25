@@ -3,7 +3,7 @@ import appdaemon.plugins.hass.hassapi as hass
 #
 # StageLight - turns on lights at a dimmed level in adjoinging rooms in 
 # response to a motion sensor event. This prevents walking into a dark room
-# before the targe room's motion sensor activates. The target room's lights 
+# before the target room's motion sensor activates. The target room's lights 
 # will come # on normally when it's motion sensor activates. Stage lights 
 # turn off if the # room's motion sensor doesn't trigger after a configurable 
 # delay
@@ -12,7 +12,8 @@ import appdaemon.plugins.hass.hassapi as hass
 # 
 # sensor_entity - The motion sensor in the adjoining room
 # actuator_entity - The switch/lights to turn on
-# tracking_entity - An input_select variable to tracking the lighting state of the room
+# tracking_entity - An input_select variable to track the lighting state of
+# the room 
 # delay - How long to keep the stage lighting on before timing out
 # brightness - Lighting level of the stage lighting
 #
@@ -37,6 +38,7 @@ class StageLight(hass.Hass):
         # turn on the switch if it is off
         if switch_state == 'off':
             self.turn_on(self.actuator, brightness_pct=self.brightness)
+
             self.log("Stage light for {} turned on".format(self.actuator), level='INFO')
 
             # set the tracking flag
@@ -63,6 +65,7 @@ class StageLight(hass.Hass):
         # turn off the light if the state is still 'Stage'
         if lighting_state == 'Stage':
             self.turn_off(self.actuator)
+                        
             self.log("Stage light for {} turned off".format(self.actuator), level='INFO')
         
             # turn off the tracking variable
