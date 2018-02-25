@@ -24,7 +24,7 @@ class PowerMonitor(hass.Hass):
             self.log("{} timer".format(self.idle_timer), level='INFO')
 
             # start an idle timer if one is not already running
-            if self.idle_timer is not None:
+            if self.idle_timer is None:
                 self.log("Starting timer")
                 self.idle_timer = self.run_in(self.entity_idle, self.max_idle_seconds)
         
