@@ -20,6 +20,8 @@ class PowerMonitor(hass.Hass):
         self.log("power {}, state {}".format(new, entity_state), level='INFO')
         
         if float(new) <= self.off_load and entity_state == 'Running':
+            self.log("Idle", level='INFO')
+            
             # start an idle timer if one is not already running
             if self.idle_timer is not None:
                 self.idle_timer = self.run_int(self.entity_idle, self.max_idle_seconds)
