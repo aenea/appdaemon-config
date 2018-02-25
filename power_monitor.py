@@ -18,12 +18,12 @@ class PowerMonitor(hass.Hass):
         # get the current state of the entity
         entity_state = self.get_state(self.tracking_entity, attribute='state')
         
-        if int(new) <= self.off_load and entity_state == 'Running':
+        if float(new) <= self.off_load and entity_state == 'Running':
             # start an idle timer if one is not already running
             if self.idle_timer is not None:
                 self.idle_timer = self.run_int(self.entity_idle, self.max_idle_seconds)
         
-        elif int(new) >= self.on_load and entity_state == 'Idle':
+        elif float(new) >= self.on_load and entity_state == 'Idle':
             # mark the entity as running
             self.select_option(self.tracking_entity, 'Running')
 
