@@ -50,6 +50,7 @@ class StageLight(hass.Hass):
         # cancel any existing timers
         if self.off_timer is not None:
             self.cancel_timer(self.off_timer)
+            self.off_timer = None
 
         # create a callback to turn off the light
         if self.delay > 0:
@@ -58,6 +59,9 @@ class StageLight(hass.Hass):
             self.actuator_off(self)
 
     def actuator_off(self, kwargs):
+
+        # Remove the timer handle
+        self.off_timer = None
         
         # get the state of the lighting flag
         lighting_state = self.get_state(self.tracker, attribute='state')
@@ -73,7 +77,3 @@ class StageLight(hass.Hass):
         else:
             self.log("Turn off of stage light for {} declined because lighting state has changed to {}".format(
                 self.actuator, lighting_state), level='INFO')
-
-        # cancel any existing timers
-        if self.off_timer is not None:
-            self.cancel_timer(self.off_timer)
