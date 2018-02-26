@@ -48,10 +48,13 @@ class PowerMonitor(hass.Hass):
             self.log("{} is running.".format(self.sensor_entity), level='INFO')
 
     def entity_idle(self, kwargs):
-
+        
+        # Remove the timer handle
+        self.idle_timer = None
+        
         # get the current state of the entity
         entity_state = self.get_state(self.tracking_entity, attribute='state')
-
+        
         if entity_state != 'Idle':
             # mark the entity as idle
             self.select_option(self.tracking_entity, 'Idle')
