@@ -26,13 +26,10 @@ class PowerMonitor(hass.Hass):
         # get the current state of the entity
         entity_state = self.get_state(self.tracking_entity, attribute='state')
         
-        self.log("Report {} new {} state {} timer".format(new, entity_state, self.idle_timer))
-        
         if float(new) <= self.off_load and entity_state == 'Running':
             # start an idle timer if one is not already running
             if self.idle_timer is None:                
                 self.idle_timer = self.run_in(self.entity_idle, self.max_idle_seconds)
-                self.log("Timer started")
         
         elif float(new) >= self.on_load and entity_state == 'Idle':
             # mark the entity as running
@@ -63,14 +60,13 @@ class PowerMonitor(hass.Hass):
             self.stop_time = datetime.now()
 
             if self.notify is True:
-                self.log("Notify true")
                 if self.start_time is not None:
                     tdelta = self.stop_time - self.start_time
                     elapsed_time = time.strftime('%H:%S', tdelta)
                 else:
-                    elapsed_time = "Unknown"
+                    elapsed_time = "unknown"
 
-                self.notify_message += ("Elapsed time {}".format(elapsed_time))
+                self.notify_message += (" Elapsed time {}".format(elapsed_time))
 
                 # send out the notification
                 self.call_service(self.notify_target, title=self.notify_title,
