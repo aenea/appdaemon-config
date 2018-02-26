@@ -45,9 +45,11 @@ class SensorLight(hass.Hass):
         # cancel any existing timers
         if self.max_timer is not None:
             self.cancel_timer(self.max_timer)
+            self.max_timer = None
 
         if self.off_timer is not None:
             self.cancel_timer(self.off_timer)
+            self.off_timer = None
 
         # set a timer to turn off the light after max_run_seconds
         if self.max_run_seconds > 0:
@@ -84,16 +86,11 @@ class SensorLight(hass.Hass):
     
     def actuator_off(self, entity, attribute, old, new, kwargs):
         
+        # clear the timer handles
+        self.max_timer = None
+        self.off_timer = None
+        
         self.log("{} turned off".format(self.actuator))
         
         # turn off the tracking variable
         self.select_option(self.tracker, 'Off')
-
-        # cancel any existing timers
-        if self.max_timer is not None:
-            self.cancel_timer(self.max_timer)
-        
-        if self.off_timer is not None:
-            self.cancel_timer(self.off_timer)
-
-        
