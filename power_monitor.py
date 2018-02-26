@@ -59,7 +59,7 @@ class PowerMonitor(hass.Hass):
             if self.notify is True:
                 if self.start_time is not None:
                     tdelta = self.stop_time - self.start_time
-                    elapsed_time = time.strftime('%H:S', tdelta)
+                    elapsed_time = time.strftime('%H:%S', tdelta)
                 else:
                     elapsed_time = "Unknown"
 
