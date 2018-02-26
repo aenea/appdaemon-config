@@ -26,7 +26,7 @@ class PowerMonitor(hass.Hass):
         # get the current state of the entity
         entity_state = self.get_state(self.tracking_entity, attribute='state')
         
-        self.log("Report {} new {} state".format(new, entity_state))
+        self.log("Report {} new {} state {} timer".format(new, entity_state, self.idle_timer))
         
         if float(new) <= self.off_load and entity_state == 'Running':
             # start an idle timer if one is not already running
