@@ -57,6 +57,7 @@ class PowerMonitor(hass.Hass):
             self.stop_time = datetime.now()
 
             if self.notify is True:
+                self.log("Notify true")
                 if self.start_time is not None:
                     tdelta = self.stop_time - self.start_time
                     elapsed_time = time.strftime('%H:%S', tdelta)
@@ -67,7 +68,9 @@ class PowerMonitor(hass.Hass):
 
                 # send out the notification
                 self.call_service(self.notify_target, title=self.notify_title,
-                  message=self.notify_message)                
+                  message=self.notify_message)
+            else:
+                self.log("Notify false")
 
             self.log("{} is off.".format(self.sensor_entity), level='INFO')
 
