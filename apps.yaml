@@ -3,7 +3,7 @@ washing_machine_power_monitor:
   class: PowerMonitor
   max_idle_seconds: 180
   notify: True
-  notify_message: "The washing machine cycle has completed. "
+  notify_message: "The washing machine cycle has completed."
   notify_target: "notify/pushbullet_scott"
   notify_title: "Washing machine cycle complete"
   off_load: 2
