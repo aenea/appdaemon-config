@@ -17,7 +17,7 @@ laundry_room_stage_light:
   actuator_entity: light.laundry_room_light_switch_level
   brightness: 5
   delay: 300
-  sensor_entity: binary_sensor.centralite_3326l_0b5c6f47_1
+  sensor_entity: binary_sensor.bathroom_2_motion_sensor_sensor
   tracking_entity: input_select.laundry_room_status
   constraint_input_boolean: input_boolean.home_occupancy,on
   
