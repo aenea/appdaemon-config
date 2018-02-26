@@ -52,7 +52,7 @@ class PowerMonitor(hass.Hass):
         # get the current state of the entity
         entity_state = self.get_state(self.tracking_entity, attribute='state')
 
-        if entity_state is not 'Idle':
+        if entity_state != 'Idle':
             # mark the entity as idle
             self.select_option(self.tracking_entity, 'Idle')
 
