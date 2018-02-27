@@ -60,15 +60,16 @@ class PowerMonitor(hass.Hass):
             self.stop_time = datetime.now()
 
             if self.notify is True:
-                # if self.start_time is not None:
-                #    tdelta = self.stop_time - self.start_time
-                #    elapsed_time = time.strftime('%H:%S', tdelta)
-                # else:
-                #   elapsed_time = "unknown"
-
+                
                 # self.notify_message += (" Elapsed time {}".format(elapsed_time))
+                self.notify_message += (" Completed at {}.".format(datetime.strftime(self.stop_time, "%H:%M")))
 
-                # send out the notification
+                if self.start_time is not None:
+                   tdelta = self.stop_time - self.start_time
+                   elapsed_time = tdelta.seconds // 60
+                   self.notify_message += (" Run time was {} minutes.".format(elapsed_time))
+
+                # send out the notification                
                 self.call_service(self.notify_target, title=self.notify_title,
                   message=self.notify_message)
             else:
