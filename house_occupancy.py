@@ -29,13 +29,15 @@ class HouseOccupancy(hass.Hass):
     def someone_arrives(self, entity, attribute, old, new, kwargs):
         
         # get the house mode
-        house_mode = self.get_state('input_select.house_mode', attribute='state')
+        house_mode = self.get_state('input_select.house_mode',
+          attribute='state')
         
         if house_mode == 'Night':
             # turn on the porch light
             self.turn_on('switch.porch_light_switch_switch')
-
-        self.log('{} has arrived.'.format(entity))
+                    
+        self.log('{} has arrived. House mode is {}'.format(entity,
+          house_mode))
 
 
     # someone has arrived to an empty house
