@@ -1,3 +1,6 @@
+house_occupancy:
+  sensor_entity: input_select.house_mode
+
 washing_machine_power_monitor:
   module: power_monitor
   class: PowerMonitor
