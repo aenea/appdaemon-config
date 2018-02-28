@@ -12,6 +12,8 @@ class HouseOccupancy(hass.Hass):
     # someone has arrived to an empty house
     def house_occupied(self, entity, attribute, old, new, kwargs):
 
+        self.log("House is occupied", level='INFO')
+
         # stop the dog music
         self.call_service('media_player/squeezebox_call_method', 
           entity_id='media_player.office', command='power', 
@@ -37,6 +39,8 @@ class HouseOccupancy(hass.Hass):
     # everone has left the house
     def house_unoccupied(self, entity, attribute, old, new, kwargs):
 
+        self.log("House is not occupied", level='INFO')
+
         # turn off lights
         self.turn_off('group.all_lights')
         self.turn_off('group.all_switches')
@@ -54,7 +58,7 @@ class HouseOccupancy(hass.Hass):
         # start the dog music
         self.call_service('media_player/squeezebox_call_method', 
           entity_id='media_player.office', command='playlist', 
-          parameters='["loadtracks", "album.titlesearch=Through a dogs ears"]')
+          parameters=['loadtracks', 'album.titlesearch=Through a dogs ears'])
         self.log("Dog music started", level='INFO')
 
 
