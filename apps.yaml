@@ -7,7 +7,7 @@ washing_machine_power_monitor:
   notify_target: "notify/pushbullet_scott"
   notify_title: "Washing machine cycle complete"
   off_load: 2
-  on_load: 30
+  on_load: 10
   sensor_entity: sensor.washing_machine_outlet_power
   tracking_entity: input_select.washing_machine_status
 
