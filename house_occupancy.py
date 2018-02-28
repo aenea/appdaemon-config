@@ -13,7 +13,7 @@ class HouseOccupancy(hass.Hass):
     def set_occupancy_state(self, entity, attribute, old, new, kwargs):
 
         # the house occupancy tracks with everyone's presence
-        if new == 'Home':
+        if new == 'home':
             self.turn_on('input_boolean.house_occupancy')
             self.log("Someone has arrived", level='INFO')
         else:
