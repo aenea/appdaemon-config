@@ -1,7 +1,7 @@
 house_occupancy:
   module: house_occupancy
   class: HouseOccupancy
-  sensor_entity: input_boolean.home_occupancy
+  sensor_entity: group.presence_all
 
 washing_machine_power_monitor:
   module: power_monitor
