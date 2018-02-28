@@ -9,9 +9,9 @@ class HouseOccupancy(hass.Hass):
         self.listen_state(self.home_occupied, self.sensor, new='on')
         self.listen_state(self.home_unoccupied, self.sensor, new='off')
         self.listen_state(self.set_occupancy_on, 'group.presence_all', 
-          new='on', old='off')
+          new='home', old='not_home')
         self.listen_state(self.set_occupancy_off, 'group.presence_all', 
-          new='off', old='on')
+          new='not_home', old='home')
 
     def set_occupancy_on(self, entity, attribute, old, new, kwargs):
 
