@@ -71,7 +71,7 @@ class PowerMonitor(hass.Hass):
 
                 # send out the notification                
                 self.call_service(self.notify_target, title=self.notify_title,
-                  message=self.notify_message)
+                  message=message_text)
             else:
                 self.log("Notify false")
 
