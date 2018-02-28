@@ -16,7 +16,7 @@ class HouseOccupancy(hass.Hass):
     def set_occupancy_on(self, entity, attribute, old, new, kwargs):
 
         self.turn_on('input_boolean.home_occupancy')
-        self.log("Someone has arrived", level='INFO')
+        self.log("Someone has arrived to an empty house", level='INFO')
 
         # THIS ISN'T GOING TO WORK WHEN SOMEONE ARRIVES AT AN
         # OCCUPIED HOUSEs

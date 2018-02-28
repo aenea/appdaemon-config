@@ -41,6 +41,7 @@ class PowerMonitor(hass.Hass):
             # cancel any running idle timers
             if self.idle_timer is not None:
                 self.cancel_timer(self.idle_timer)
+                self.idle_timer = None
 
             self.log("{} is running.".format(self.sensor_entity), level='INFO')
 
