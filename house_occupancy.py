@@ -8,6 +8,17 @@ class HouseOccupancy(hass.Hass):
 
         self.listen_state(self.house_occupied, self.sensor, new='on')
         self.listen_state(self.house_unoccupied, self.sensor, new='off')
+        self.listen_state(self.set_occupancy_state, 'group.presence_all')
+
+    def set_occupancy_state(self, entity, attribute, old, new, kwargs):
+
+        # the house occupancy tracks with everyone's presence
+        if new == 'Home':
+            self.turn_on('input_boolean.house_occupancy')
+            self.log("Someone has arrived", level='INFO')
+        else:
+            self.turn_off('input_boolean.house_occpuancy')
+            self.log("Everyone has left", level='INFO')
 
     # someone has arrived to an empty house
     def house_occupied(self, entity, attribute, old, new, kwargs):
