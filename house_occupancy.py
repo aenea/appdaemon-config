@@ -17,7 +17,7 @@ class HouseOccupancy(hass.Hass):
             self.turn_on('input_boolean.house_occupancy')
             self.log("Someone has arrived", level='INFO')
         else:
-            self.turn_off('input_boolean.house_occpuancy')
+            self.turn_off('input_boolean.house_occupancy')
             self.log("Everyone has left", level='INFO')
 
     # someone has arrived to an empty house
