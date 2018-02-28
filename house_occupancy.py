@@ -23,7 +23,7 @@ class HouseOccupancy(hass.Hass):
             if house_mode == 'Night':
                 # turn on the porch light
                 self.turn_on('switch.porch_light_switch_switch')
-        else:
+        elif new == 'not_home' and old == 'home':
             self.turn_off('input_boolean.home_occupancy')
             self.log("Everyone has left", level='INFO')
 
