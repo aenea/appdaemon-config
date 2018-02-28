@@ -13,9 +13,16 @@ class HouseOccupancy(hass.Hass):
     def set_occupancy_state(self, entity, attribute, old, new, kwargs):
 
         # the house occupancy tracks with everyone's presence
-        if new == 'home':
+        if new == 'home' and old == 'not_home':
             self.turn_on('input_boolean.home_occupancy')
             self.log("Someone has arrived", level='INFO')
+
+            # get the house mode
+            house_mode = self.get_state('input_select.house_mode', attribute='state')
+        
+            if house_mode == 'Night':
+                # turn on the porch light
+                self.turn_on('switch.porch_light_switch_switch')
         else:
             self.turn_off('input_boolean.home_occupancy')
             self.log("Everyone has left", level='INFO')
