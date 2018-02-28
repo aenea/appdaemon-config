@@ -12,25 +12,31 @@ class HouseOccupancy(hass.Hass):
           new='home', old='not_home')
         self.listen_state(self.set_occupancy_off, 'group.presence_all', 
           new='not_home', old='home')
+        self.listen_state(self.someone_arrives, 'presence', new='home')
 
     def set_occupancy_on(self, entity, attribute, old, new, kwargs):
 
         self.turn_on('input_boolean.home_occupancy')
         self.log("Someone has arrived to an empty house", level='INFO')
 
-        # THIS ISN'T GOING TO WORK WHEN SOMEONE ARRIVES AT AN
-        # OCCUPIED HOUSEs
+
+    def set_occupancy_off(self, entity, attribute, old, new, kwargs):        
+    
+        self.turn_off('input_boolean.home_occupancy')
+        self.log("Everyone has left", level='INFO')
+
+
+    def someone_arrives(self, entity, attribute, old, new, kwargs):
+        
         # get the house mode
         house_mode = self.get_state('input_select.house_mode', attribute='state')
         
         if house_mode == 'Night':
             # turn on the porch light
             self.turn_on('switch.porch_light_switch_switch')
-    
-    def set_occupancy_off(self, entity, attribute, old, new, kwargs):        
-    
-        self.turn_off('input_boolean.home_occupancy')
-        self.log("Everyone has left", level='INFO')
+
+        self.log('{} has arrived.'.format(entity))
+
 
     # someone has arrived to an empty house
     def home_occupied(self, entity, attribute, old, new, kwargs):
@@ -60,6 +66,7 @@ class HouseOccupancy(hass.Hass):
         else:
             self.log("Welcome lights declined, house mode is {}"
             .format(house_mode))
+
 
     # everone has left the house
     def home_unoccupied(self, entity, attribute, old, new, kwargs):
