@@ -12,7 +12,7 @@ class HouseOccupancy(hass.Hass):
           new='home', old='not_home')
         self.listen_state(self.set_occupancy_off, 'group.presence_all', 
           new='not_home', old='home')
-        self.listen_state(self.someone_arrives, 'presence', new='home')
+        self.listen_state(self.someone_arrives, 'device_tracker', new='home')
 
     def set_occupancy_on(self, entity, attribute, old, new, kwargs):
 
