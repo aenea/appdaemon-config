@@ -16,12 +16,14 @@ class HouseOccupancy(hass.Hass):
 
         # stop the dog music
         self.call_service('media_player/squeezebox_call_method', 
-          entity_id='media_player.office', command='power', 
+          entity_id='media_player.office', 
+          command='power', 
           parameters='0')
         self.log("Dog music stopped", level='INFO')
 
         # clear the thermostat away mode
-        self.call_service('climate/set_away_mode', entity_id='climate.Home',
+        self.call_service('climate/set_away_mode', 
+          entity_id='climate.Home',
           away_mode='false')
         self.log("Thermostat away mode cleared", level='INFO')
 
@@ -51,13 +53,15 @@ class HouseOccupancy(hass.Hass):
         self.log('All remotes turned off', level='INFO')
 
         # set the thermostat away mode
-        self.call_service('climate/set_away_mode', entity_id='climate.Home',
+        self.call_service('climate/set_away_mode', 
+          entity_id='climate.Home',
           away_mode='true')
         self.log("Thermostat away mode cleared", level='INFO')
 
         # start the dog music
         self.call_service('media_player/squeezebox_call_method', 
-          entity_id='media_player.office', command='playlist', 
+          entity_id='media_player.office', 
+          command='playlist', 
           parameters=['loadtracks', 'album.titlesearch=Through a dogs ears'])
         self.log("Dog music started", level='INFO')
 
