@@ -79,7 +79,7 @@ class HouseOccupancy(hass.Hass):
         self.call_service('climate/set_away_mode', 
           entity_id='climate.Home',
           away_mode='true')
-        self.log("Thermostat away mode cleared", level='INFO')
+        self.log("Thermostat away mode set", level='INFO')
 
         # start the dog music
         self.call_service('media_player/squeezebox_call_method', 
