@@ -9,7 +9,6 @@ class HouseOccupancy(hass.Hass):
         self.listen_state(self.house_occupied, self.sensor, new='on')
         self.listen_state(self.house_unoccupied, self.sensor, new='off')
 
-
     # someone has arrived to an empty house
     def house_occupied(self, entity, attribute, old, new, kwargs):
 
