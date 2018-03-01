@@ -6,7 +6,7 @@ class ManualLight(hass.Hass):
 
         self.actuator = self.args['actuator_entity']
         self.max_run_time = self.args['max_run_time']
-        self.tracker = self.args['tracking_entity']
+        self.tracking_entity = self.args['tracking_entity']
         self.off_timer = None
 
         self.listen_state(self.actuator_on, self.actuator, new='on')
