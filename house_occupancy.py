@@ -13,6 +13,18 @@ class HouseOccupancy(hass.Hass):
         self.listen_state(self.set_occupancy_off, 'group.presence_all', 
           new='not_home', old='home')
         self.listen_state(self.someone_arrives, 'device_tracker', new='home')
+        self.listen_state(self.door_opens, 
+                          'binary_sensor.back_door_sensor_sensor', new='open')
+    
+    def door_opens(self, entity, attribute, old, new, kwargs):
+        """ Turn off the porch light when the back door opens
+        if the porch light was turned on by automation
+        """
+        porch_light_status = self.get_state('input_select.porch_light_status',
+          attribute='state')
+
+        if porch_light_status == 'Automated'
+            self.turn_off('switch.porch_light_switch_switch')
 
     def set_occupancy_on(self, entity, attribute, old, new, kwargs):
 
