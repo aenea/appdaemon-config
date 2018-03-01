@@ -23,6 +23,8 @@ class HouseOccupancy(hass.Hass):
         porch_light_status = self.get_state('input_select.porch_light_status',
           attribute='state')
 
+        self.log(porch_light_status)
+
         if porch_light_status == 'Automated':
             self.turn_off('switch.porch_light_switch_switch')
 
