@@ -25,7 +25,7 @@ class ManualLight(hass.Hass):
     def actuator_off(self, entity, attribute, old, new, kwargs):
 
         # clear the status flag
-        self.select_option(self.tracker, 'Off')
+        self.select_option(self.tracking_entity, 'Off')
 
     def turn_off_actuator(self, kwargs):
 
