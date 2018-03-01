@@ -14,7 +14,7 @@ class HouseOccupancy(hass.Hass):
           new='not_home', old='home')
         self.listen_state(self.someone_arrives, 'device_tracker', new='home')
         self.listen_state(self.door_opens, 
-                          'binary_sensor.back_door_sensor_sensor', new='open')
+                          'binary_sensor.back_door_sensor_sensor', new='on')
     
     def door_opens(self, entity, attribute, old, new, kwargs):
         """ Turn off the porch light when the back door opens
