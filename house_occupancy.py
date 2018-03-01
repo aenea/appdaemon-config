@@ -19,12 +19,10 @@ class HouseOccupancy(hass.Hass):
         self.turn_on('input_boolean.home_occupancy')
         self.log("Someone has arrived to an empty house", level='INFO')
 
-
     def set_occupancy_off(self, entity, attribute, old, new, kwargs):        
     
         self.turn_off('input_boolean.home_occupancy')
         self.log("Everyone has left", level='INFO')
-
 
     def someone_arrives(self, entity, attribute, old, new, kwargs):
         
@@ -34,7 +32,10 @@ class HouseOccupancy(hass.Hass):
         
         if house_mode == 'Night':
             # turn on the porch light
-            self.turn_on('switch.porch_light_switch_switch')
+            self.select_option('input_select.porch_light_status',
+                               'Automated')
+            self.turn_on('switch.porch_light_switch_switch')            
+            self.log('Porch light turned on for arrival', level='INFO')
                     
         self.log('{} has arrived. House mode is {}'.format(entity,
           house_mode))

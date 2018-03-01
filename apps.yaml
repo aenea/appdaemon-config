@@ -46,6 +46,13 @@ pantry_light:
   sensor_entity: binary_sensor.pantry_door_sensor_sensor
   tracking_entity: input_select.pantry_status
 
+porch_light:
+  module: manual_light
+  class: ManualLight
+  actuator_entity: switch.porch_light_switch_switch
+  max_run_time: 10
+  tracking_entity: input_select.porch_light_status
+
 utility_room_light:
   module: sensorlight
   class: SensorLight
