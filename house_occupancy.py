@@ -9,16 +9,16 @@ class HouseOccupancy(hass.Hass):
         self.listen_state(self.home_occupied, self.sensor, new='on')
         self.listen_state(self.home_unoccupied, self.sensor, new='off')
         self.listen_state(self.set_occupancy_on, 'group.presence_all', 
-          new='home', old='not_home')
+                          new='home', old='not_home')
         self.listen_state(self.set_occupancy_off, 'group.presence_all', 
-          new='not_home', old='home')
+                          new='not_home', old='home')
         self.listen_state(self.someone_arrives, 'device_tracker', new='home')
         self.listen_state(self.door_opens, 
                           'binary_sensor.back_door_sensor_sensor', new='on')
     
     def door_opens(self, entity, attribute, old, new, kwargs):
-        """ Turn off the porch light when the back door opens
-        if the porch light was turned on by automation
+        """ Turn off the porch light when the back door opens if the porch 
+        light was turned on by automation
         """
         porch_light_status = self.get_state('input_select.porch_light_status',
           attribute='state')
@@ -91,8 +91,8 @@ class HouseOccupancy(hass.Hass):
         self.log("House is not occupied", level='INFO')
 
         # turn off lights
-        self.turn_off('group.all_lights')
-        self.turn_off('group.all_switches')
+        self.turn_off('group.lights')
+        self.turn_off('group.switches')
         self.log("All lights turned off", level='INFO')
 
         # turn off remotes
