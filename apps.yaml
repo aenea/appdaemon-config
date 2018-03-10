@@ -66,7 +66,7 @@ utility_room_light:
 bar_light:
   module: switchlight
   class: SwitchLight
-  actuator_entity: switch.bar_light_switch_switch
+  actuator_entity: light.bar_light_switch_level
   brightness: 100
   light_group: light.bar
 
