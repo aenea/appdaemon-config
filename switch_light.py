@@ -65,7 +65,7 @@ class SwitchLight(hass.Hass):
             # synchronize the dimmer level
             dimmer_level = self.get_state(self.light_group, 
                                           attribute='brightness')
-            self.turn_on(self.actuator, brightness=dimmer_level)
+            self.turn_on(self.actuator, brightness_pct=dimmer_level)
             self.log("{} synchronized to light level".format(
                 self.actuator
             ))
