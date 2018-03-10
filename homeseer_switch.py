@@ -16,7 +16,13 @@ class HomeseerSwitch(hass.Hass):
             scene_id=1, scene_data=self.scene_id)
         self.listen_event(self.scene_off, event='zwave.scene_activated', entity_id=self.zwave_entity, 
             scene_id=2, scene_data=self.scene_id)        
+        self.listen_event(self.dimmer_change, event='zwave.switchmultilevel', 
+                          entity_id=self.zwave_entity)
 
+    def dimmer_change(self, event_name, data, kwargs):
+
+        self.log(self.brightness_pct)
+        
     def scene_on(self, event_name, data, kwargs):
         
         if self.scene_id == 3 or self.scene_id == 7860:
