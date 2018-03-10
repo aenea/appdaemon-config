@@ -30,8 +30,8 @@ class SwitchLight(hass.Hass):
             self.turn_on(self.light_group, brightness_pct=self.brightness)
             self.log(self.actuator + " turned on")
         else:
-            brightness = self.get_state(self.actuator, attribute='brightness_pct')
-            self.turn_on(self.light_group, brightness_pct=brightness)
+            brightness = self.get_state(self.actuator, attribute='brightness')
+            self.turn_on(self.light_group, brightness=brightness)
             self.log('{} dimmer adjusted'.format(brightness))
         
     def switch_off(self, entity, attribute, old, new, kwargs):
