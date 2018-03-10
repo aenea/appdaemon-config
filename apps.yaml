@@ -64,14 +64,14 @@ utility_room_light:
   tracking_entity: input_select.utility_room_status
 
 bar_light:
-  module: switchlight
+  module: switch_light
   class: SwitchLight
   actuator_entity: light.bar_light_switch_level
   brightness: 100
   light_group: light.bar
 
 fireplace_light:
-  module: switchlight
+  module: switch_light
   class: SwitchLight
   actuator_entity: switch.fireplace_light_switch_switch
   brightness: 100
