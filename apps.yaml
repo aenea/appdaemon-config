@@ -117,4 +117,4 @@ bar_double_tap:
   class: HomeseerSwitch
   actuator_entity: light.bar_light_switch
   scene_id: 7860
-  zwave_entity: zwave.bar_light_switch_2
+  zwave_entity: zwave.bar_light_switch
