@@ -115,6 +115,6 @@ kitchen_triple_tap:
 bar_double_tap:
   module: homeseer_switch
   class: HomeseerSwitch
-  actuator_entity: light.bar_light_switch
+  actuator_entity: light.bar_light_switch_level
   scene_id: 7860
   zwave_entity: zwave.bar_light_switch
