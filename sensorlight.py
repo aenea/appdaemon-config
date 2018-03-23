@@ -20,7 +20,7 @@ class SensorLight(hass.Hass):
 
         self.listen_state(self.sensor_on, self.sensor, new='on')
         self.listen_state(self.sensor_off, self.sensor, new='off')
-        self.listen_state(self.actuator_off, self.actuator, old='on', new='off',)
+        self.listen_state(self.actuator_off, self.actuator, old='on', new='off')
         
     def sensor_on(self, entity, attribute, old, new, kwargs):
 
@@ -39,6 +39,12 @@ class SensorLight(hass.Hass):
         
             # turn on the automation tracking flag
             self.select_option(self.tracker, 'Automated')
+
+            sell.call_service('logbook/log',
+                              entity_id=self.actuator,
+                              domain='automation',
+                              name='sensor_light: ',
+                              message='{} turned on'.format(self.actuator))
 
             self.log("{} turned on".format(self.actuator), level='INFO')
 
