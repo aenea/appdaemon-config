@@ -49,7 +49,7 @@ pantry_light:
 porch_light:
   module: manual_light
   class: ManualLight
-  actuator_entity: switch.porch_light_switch_switch
+  actuator_entity: switch.front_porch_light_switch_switch
   max_run_time: 1200
   tracking_entity: input_select.porch_light_status
 

@@ -26,7 +26,7 @@ class HouseOccupancy(hass.Hass):
         self.log(porch_light_status)
 
         if porch_light_status == 'Automated':
-            self.turn_off('switch.porch_light_switch_switch')
+            self.turn_off('switch.front_porch_light_switch_switch')
 
     def set_occupancy_on(self, entity, attribute, old, new, kwargs):
 
