@@ -40,7 +40,7 @@ class SensorLight(hass.Hass):
             # turn on the automation tracking flag
             self.select_option(self.tracker, 'Automated')
 
-            sell.call_service('logbook/log',
+            self.call_service('logbook/log',
                               entity_id=self.actuator,
                               domain='automation',
                               name='sensor_light: ',
