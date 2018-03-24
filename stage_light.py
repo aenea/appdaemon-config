@@ -1,22 +1,23 @@
 import appdaemon.plugins.hass.hassapi as hass
 
 #
-# StageLight - turns on lights at a dimmed level in adjoinging rooms in 
+# StageLight - turns on lights at a dimmed level in adjoinging rooms in
 # response to a motion sensor event. This prevents walking into a dark room
-# before the target room's motion sensor activates. The target room's lights 
-# will come # on normally when it's motion sensor activates. Stage lights 
-# turn off if the # room's motion sensor doesn't trigger after a configurable 
+# before the target room's motion sensor activates. The target room's lights
+# will come # on normally when it's motion sensor activates. Stage lights
+# turn off if the # room's motion sensor doesn't trigger after a configurable
 # delay
 #
-# Args: 
-# 
+# Args:
+#
 # sensor_entity - The motion sensor in the adjoining room
 # actuator_entity - The switch/lights to turn on
 # tracking_entity - An input_select variable to track the lighting state of
-# the room 
+# the room
 # delay - How long to keep the stage lighting on before timing out
 # brightness - Lighting level of the stage lighting
 #
+
 
 class StageLight(hass.Hass):
 
@@ -29,7 +30,7 @@ class StageLight(hass.Hass):
         self.off_timer = None
 
         self.listen_state(self.sensor_on, self.sensor, new='on', old='off')
-        
+
     def sensor_on(self, entity, attribute, old, new, kwargs):
 
         # get the state of the switch
@@ -39,13 +40,26 @@ class StageLight(hass.Hass):
         if switch_state == 'off':
             self.turn_on(self.actuator, brightness_pct=self.brightness)
 
-            self.log("Stage light for {} turned on".format(self.actuator), level='INFO')
+            self.call_service(
+                'logbook/log',
+                entity_id=self.actuator,
+                domain='automation',
+                name='stage_light: ',
+                message='{} staged'.format(self.actuator)
+            )
 
             # set the tracking flag
             self.select_option(self.tracker, 'Stage')
         else:
-            self.log("Stage light for {} declined because light is already on".format(self.actuator), 
-                level='INFO')
+            self.call_service(
+                'logbook/log',
+                entity_id=self.actuator,
+                domain='automation',
+                name='stage_light: ',
+                message=(
+                    '{} declined staging - already on'.format(self.actuator)
+                )
+            )
 
         # cancel any existing timers
         if self.off_timer is not None:
@@ -62,18 +76,32 @@ class StageLight(hass.Hass):
 
         # Remove the timer handle
         self.off_timer = None
-        
+
         # get the state of the lighting flag
         lighting_state = self.get_state(self.tracker, attribute='state')
-        
+
         # turn off the light if the state is still 'Stage'
         if lighting_state == 'Stage':
             self.turn_off(self.actuator)
-                        
-            self.log("Stage light for {} turned off".format(self.actuator), level='INFO')
-        
+
+            self.call_service(
+                'logbook/log',
+                entity_id=self.actuator,
+                domain='automation',
+                name='stage_light: ',
+                message='Stage light for {} turned off'.format(self.actuator)
+            )
+
             # turn off the tracking variable
             self.select_option(self.tracker, 'Off')
         else:
-            self.log("Turn off of stage light for {} declined because lighting state has changed to {}".format(
-                self.actuator, lighting_state), level='INFO')
+            self.call_service(
+                'logbook/log',
+                entity_id=self.actuator,
+                domain='automation',
+                name='stage_light: ',
+                message=(
+                    'Stage light for {} not turned off - state has '
+                    'changed to {}'.format(self.actuator, lighting_state)
+                )
+            )
