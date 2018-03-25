@@ -38,10 +38,10 @@ class SensorLight(hass.Hass):
 
         # check for guest mode
         guest_mode = self.get_state(
-            input_boolean.guest_mode,
+            entity_id='input_boolean.guest_mode',
             attribute='state'
         )
-        self.log(guest_mode)
+
         if guest_mode is True:
             return
 
@@ -91,7 +91,7 @@ class SensorLight(hass.Hass):
 
         # check for guest mode
         guest_mode = self.get_state(
-            input_boolean.guest_mode,
+            entity_id='input_boolean.guest_mode',
             attribute='state'
         )
         if guest_mode is True:
@@ -152,7 +152,7 @@ class SensorLight(hass.Hass):
 
         # check for guest mode
         guest_mode = self.get_state(
-            input_boolean.guest_mode,
+            entity_id='input_boolean.guest_mode',
             attribute='state'
         )
         if guest_mode is True:
