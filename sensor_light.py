@@ -41,6 +41,7 @@ class SensorLight(hass.Hass):
             input_boolean.guest_mode,
             attribute='state'
         )
+        self.log(guest_mode)
         if guest_mode is True:
             return
 
