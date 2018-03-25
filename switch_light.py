@@ -25,8 +25,10 @@ class SwitchLight(hass.Hass):
         self.block_restart = False
 
     def switch_on(self, entity, attribute, old, new, kwargs):
-        
-        if (old == 'off'):            
+
+        self.log('switch on')
+
+        if (old == 'off'):
             # turn on the light to the previous dimmer level
             self.turn_on(self.light_group)
             self.log(self.actuator + " turned on")
