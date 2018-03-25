@@ -23,11 +23,26 @@ class SensorLight(hass.Hass):
         self.listen_state(self.sensor_off, self.sensor, new='off')
         self.listen_state(
             self.actuator_off,
-            self.actuator, old='on',
+            self.actuator,
+            old='on',
             new='off'
+        )
+        self.listen_state(
+            self.actuator_on,
+            self.actuator,
+            old='off',
+            new='on'
         )
 
     def sensor_on(self, entity, attribute, old, new, kwargs):
+
+        # check for guest mode
+        guest_mode = self.get_state(
+            input_boolean.guest_mode,
+            attribute='state'
+        )
+        if guest_mode is True:
+            return
 
         # get the state of the switch
         switch_state = self.get_state(self.actuator, attribute='state')
@@ -38,13 +53,14 @@ class SensorLight(hass.Hass):
         # turn on the light if it is not fully on
         if (switch_state == 'off' or lighting_state == 'Stage' or
                 lighting_state == 'Warning'):
+
+            # turn on the automation tracking flag
+            self.select_option(self.tracker, 'Automated')
+
             if self.brightness is None:
                 self.turn_on(self.actuator)
             else:
                 self.turn_on(self.actuator, brightness_pct=self.brightness)
-
-            # turn on the automation tracking flag
-            self.select_option(self.tracker, 'Automated')
 
             self.call_service(
                 'logbook/log',
@@ -71,6 +87,15 @@ class SensorLight(hass.Hass):
             )
 
     def sensor_off(self, entity, attribute, old, new, kwargs):
+
+        # check for guest mode
+        guest_mode = self.get_state(
+            input_boolean.guest_mode,
+            attribute='state'
+        )
+        if guest_mode is True:
+            return
+
         if self.delay > 0:
             if self.brightness is not None:
                 self.off_timer = self.run_in(self.turn_off_warning, 30)
@@ -87,7 +112,9 @@ class SensorLight(hass.Hass):
         # get the state of the lighting flag
         lighting_state = self.get_state(self.tracker, attribute='state')
 
-        if lighting_state != "Off":
+        if lighting_state == 'Automated':
+            self.select_option(self.tracker, 'Warning')
+
             # dim the lights to warn about an impending turn off
             current_brightness = self.get_state(
                 self.actuator,
@@ -95,7 +122,7 @@ class SensorLight(hass.Hass):
             )
             self.turn_on(
                 self.actuator,
-                brightness=int(current_brightness * .6)
+                brightness=int(current_brightness * .4)
             )
 
             self.call_service(
@@ -108,14 +135,27 @@ class SensorLight(hass.Hass):
 
             # schedule the final turn off
             self.off_timer = self.run_in(self.turn_off_actuator, 30)
-            self.select_option(self.tracker, 'Warning')
 
     def turn_off_actuator(self, kwargs):
 
-        # turn off the light
-        self.turn_off(self.actuator)
+        lighting_state = self.get_state(
+            self.tracker,
+            attribute='state'
+        )
+
+        # turn off the light if it was turned on by automation
+        if lighting_state != 'Manual':
+            self.turn_off(self.actuator)
 
     def actuator_off(self, entity, attribute, old, new, kwargs):
+
+        # check for guest mode
+        guest_mode = self.get_state(
+            input_boolean.guest_mode,
+            attribute='state'
+        )
+        if guest_mode is True:
+            return
 
         # clear the timer handles
         self.max_timer = None
@@ -131,3 +171,13 @@ class SensorLight(hass.Hass):
 
         # turn off the tracking variable
         self.select_option(self.tracker, 'Off')
+
+    def actuator_on(self, entity, attribute, old, new, kwargs):
+
+        lighting_state = self.get_state(
+            self.tracker,
+            attribute='state'
+        )
+
+        if lighting_state == 'Off':
+            self.select_option(self.tracker, 'Manual')
