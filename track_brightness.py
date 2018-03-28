@@ -10,6 +10,6 @@ class TrackBrightness(hass.Hass):
             entity_id='sun.sun'
         )
 
-    def sun_event(self, event_name, data, kwargs):
+    def sun_event(self, entity, attribute, old, new, kwargs):
 
         self.log(self.actuator + " sun event", level='INFO')
