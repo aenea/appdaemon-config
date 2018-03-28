@@ -118,3 +118,7 @@ bar_double_tap:
   actuator_entity: light.bar_light_switch_level
   scene_id: 7860
   zwave_entity: zwave.bar_light_switch
+
+house_brightness:
+  module: track_brightness
+  class: TrackBrightness

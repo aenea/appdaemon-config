@@ -17,7 +17,7 @@ import appdaemon.plugins.hass.hassapi as hass
 class HomeseerSwitch(hass.Hass):
     
     def initialize(self):
-
+ 
         self.actuator = self.args['actuator_entity']
         self.scene_id = self.args['scene_id']
         self.zwave_entity = self.args['zwave_entity']
