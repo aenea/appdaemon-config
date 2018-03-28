@@ -5,7 +5,7 @@ class TrackBrightness(hass.Hass):
     
     def initialize(self):
 
-        self.listen_event(
+        self.listen_state(
             self.sun_event,
             entity_id='sun.sun'
         )
