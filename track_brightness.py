@@ -2,7 +2,7 @@ import appdaemon.plugins.hass.hassapi as hass
 
 
 class TrackBrightness(hass.Hass):
-    
+
     def initialize(self):
 
         self.listen_state(
@@ -12,4 +12,4 @@ class TrackBrightness(hass.Hass):
 
     def sun_event(self, entity, attribute, old, new, kwargs):
 
-        self.log(" sun event", level='INFO')
+        self.log(new, level='INFO')
