@@ -12,4 +12,10 @@ class TrackBrightness(hass.Hass):
 
     def sun_event(self, entity, attribute, old, new, kwargs):
 
-        self.log(entity, level='INFO')
+        # check for guest mode
+        sun_elevation = self.get_state(
+            'sun.sun',
+            attribute='elevation'
+        )
+
+        self.log(sun_elevation, level='INFO')
