@@ -7,7 +7,7 @@ class TrackBrightness(hass.Hass):
 
         self.listen_state(
             self.sun_event,
-            entity_id='sun.sun'
+            'sun.sun'
         )
 
     def sun_event(self, entity, attribute, old, new, kwargs):
