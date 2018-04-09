@@ -17,6 +17,7 @@ class ColorTemperature(hass.Hass):
         # get the list of color temperature enabled lights
         ct_group = self.get_state('group.ct_lights', attribute='all')
         ct_lights = ct_group['attributes']['entity_id']
+        self.log(ct_lights)
 
         # hook the turn on event for the color temperature lights
         for ct_light in ct_lights:            
