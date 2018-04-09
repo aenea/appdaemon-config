@@ -80,10 +80,10 @@ class ColorTemperature(hass.Hass):
         self.set_value('input_number.kelvin_current', target_temp)
 
         # get the list of color temperature enabled bulbs
-        ct_group = self.get_state('group.ct_bulbs', 'all')
-        ct_bulbs = ct_group['attributes']['entity_id']
+        ct_group = self.get_state('group.ct_lights', 'all')
+        ct_lights = ct_group['attributes']['entity_id']
 
-        self.log(ct_bulbs)
+        self.log(ct_lights)
         #self.call_service('homeassistant/turn_on', entity_id='light.living_room_1', kelvin=target_temp)
         #self.call_service('homeassistant/turn_on', entity_id='light.living_room_2', kelvin=target_temp)
 
