@@ -21,6 +21,7 @@ class ColorTemperature(hass.Hass):
         # hook the turn on event for the color temperature lights
         for ct_light in ct_lights:            
             self.listen_state(self.light_on, ct_light, new='on', old='off')
+            self.log(ct_light)
             self.call_service(
                 'logbook/log',
                 entity_id=ct_light,
@@ -29,7 +30,7 @@ class ColorTemperature(hass.Hass):
                 message=(
                     'monitoring {} for turn on events'.format(ct_light)
                 )
-            )   
+            )
 
     def light_on(self, entity, attribute, old, new, kwargs):
 
