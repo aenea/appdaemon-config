@@ -27,7 +27,7 @@ class ColorTemperature(hass.Hass):
                 domain='automation',
                 name='ct_light: ',
                 message=(
-                    'monitoring {} for on events'.format(ct_light)
+                    'monitoring {} for turn on events'.format(ct_light)
                 )
             )   
 
