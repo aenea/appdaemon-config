@@ -33,7 +33,7 @@ class ColorTemperature(hass.Hass):
         # set the light to the target color temperature
         self.call_service(
             'homeassistant/turn_on',
-            entity_id=ct_light,
+            entity_id=entity,
             kelvin=target_temp
         )
         
