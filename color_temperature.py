@@ -19,8 +19,16 @@ class ColorTemperature(hass.Hass):
         ct_lights = ct_group['attributes']['entity_id']
 
         # hook the turn on event for the color temperature lights
-        for ct_light in ct_lights:
+        for ct_light in ct_lights:            
             self.listen_state(self.light_on, ct_light, new='on', old='off')
+            self.call_service(
+                'logbook/log',
+                entity_id=ct_light,
+                domain='automation',
+                name='ct_light: ',
+                message=(
+                    'monitoring {} for on events'.format(ct_light)
+                )            
     
     def light_on(self, entity, attribute, old, new, kwargs):
 
