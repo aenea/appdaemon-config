@@ -18,7 +18,7 @@ class ColorTemperature(hass.Hass):
 
         # get the sun event information
         a = Astral()
-        home = location = Location(info = (
+        home = location = Location(info=(
             'Marsyville',
             'Ohio',
             40.334872,
@@ -78,6 +78,12 @@ class ColorTemperature(hass.Hass):
 
         self.log(target_temp)
         self.set_value('input_number.kelvin_current', target_temp)
+
+        # get the list of color temperature enabled bulbs
+        ct_group = self.get_state('group.ct_bulbs', 'all')
+        ct_bulbs = ct_group['attributes']['entity_id']
+
+        self.log(ct_bulbs)
         #self.call_service('homeassistant/turn_on', entity_id='light.living_room_1', kelvin=target_temp)
         #self.call_service('homeassistant/turn_on', entity_id='light.living_room_2', kelvin=target_temp)
 
