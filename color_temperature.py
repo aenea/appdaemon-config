@@ -28,8 +28,9 @@ class ColorTemperature(hass.Hass):
                 name='ct_light: ',
                 message=(
                     'monitoring {} for on events'.format(ct_light)
-                )            
-    
+                )
+            )   
+
     def light_on(self, entity, attribute, old, new, kwargs):
 
         # get the current target color temperature
