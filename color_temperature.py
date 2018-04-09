@@ -13,6 +13,29 @@ class ColorTemperature(hass.Hass):
             datetime.datetime.now(),
             5 * 60
         )
+
+        # get the list of color temperature enabled lights
+        ct_group = self.get_state('group.ct_lights', attribute='all')
+        ct_lights = ct_group['attributes']['entity_id']
+
+        # hook the turn on event for the color temperature lights
+        for ct_light in ct_lights:
+            self.listen_state(self.light_on, ct_light, new='on', old='off')
+    
+    def light_on(self, entity, attribute, old, new, kwargs):
+
+        # get the current target color temperature
+        target_temp = int(float(self.get_state(
+            'input_number.kelvin_sunset',
+            attribute='state'
+        )))
+
+        # set the light to the target color temperature
+        self.call_service(
+            'homeassistant/turn_on',
+            entity_id=ct_light,
+            kelvin=target_temp
+        )
         
     def calc_temp(self, kwargs):
 
