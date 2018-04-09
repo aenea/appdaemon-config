@@ -83,14 +83,13 @@ class ColorTemperature(hass.Hass):
         ct_group = self.get_state('group.ct_lights', attribute='all')
         ct_lights = ct_group['attributes']['entity_id']
 
-        self.log(ct_lights)
-        #self.call_service('homeassistant/turn_on', entity_id='light.living_room_1', kelvin=target_temp)
-        #self.call_service('homeassistant/turn_on', entity_id='light.living_room_2', kelvin=target_temp)
-
-
-
-
-        
-
-
+        # set the lights that are on to the current color temperature
+        for ct_light in ct_lights:
+            light_state = self.get_state(ct_light, attribute='state')
+            if light_state == 'on':
+                self.call_service(
+                    'homeassistant/turn_on',
+                    entity_id=ct_light,
+                    kelvin=target_temp
+                )
 
