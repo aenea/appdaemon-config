@@ -51,6 +51,7 @@ class ColorTemperature(hass.Hass):
         self.call_service(
             'homeassistant/turn_on',
             entity_id=entity,
+            brightness_pct=100,
             kelvin=target_temp
         )
         
