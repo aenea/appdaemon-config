@@ -51,7 +51,7 @@ porch_light:
   class: ManualLight
   actuator_entity: switch.front_porch_light_switch_switch
   max_run_time: 1200
-  tracking_entity: input_select.porch_light_status
+  tracking_entity: input_select.front_porch_light_status
 
 utility_room_light:
   module: sensor_light

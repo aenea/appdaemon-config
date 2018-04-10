@@ -20,10 +20,8 @@ class HouseOccupancy(hass.Hass):
         """ Turn off the porch light when the back door opens if the porch 
         light was turned on by automation
         """
-        porch_light_status = self.get_state('input_select.porch_light_status',
+        porch_light_status = self.get_state('input_select.front_porch_light_status',
           attribute='state')
-
-        self.log(porch_light_status)
 
         if porch_light_status == 'Automated':
             self.turn_off('switch.front_porch_light_switch_switch')
@@ -46,7 +44,7 @@ class HouseOccupancy(hass.Hass):
         
         if house_mode == 'Night':
             # turn on the porch light
-            self.select_option('input_select.porch_light_status',
+            self.select_option('input_select.front_porch_light_status',
                                'Automated')
             self.turn_on('switch.porch_light_switch_switch')            
             self.log('Porch light turned on for arrival', level='INFO')
