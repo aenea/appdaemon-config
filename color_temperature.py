@@ -117,7 +117,7 @@ class ColorTemperature(hass.Hass):
 
             target_temp = int(noon_temp + (temp_change * elapsed_pct))
 
-        self.log(target_temp, noon_temp, sunset_temp, elapsed_pct)
+        self.log("{} {} {} {} {}".format(target_temp, noon_temp, sunset_temp, elapsed_pct))
         self.set_value('input_number.kelvin_current', target_temp)
 
         # get the list of color temperature enabled bulbs
