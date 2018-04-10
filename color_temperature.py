@@ -46,6 +46,7 @@ class ColorTemperature(hass.Hass):
             'input_number.kelvin_current',
             attribute='state'
         )))
+        self.log(target_temp)
 
         # set the light to the target color temperature
         self.call_service(
