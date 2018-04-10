@@ -16,45 +16,12 @@ class ColorTemperature(hass.Hass):
             is_daylight=1
         )
 
-        # get the list of color temperature enabled lights
-        ct_group = self.get_state('group.ct_lights', attribute='all')
-        ct_lights = ct_group['attributes']['entity_id']
-
-        # hook the turn on event for the color temperature lights
-        for ct_light in ct_lights:            
-            self.listen_state(self.light_on, ct_light, new='on', old='off')
-            self.call_service(
-                'logbook/log',
-                entity_id=ct_light,
-                domain='automation',
-                name='ct_light: ',
-                message=(
-                    'monitoring {} for turn on events'.format(ct_light)
-                )
-            )
-
     def is_daylight(self, value):
         if self.sun_up():
             return True
         else:
             return False
 
-    def light_on(self, entity, attribute, old, new, kwargs):
-
-        # get the current target color temperature
-        target_temp = int(float(self.get_state(
-            'input_number.kelvin_current',
-            attribute='state'
-        )))
-        
-        # set the light to the target color temperature
-        self.call_service(
-            'homeassistant/turn_on',
-            entity_id=entity,
-            brightness_pct=100,
-            kelvin=target_temp
-        )
-        
     def calc_temp(self, kwargs):
 
         # get the sun event information
@@ -119,18 +86,4 @@ class ColorTemperature(hass.Hass):
 
         self.log(str(target_temp))
         self.set_value('input_number.kelvin_current', target_temp)
-
-        # get the list of color temperature enabled bulbs
-        ct_group = self.get_state('group.ct_lights', attribute='all')
-        ct_lights = ct_group['attributes']['entity_id']
-
-        # set the lights that are on to the current color temperature
-        for ct_light in ct_lights:
-            light_state = self.get_state(ct_light, attribute='state')
-            if light_state == 'on':
-                self.call_service(
-                    'homeassistant/turn_on',
-                    entity_id=ct_light,
-                    kelvin=target_temp
-                )
 

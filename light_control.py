@@ -41,3 +41,35 @@ class LightControl(hass.Hass):
 
         # monitor changes in the target color temperature
         self.listen_state(self.target_temp_change, self.target_temp)
+
+    def light_on(self, entity, attribute, old, new, kwargs):
+
+        # get the current target color temperature
+        target_temp = int(float(self.get_state(
+            self.target_temp,
+            attribute='state'
+        )))
+
+        # set the light to the target color temperature
+        self.call_service(
+            'homeassistant/turn_on',
+            entity_id=entity,
+            brightness_pct=100,
+            kelvin=target_temp
+        )
+
+    def light_on(self, entity, attribute, old, new, kwargs):
+
+        # get the list of color temperature enabled bulbs
+        ct_group = self.get_state(self.ct_group, attribute='all')
+        ct_lights = ct_group['attributes']['entity_id']
+
+        # set the lights that are on to the current color temperature
+        for ct_light in ct_lights:
+            light_state = self.get_state(ct_light, attribute='state')
+            if light_state == 'on':
+                self.call_service(
+                    'homeassistant/turn_on',
+                    entity_id=ct_light,
+                    kelvin=target_temp
+                )
