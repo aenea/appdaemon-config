@@ -8,21 +8,21 @@ class ColorTemperature(hass.Hass):
     def initialize(self):
 
         # run the color temperature calculation every 5 minutes
+        self.register_constraint("is_daylight")
         self.periodic = self.run_every(
             self.calc_temp,
             datetime.datetime.now(),
-            5 * 60
+            5 * 60,
+            is_daylight=1
         )
 
         # get the list of color temperature enabled lights
         ct_group = self.get_state('group.ct_lights', attribute='all')
         ct_lights = ct_group['attributes']['entity_id']
-        self.log(ct_lights)
 
         # hook the turn on event for the color temperature lights
         for ct_light in ct_lights:            
             self.listen_state(self.light_on, ct_light, new='on', old='off')
-            self.log(ct_light)
             self.call_service(
                 'logbook/log',
                 entity_id=ct_light,
@@ -32,6 +32,12 @@ class ColorTemperature(hass.Hass):
                     'monitoring {} for turn on events'.format(ct_light)
                 )
             )
+
+    def is_daylight(self, value):
+        if self.sun_up():
+            return True
+        else:
+            return False
 
     def light_on(self, entity, attribute, old, new, kwargs):
 
