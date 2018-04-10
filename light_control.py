@@ -58,7 +58,7 @@ class LightControl(hass.Hass):
             kelvin=target_temp
         )
 
-    def light_on(self, entity, attribute, old, new, kwargs):
+    def target_temp_change(self, entity, attribute, old, new, kwargs):
 
         # get the list of color temperature enabled bulbs
         ct_group = self.get_state(self.ct_group, attribute='all')
