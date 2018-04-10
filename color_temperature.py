@@ -43,7 +43,7 @@ class ColorTemperature(hass.Hass):
 
         # get the current target color temperature
         target_temp = int(float(self.get_state(
-            'input_number.kelvin_sunset',
+            'input_number.kelvin_current',
             attribute='state'
         )))
 
