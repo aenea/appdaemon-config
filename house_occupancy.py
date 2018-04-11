@@ -98,7 +98,7 @@ class HouseOccupancy(hass.Hass):
         self.log('All remotes turned off', level='INFO')
 
         # get the current temperature
-        current_temp = get_state('sensor.pws_temp_f', attribute='state')
+        current_temp = float(get_state('sensor.pws_temp_f', attribute='state'))
 
         # the heat pump struggles to recover if the outside temperature is
         # too low
@@ -119,7 +119,7 @@ class HouseOccupancy(hass.Hass):
 
     def outdoor_temp_change(self, entity, attribute, old, new, kwargs):
 
-        current_temp = self.get_state('sensor.pws_temp_f', attribute='state')
+        current_temp = float(self.get_state('sensor.pws_temp_f', attribute='state'))
         away_mode = self.get_state('climate.home', attribute='away_mode')
         house_occupancy = self.get_state('group.presence_all', attribute='state')
 
