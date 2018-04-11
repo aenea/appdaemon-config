@@ -126,7 +126,7 @@ class HouseOccupancy(hass.Hass):
         # adjust the thermostat away mode based on temperature. The heat
         # pump struggles to recover if the temperature is too low
         if house_occupancy == 'not_home' and away_mode == 'off':
-            if current_temp < 18 or current_temp > 45:
+            if current_temp < 20 or current_temp > 45:
                 # the temperature has fallen outside of the dead band -
                 # turn on away mode
                 self.call_service(
@@ -135,7 +135,7 @@ class HouseOccupancy(hass.Hass):
                     away_mode='true'
                 )
         elif house_occupancy == 'not_home' and away_mode == 'on':
-            if current_temp > 20 and current_temp < 40:
+            if current_temp > 22 and current_temp < 40:
                 # the temperature has fallen inside the dead band
                 # turn off away mode
                 self.call_service('climate/set_away_mode', 
