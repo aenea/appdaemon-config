@@ -102,12 +102,12 @@ class HouseOccupancy(hass.Hass):
         self.log('All remotes turned off', level='INFO')
 
         # clear any hold modes on the thermostat
-            self.call_service(
-                'climate/set_hold_mode',
-                entity_id='climate.home',
-                hold_mode='none'
-            )
-            self.log("Thermostat away mode set", level='INFO')
+        self.call_service(
+            'climate/set_hold_mode',
+            entity_id='climate.home',
+            hold_mode='none'
+        )
+        self.log("Thermostat away mode set", level='INFO')
 
         # start the dog music
         self.call_service('media_player/squeezebox_call_method', 
