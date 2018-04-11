@@ -119,9 +119,9 @@ class HouseOccupancy(hass.Hass):
 
     def outdoor_temp_change(self, entity, attribute, old, new, kwargs):
 
-        current_temp = get_state('sensor.pws_temp_f', attribute='state')
-        away_mode = get_state('climate.home', attribute='away_mode')
-        house_occupancy = get_state('group.presence_all', attribute='state')
+        current_temp = self.get_state('sensor.pws_temp_f', attribute='state')
+        away_mode = self.get_state('climate.home', attribute='away_mode')
+        house_occupancy = self.get_state('group.presence_all', attribute='state')
 
         # adjust the thermostat away mode based on temperature. The heat
         # pump struggles to recover if the temperature is too low
