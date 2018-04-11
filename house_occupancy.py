@@ -15,7 +15,11 @@ class HouseOccupancy(hass.Hass):
         self.listen_state(self.someone_arrives, 'device_tracker', new='home')
         self.listen_state(self.door_opens, 
                           'binary_sensor.back_door_sensor_sensor', new='on')
-        self.listen_state(self.outdoor_temp_change, 'sensor.pws_temp_f')
+        self.listen_state(
+            self.climate_mode_change,
+            'climate.home',
+            attribute='climate_mode'
+        )
     
     def door_opens(self, entity, attribute, old, new, kwargs):
         """ Turn off the porch light when the back door opens if the porch 
@@ -97,16 +101,11 @@ class HouseOccupancy(hass.Hass):
         self.turn_off('group.remotes')
         self.log('All remotes turned off', level='INFO')
 
-        # get the current temperature
-        current_temp = float(get_state('sensor.pws_temp_f', attribute='state'))
-
-        # the heat pump struggles to recover if the outside temperature is
-        # too low
-        if current_temp < 20 or current_temp > 40:
+        # clear any hold modes on the thermostat
             self.call_service(
-                'climate/set_away_mode',
-                entity_id='climate.Home',
-                away_mode='true'
+                'climate/set_hold_mode',
+                entity_id='climate.home',
+                hold_mode='none'
             )
             self.log("Thermostat away mode set", level='INFO')
 
@@ -117,31 +116,22 @@ class HouseOccupancy(hass.Hass):
           parameters=['loadtracks', 'album.titlesearch=Through a dogs ears'])
         self.log("Dog music started", level='INFO')
 
-    def outdoor_temp_change(self, entity, attribute, old, new, kwargs):
+    def climate_mode_change(self, entity, attribute, old, new, kwargs):
 
-        current_temp = float(self.get_state('sensor.pws_temp_f', attribute='state'))
-        away_mode = self.get_state('climate.home', attribute='away_mode')
-        house_occupancy = self.get_state('group.presence_all', attribute='state')
+        # Is the house occupied?
+        house_occupancy = self.get_state(
+            'group.presence_all',
+            attribute='state'
+        )
 
-        # adjust the thermostat away mode based on temperature. The heat
-        # pump struggles to recover if the temperature is too low
-        if house_occupancy == 'not_home' and away_mode == 'off':
-            if current_temp < 20 or current_temp > 45:
-                # the temperature has fallen outside of the dead band -
-                # turn on away mode
-                self.call_service(
-                    'climate/set_away_mode',
-                    entity_id='climate.Home',
-                    away_mode='true'
-                )
-        elif house_occupancy == 'not_home' and away_mode == 'on':
-            if current_temp > 22 and current_temp < 40:
-                # the temperature has fallen inside the dead band
-                # turn off away mode
-                self.call_service('climate/set_away_mode', 
-                entity_id='climate.Home',
-                away_mode='false')                
+        # if the thermostat changes to 'Away' and someone is home
+        # set a hold mode using the 'Home' climate
+        if new == 'Away' and house_occupancy == 'home':
+            self.call_service(
+                'climate/set_hold_mode',
+                entity_id='climate.home',
+                hold_mode='home'
+            )                    
 
-        
 
 

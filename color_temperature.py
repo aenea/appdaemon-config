@@ -3,6 +3,7 @@ from astral import *
 import datetime
 import pytz
 
+
 class ColorTemperature(hass.Hass):
 
     def initialize(self):
@@ -86,4 +87,3 @@ class ColorTemperature(hass.Hass):
 
         self.log(str(target_temp))
         self.set_value('input_number.kelvin_current', target_temp)
-
