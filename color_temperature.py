@@ -25,22 +25,25 @@ class ColorTemperature(hass.Hass):
 
     def calc_temp(self, kwargs):
 
+        # get the hass config
+        config = self.get_hass_config()
+
         # get the sun event information
         a = Astral()
         home = location = Location(info=(
             'Marsyville',
             'Ohio',
-            40.334872,
-            -83.312793,
-            'America/New_York',
-            965)
+            config['latitude'],
+            config['longitude'],
+            config['time_zone'],
+            config['elevation'])
         )
         sun = home.sun()
         sunrise = sun['sunrise']
         solar_noon = sun['noon']
         sunset = sun['sunset']
 
-        now = datetime.datetime.now(pytz.timezone('America/New_York'))
+        now = datetime.datetime.now(pytz.timezone(config['time_zone']))
 
         if now < sunrise or now > sunset:
             # get the target color temperatures
