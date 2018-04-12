@@ -175,7 +175,7 @@ class HouseOccupancy(hass.Hass):
         self.call_service(
             'climate/set_hold_mode',
             entity_id='climate.home',
-            hold_mode='none'
+            hold_mode='None'
         )
         self.call_service(
             'logbook/log',
