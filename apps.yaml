@@ -1,7 +1,9 @@
 house_occupancy:
   module: house_occupancy
   class: HouseOccupancy
-  sensor_entity: input_boolean.home_occupancy
+  occupancy_entity: input_boolean.home_occupancy
+  doors_entity: group.entry_doors
+  climate_entity: climate.home
 
 washing_machine_power_monitor:
   module: power_monitor

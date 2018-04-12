@@ -8,10 +8,8 @@ class TrackBrightness(hass.Hass):
         # set default values
         self.brightness = 100
 
-        self.listen_state(
-            self.sun_event,
-            'sun.sun'
-        )
+        self.listen_state(self.sun_event,'sun.sun')
+
 
     def sun_event(self, entity, attribute, old, new, kwargs):
 

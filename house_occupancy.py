@@ -5,30 +5,46 @@ class HouseOccupancy(hass.Hass):
 
     def initialize(self):
 
-        self.sensor = self.args['sensor_entity']
+        # state tracker for house occupancy
+        self.occupancy = self.args['occupancy_entity']
+        self.doors = self.args['doors_entity']
+        self.climate = self.args['climate_entity']
 
-        self.listen_state(self.home_occupied, self.sensor, new='on')
-        self.listen_state(self.home_unoccupied, self.sensor, new='off')
-        self.listen_state(self.set_occupancy_on, 'group.presence_all',
-                          new='home', old='not_home')
-        self.listen_state(self.set_occupancy_off, 'group.presence_all',
-                          new='not_home', old='home')
-        self.listen_state(self.someone_arrives, 'device_tracker', new='home')
+        # react to arrivals
+        self.listen_state(self.home_occupied, self.occupancy, new='on')
+        # react to departures
+        self.listen_state(self.home_unoccupied, self.occupancy, new='off')
+        # set ocupancy state
         self.listen_state(
-            self.door_opens,
-            'binary_sensor.back_door_sensor_sensor',
-            new='on'
+            self.set_occupancy_on,
+            'group.presence_all',
+            new='home',
+            old='not_home'
         )
+        # set occupancy state
+        self.listen_state(
+            self.set_occupancy_off,
+            'group.presence_all',
+            new='not_home',
+            old='home'
+        )
+        # track the arrival of individuals
+        self.listen_state(self.someone_arrives, 'device_tracker', new='home')
+
+        # track entry door status
+        self.listen_state(self.door_opens, self.doors, new='on')
+
+        # track thermostat climate mode changes
         self.listen_state(
             self.climate_mode_change,
-            'climate.home',
+            self.climate,
             attribute='climate_mode'
         )
 
     def door_opens(self, entity, attribute, old, new, kwargs):
 
-        # Turn off the porch light when the back door opens if
-        # the porch light was turned on by automation
+        # if the porch light was turned on by automation, turn
+        # it off when an entry door opens
         porch_light_status = self.get_state(
             'input_select.front_porch_light_status',
             attribute='state'
@@ -39,10 +55,10 @@ class HouseOccupancy(hass.Hass):
 
     def set_occupancy_on(self, entity, attribute, old, new, kwargs):
 
-        self.turn_on(self.sensor)
+        self.turn_on(self.occupancy)
         self.call_service(
             'logbook/log',
-            entity_id=self.sensor,
+            entity_id=self.occupancy,
             domain='automation',
             name='house_occupancy: ',
             message=('someone has arrived to an empty house')
@@ -50,10 +66,10 @@ class HouseOccupancy(hass.Hass):
 
     def set_occupancy_off(self, entity, attribute, old, new, kwargs):
 
-        self.turn_off(self.sensor)
+        self.turn_off(self.occupancy)
         self.call_service(
             'logbook/log',
-            entity_id=self.sensor,
+            entity_id=self.occupancy,
             domain='automation',
             name='house_occupancy: ',
             message=('everyone has left')
@@ -76,15 +92,16 @@ class HouseOccupancy(hass.Hass):
             self.turn_on('switch.porch_light_switch_switch')
             self.call_service(
                 'logbook/log',
-                entity_id=self.sensor,
+                entity_id=self.occupancy,
                 domain='automation',
                 name='house_occupancy: ',
                 message=('porch light turned on for arrival')
             )
 
+        # log the arrival
         self.call_service(
             'logbook/log',
-            entity_id=self.sensor,
+            entity_id=self.occupancy,
             domain='automation',
             name='house_occupancy: ',
             message=(
@@ -105,7 +122,7 @@ class HouseOccupancy(hass.Hass):
         )
         self.call_service(
             'logbook/log',
-            entity_id=self.sensor,
+            entity_id=self.occupancy,
             domain='automation',
             name='house_occupancy: ',
             message=(' dog music stopped')
@@ -122,7 +139,7 @@ class HouseOccupancy(hass.Hass):
             self.turn_on('group.welcome_lights')
             self.call_service(
                 'logbook/log',
-                entity_id=self.sensor,
+                entity_id=self.occupancy,
                 domain='automation',
                 name='house_occupancy: ',
                 message=('welcome lights turned on')
@@ -130,7 +147,7 @@ class HouseOccupancy(hass.Hass):
         else:
             self.call_service(
                 'logbook/log',
-                entity_id=self.sensor,
+                entity_id=self.occupancy,
                 domain='automation',
                 name='house_occupancy: ',
                 message=(
@@ -144,7 +161,7 @@ class HouseOccupancy(hass.Hass):
 
         self.call_service(
             'logbook/log',
-            entity_id=self.sensor,
+            entity_id=self.occupancy,
             domain='automation',
             name='house_occupancy: ',
             message=(' house is not occupied')
@@ -155,7 +172,7 @@ class HouseOccupancy(hass.Hass):
         self.turn_off('group.switches')
         self.call_service(
             'logbook/log',
-            entity_id=self.sensor,
+            entity_id=self.occupancy,
             domain='automation',
             name='house_occupancy: ',
             message=(' all lights turned off')
@@ -165,7 +182,7 @@ class HouseOccupancy(hass.Hass):
         self.turn_off('group.remotes')
         self.call_service(
             'logbook/log',
-            entity_id=self.sensor,
+            entity_id=self.occupancy,
             domain='automation',
             name='house_occupancy: ',
             message=(' all remotes turned off')
@@ -174,12 +191,12 @@ class HouseOccupancy(hass.Hass):
         # resume thermostat schedule
         self.call_service(
             'climate/set_hold_mode',
-            entity_id='climate.home',
+            entity_id=self.climate,
             hold_mode='None'
         )
         self.call_service(
             'logbook/log',
-            entity_id=self.sensor,
+            entity_id=self.occupancy,
             domain='automation',
             name='house_occupancy: ',
             message=(' thermostat schedule resumed')
@@ -194,7 +211,7 @@ class HouseOccupancy(hass.Hass):
         )
         self.call_service(
             'logbook/log',
-            entity_id=self.sensor,
+            entity_id=self.occupancy,
             domain='automation',
             name='house_occupancy: ',
             message=(' dog music started')
@@ -203,16 +220,13 @@ class HouseOccupancy(hass.Hass):
     def climate_mode_change(self, entity, attribute, old, new, kwargs):
 
         # Is the house occupied?
-        house_occupancy = self.get_state(
-            'group.presence_all',
-            attribute='state'
-        )
+        house_occupancy = self.get_state(self.occupancy, attribute='state')
 
         # don't allow the thermostat to move to away mode if someone
         # is home
-        if new.casefold() == 'away' and house_occupancy == 'home':
+        if new.casefold() == 'away' and house_occupancy.casefold() == 'on':
             self.call_service(
                 'climate/set_hold_mode',
-                entity_id='climate.home',
+                entity_id=self.climate,
                 hold_mode='home'
             )
