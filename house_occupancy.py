@@ -128,6 +128,22 @@ class HouseOccupancy(hass.Hass):
             message=(' dog music stopped')
         )
 
+        # set the thermostat to 'home' mode if necessary
+        climate_mode = get_state(self.climate, attribute='climate_mode')
+        if climate_mode.casefold() == 'away':
+            self.call_service(
+                'climate/set_hold_mode',
+                entity_id=self.climate,
+                hold_mode='home'
+            )
+            self.call_service(
+                'logbook/log',
+                entity_id=self.occupancy,
+                domain='automation',
+                name='house_occupancy: ',
+                message=('thermostat climate set to Home')
+            )       
+
         # get the house mode
         house_mode = self.get_state(
             'input_select.house_mode',
