@@ -129,7 +129,7 @@ class HouseOccupancy(hass.Hass):
         )
 
         # set the thermostat to 'home' mode if necessary
-        climate_mode = get_state(self.climate, attribute='climate_mode')
+        climate_mode = self.get_state(self.climate, attribute='climate_mode')
         if climate_mode.casefold() == 'away':
             self.call_service(
                 'climate/set_hold_mode',
