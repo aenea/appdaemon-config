@@ -35,7 +35,7 @@ laundry_room_light:
   brightness: 100
   delay: 300
   max_run_seconds: 5400
-  sensor_entity: binary_sensor.sensor_3
+  sensor_entity: binary_sensor.laundry_room_motion_sensor_sensor
   tracking_entity: input_select.laundry_room_status
 
 pantry_light:
