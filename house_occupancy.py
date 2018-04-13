@@ -43,6 +43,14 @@ class HouseOccupancy(hass.Hass):
 
     def door_opens(self, entity, attribute, old, new, kwargs):
 
+        # don't do anything if guest mode is active
+        guest_mode = self.get_state(
+            'input_boolean.guest_mode',
+            attribue='state'
+        )
+        if guest_mode.casefold() == 'on':
+            return
+
         # if the porch light was turned on by automation, turn
         # it off when an entry door opens
         porch_light_status = self.get_state(
@@ -55,6 +63,14 @@ class HouseOccupancy(hass.Hass):
 
     def set_occupancy_on(self, entity, attribute, old, new, kwargs):
 
+        # don't do anything if guest mode is active
+        guest_mode = self.get_state(
+            'input_boolean.guest_mode',
+            attribue='state'
+        )
+        if guest_mode.casefold() == 'on':
+            return
+
         self.turn_on(self.occupancy)
         self.call_service(
             'logbook/log',
@@ -66,6 +82,14 @@ class HouseOccupancy(hass.Hass):
 
     def set_occupancy_off(self, entity, attribute, old, new, kwargs):
 
+        # don't do anything if guest mode is active
+        guest_mode = self.get_state(
+            'input_boolean.guest_mode',
+            attribue='state'
+        )
+        if guest_mode.casefold() == 'on':
+            return
+
         self.turn_off(self.occupancy)
         self.call_service(
             'logbook/log',
@@ -76,6 +100,14 @@ class HouseOccupancy(hass.Hass):
         )
 
     def someone_arrives(self, entity, attribute, old, new, kwargs):
+
+        # don't do anything if guest mode is active
+        guest_mode = self.get_state(
+            'input_boolean.guest_mode',
+            attribue='state'
+        )
+        if guest_mode.casefold() == 'on':
+            return
 
         # get the house mode
         house_mode = self.get_state(
@@ -112,6 +144,14 @@ class HouseOccupancy(hass.Hass):
         )
 
     def home_occupied(self, entity, attribute, old, new, kwargs):
+
+        # don't do anything if guest mode is active
+        guest_mode = self.get_state(
+            'input_boolean.guest_mode',
+            attribue='state'
+        )
+        if guest_mode.casefold() == 'on':
+            return
 
         # stop the dog music
         self.call_service(
@@ -175,6 +215,14 @@ class HouseOccupancy(hass.Hass):
 
     def home_unoccupied(self, entity, attribute, old, new, kwargs):
 
+        # don't do anything if guest mode is active
+        guest_mode = self.get_state(
+            'input_boolean.guest_mode',
+            attribue='state'
+        )
+        if guest_mode.casefold() == 'on':
+            return
+
         self.call_service(
             'logbook/log',
             entity_id=self.occupancy,
@@ -234,6 +282,14 @@ class HouseOccupancy(hass.Hass):
         )
 
     def climate_mode_change(self, entity, attribute, old, new, kwargs):
+
+        # don't do anything if guest mode is active
+        guest_mode = self.get_state(
+            'input_boolean.guest_mode',
+            attribue='state'
+        )
+        if guest_mode.casefold() == 'on':
+            return
 
         # Is the house occupied?
         house_occupancy = self.get_state(self.occupancy, attribute='state')
