@@ -46,7 +46,7 @@ class HouseOccupancy(hass.Hass):
         # don't do anything if guest mode is active
         guest_mode = self.get_state(
             'input_boolean.guest_mode',
-            attribue='state'
+            attribute='state'
         )
         if guest_mode.casefold() == 'on':
             return
@@ -66,7 +66,7 @@ class HouseOccupancy(hass.Hass):
         # don't do anything if guest mode is active
         guest_mode = self.get_state(
             'input_boolean.guest_mode',
-            attribue='state'
+            attribute='state'
         )
         if guest_mode.casefold() == 'on':
             return
@@ -85,7 +85,7 @@ class HouseOccupancy(hass.Hass):
         # don't do anything if guest mode is active
         guest_mode = self.get_state(
             'input_boolean.guest_mode',
-            attribue='state'
+            attribute='state'
         )
         if guest_mode.casefold() == 'on':
             return
@@ -104,7 +104,7 @@ class HouseOccupancy(hass.Hass):
         # don't do anything if guest mode is active
         guest_mode = self.get_state(
             'input_boolean.guest_mode',
-            attribue='state'
+            attribute='state'
         )
         if guest_mode.casefold() == 'on':
             return
@@ -148,7 +148,7 @@ class HouseOccupancy(hass.Hass):
         # don't do anything if guest mode is active
         guest_mode = self.get_state(
             'input_boolean.guest_mode',
-            attribue='state'
+            attribute='state'
         )
         if guest_mode.casefold() == 'on':
             return
@@ -218,7 +218,7 @@ class HouseOccupancy(hass.Hass):
         # don't do anything if guest mode is active
         guest_mode = self.get_state(
             'input_boolean.guest_mode',
-            attribue='state'
+            attribute='state'
         )
         if guest_mode.casefold() == 'on':
             return
@@ -286,7 +286,7 @@ class HouseOccupancy(hass.Hass):
         # don't do anything if guest mode is active
         guest_mode = self.get_state(
             'input_boolean.guest_mode',
-            attribue='state'
+            attribute='state'
         )
         if guest_mode.casefold() == 'on':
             return
