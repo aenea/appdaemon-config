@@ -131,7 +131,7 @@ light_control:
   ct_group_entity: group.ct_lights
   target_temp_entity: input_number.kelvin_current
 
-office_light
+office_light:
   module: pico_light
   class: PicoLight
   actuator_entity: sensor.office_pico
