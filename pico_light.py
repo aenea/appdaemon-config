@@ -20,10 +20,12 @@ class PicoLight(hass.Hass):
     def switch_on(self, entity, attribute, old, new, kwargs):
 
         # turn on the light
+        self.log("{} on".format(new))
         self.turn_on(self.light_group)
 
     def switch_off(self, entity, attribute, old, new, kwargs):
 
         # turn off the light
+        self.log("{} off".format(new))
         self.turn_off(self.light_group)
 
