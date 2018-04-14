@@ -50,7 +50,7 @@ class PicoLight(hass.Hass):
 
         # change the light brightness
         self.call_service(
-            'light.lifx_set_state',
+            'light/lifx_set_state',
             entity_id=self.light_group, 
             brightness_pct=current_brightness
         )
@@ -74,7 +74,7 @@ class PicoLight(hass.Hass):
 
         # change the light brightness
         self.call_service(
-            'light.lifx_set_state',
+            'light/lifx_set_state',
             entity_id=self.light_group, 
             brightness_pct=current_brightness
         )
