@@ -44,7 +44,7 @@ class PicoLight(hass.Hass):
         # get the current state of the light
         state = self.get_state(
             self.light_group,
-            attribue='state'
+            attribute='state'
         )
 
         # do nothing if the light is off
