@@ -254,9 +254,9 @@ class HouseOccupancy(hass.Hass):
 
         # resume thermostat schedule
         self.call_service(
-            'climate/set_hold_mode',
+            'climate/resume_program',
             entity_id=self.climate,
-            hold_mode='None'
+            resume_all='true'
         )
         self.call_service(
             'logbook/log',
