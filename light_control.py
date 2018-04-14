@@ -71,5 +71,5 @@ class LightControl(hass.Hass):
                 self.call_service(
                     'homeassistant/turn_on',
                     entity_id=ct_light,
-                    kelvin=new
+                    kelvin=int(float(new))
                 )
