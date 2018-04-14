@@ -15,7 +15,7 @@ class PicoLight(hass.Hass):
         self.block_restart = False
         
         self.listen_state(self.switch_on, self.actuator, new='1')
-        self.listen_state(self.switch_on, self.actuator, new='4')
+        self.listen_state(self.switch_off, self.actuator, new='4')
 
     def switch_on(self, entity, attribute, old, new, kwargs):
 
