@@ -4,16 +4,17 @@ import appdaemon.plugins.hass.hassapi as hass
 # switchLight App
 #
 # Args: asdf
-#asf
+# asf
+
 
 class PicoLight(hass.Hass):
-    
+
     def initialize(self):
         self.actuator = self.args['actuator_entity']
         self.light_group = self.args['light_group']
         self.brightness = self.args['brightness']
         self.block_restart = False
-        
+
         self.listen_state(self.switch_on, self.actuator, new='1')
         self.listen_state(self.switch_off, self.actuator, new='4')
         self.listen_state(self.brighter, self.actuator, new='8')
@@ -50,14 +51,15 @@ class PicoLight(hass.Hass):
         if current_brightness > 100:
             current_brightness = 100
 
-        # change the light brightness
-        self.call_service(
-            'light/lifx_set_state',
-            entity_id=self.light_group, 
-            brightness_pct=current_brightness,
-            power=True,
-            transition=0
-        )
+        self.turn_on(self.entity, brightness_pct=current_brightness)
+#        # change the light brightness
+#        self.call_service(
+#            'light/lifx_set_state',
+#            entity_id=self.light_group, 
+#            brightness_pct=current_brightness,
+#            power=True,
+#            transition=0
+#        )
 
     def dimmer(self, entity, attribute, old, new, kwargs):
 
