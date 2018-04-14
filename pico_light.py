@@ -34,10 +34,10 @@ class PicoLight(hass.Hass):
     def brighter(self, entity, attribute, old, new, kwargs):
 
         # get the current brightness
-        current_brightness = int(float((self.get_state(
+        current_brightness = int(float(self.get_state(
             self.light_group,
-            attribute='brightness')) / 255 * 100)
-        )
+            attribute='brightness')) / 255 
+        ) * 100
         
         # round the current brightness to the nearest 10
         current_brightness = round(current_brightness / 10, 0) * 10
@@ -58,10 +58,10 @@ class PicoLight(hass.Hass):
     def dimmer(self, entity, attribute, old, new, kwargs):
 
         # get the current brightness
-        current_brightness = int(float((self.get_state(
+        current_brightness = int(float(self.get_state(
             self.light_group,
-            attribute='brightness')) / 255 ) * 100
-        )
+            attribute='brightness')) / 255 )
+        ) * 100
 
         # round the current brightness to the nearest 10
         current_brightness = round(current_brightness / 10, 0) * 10
