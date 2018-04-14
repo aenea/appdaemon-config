@@ -56,7 +56,7 @@ class PicoLight(hass.Hass):
         # get the current brightness
         current_brightness = int(float(self.get_state(
             self.light_group,
-            attribute='brightness')) /255
+            attribute='brightness')) / 255
         )
 
         # round the current brightness to the nearest 10
