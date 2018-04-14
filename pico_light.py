@@ -74,9 +74,9 @@ class PicoLight(hass.Hass):
     def brighter(self, entity, attribute, old, new, kwargs):
 
         # increase the brightness by 10%
-        change_brightness(10)
+        self.change_brightness(10)
 
     def dimmer(self, entity, attribute, old, new, kwargs):
 
         # decrease the brightness by 10%
-        change_brightness(-10)
+        self.change_brightness(-10)
