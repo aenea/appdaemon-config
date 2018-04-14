@@ -135,5 +135,5 @@ office_light:
   module: pico_light
   class: PicoLight
   actuator_entity: sensor.office_pico
-  light_gorup: light.mantle_1
+  light_group: light.mantle_1
   brightness: 100
