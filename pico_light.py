@@ -32,64 +32,51 @@ class PicoLight(hass.Hass):
         self.log("{} off".format(new))
         self.turn_off(self.light_group)
 
+    def change_brightness(self, change):
+
+        # get the current brightness level
+        old_brightness = self.get_state(
+            self.light_group,
+            attribute='brightness'
+        )
+
+        # convert the brightness to a percentage
+        new_brightness = round((float(old_brightness / 255) * 100), 0)
+
+        # change the brightness level
+        new_brightness += change
+
+        # round the new brightness to the nearest 10
+        new_brightness = round((new_brightness / 10), 0) * 10
+
+        # maximum brightness is 100%
+        if new_brightness > 100:
+            new_brightness = 100
+
+        # minimum brightness is 5%
+        if new_brightness < 5:
+            new_brightness = 5
+
+        # change the light to the new brightness
+        self.turn_on(self.light_group, brightness_pct=new_brightness)
+        self.call_service(
+            'logbook/log',
+            entity_id=self.actuator,
+            domain='automation',
+            name='pico_light: ',
+            message=('{} brightness changed from {} to {}'.format(
+                self.light_group,
+                old_brightness,
+                new_brightness)
+            )
+        )
+
     def brighter(self, entity, attribute, old, new, kwargs):
 
-        # get the current brightness
-        current_brightness = int(float(self.get_state(
-            self.light_group,
-            attribute='brightness')
-        ))
-        brightness_pct = int((current_brightness / 255) * 100)
-        self.log(brightness_pct)
-        
-        # round the current brightness to the nearest 10
-        current_brightness = round(brightness_pct / 10, 0) * 10
-
-        # increase the brightness up by 10%
-        current_brightness += 10
-        
-        if current_brightness > 100:
-            current_brightness = 100
-
-        self.turn_on(self.entity, brightness_pct=current_brightness)
-#        # change the light brightness
-#        self.call_service(
-#            'light/lifx_set_state',
-#            entity_id=self.light_group, 
-#            brightness_pct=current_brightness,
-#            power=True,
-#            transition=0
-#        )
+        # increase the brightness by 10%
+        change_brightness(10)
 
     def dimmer(self, entity, attribute, old, new, kwargs):
 
-        # get the current brightness
-        current_brightness = int(float(self.get_state(
-            self.light_group,
-            attribute='brightness')
-        ))
-        brightness_pct = int((current_brightness / 255) * 100)
-        self.log(brightness_pct)
-        
-        # round the current brightness to the nearest 10
-        current_brightness = round(brightness_pct / 10, 0) * 10
-
-        # round the current brightness to the nearest 10
-        current_brightness = round(current_brightness / 10, 0) * 10
-
-        # decrease the brightness up by 10%
-        current_brightness -= 10
-        
-        if current_brightness < 5:
-            current_brightness = 5
-
-        # change the light brightness
-        self.call_service(
-            'light/lifx_set_state',
-            entity_id=self.light_group, 
-            brightness_pct=current_brightness,
-            power=True,
-            transition=0
-        )
-
-
+        # decrease the brightness by 10%
+        change_brightness(-10)
