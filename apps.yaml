@@ -130,3 +130,10 @@ light_control:
   class: LightControl
   ct_group_entity: group.ct_lights
   target_temp_entity: input_number.kelvin_current
+
+office_light
+  module: pico_light
+  class: PicoLight
+  actuator_entity: sensor.office_pico
+  light_gorup: light.mantle_1
+  brightness: 100
