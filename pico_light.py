@@ -49,7 +49,11 @@ class PicoLight(hass.Hass):
             current_brightness = 100
 
         # change the light brightness
-        self.turn_on(self.light_group, brightness_pct=current_brightness)
+        self.call_service(
+            'light.lifx_set_state',
+            self.light_group, 
+            brightness_pct=current_brightness
+        )
 
     def dimmer(self, entity, attribute, old, new, kwargs):
 
@@ -69,5 +73,10 @@ class PicoLight(hass.Hass):
             current_brightness = 5
 
         # change the light brightness
-        self.turn_on(self.light_group, brightness_pct=current_brightness)
+        self.call_service(
+            'light.lifx_set_state',
+            self.light_group, 
+            brightness_pct=current_brightness
+        )
+
 
