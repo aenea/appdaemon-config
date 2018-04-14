@@ -22,17 +22,34 @@ class PicoLight(hass.Hass):
 
     def switch_on(self, entity, attribute, old, new, kwargs):
 
-        # turn on the light
-        self.log("{} on".format(new))
-        self.turn_on(self.light_group)
+        # get the current state of the light
+        state = self.get_state(
+            self.light_group,
+            state='attribute'
+        )
+
+        if state == 'on':
+            # turn the light to full brightness if it is already on
+            self.turn_on(self.light_group, brightness_pct='100')
+        else:
+            self.turn_on(self.light_group)
 
     def switch_off(self, entity, attribute, old, new, kwargs):
 
         # turn off the light
-        self.log("{} off".format(new))
         self.turn_off(self.light_group)
 
     def change_brightness(self, change):
+
+        # get the current state of the light
+        state = self.get_state(
+            self.light_group,
+            state='attribute'
+        )
+
+        # do nothing if the light is off
+        if state == 'off':
+            return
 
         # get the current brightness level
         old_brightness = self.get_state(
@@ -41,10 +58,10 @@ class PicoLight(hass.Hass):
         )
 
         # convert the brightness to a percentage
-        new_brightness = round((float(old_brightness / 255) * 100), 0)
+        brightness_pct = round((float(old_brightness / 255) * 100), 0)
 
         # change the brightness level
-        new_brightness += change
+        new_brightness = brightness_pct + change
 
         # round the new brightness to the nearest 10
         new_brightness = round((new_brightness / 10), 0) * 10
@@ -66,7 +83,7 @@ class PicoLight(hass.Hass):
             name='pico_light: ',
             message=('{} brightness changed from {} to {}'.format(
                 self.light_group,
-                old_brightness,
+                brightness_pct,
                 new_brightness)
             )
         )
