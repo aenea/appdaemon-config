@@ -73,3 +73,12 @@ class LightControl(hass.Hass):
                     entity_id=ct_light,
                     kelvin=int(float(new))
                 )
+                self.call_service(
+                    'logbook/log',
+                    entity_id=ct_light,
+                    domain='automation',
+                    name='light_control: ',
+                    message=('{} color temperature changed to {}'.format(
+                        ct_light, new)
+                    )
+                )
