@@ -46,6 +46,7 @@ second_bathroom_light:
   delay: 300
   max_run_seconds: 5400
   sensor_entity: binary_sensor.bathroom_2_motion_sensor_sensor
+  tracking_entity:
 
 pantry_light:
   module: sensor_light
