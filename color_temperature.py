@@ -3,6 +3,10 @@ from astral import *
 import datetime
 import pytz
 
+# Track the target color temperature for the ct enabled lights. The
+# target temperature rises from sunrise to noon and then lowers from
+# noon to sunset
+
 
 class ColorTemperature(hass.Hass):
 
@@ -88,5 +92,4 @@ class ColorTemperature(hass.Hass):
 
             target_temp = int(noon_temp + (temp_change * elapsed_pct))
 
-        self.log(str(target_temp))
         self.set_value('input_number.ct_target', target_temp)

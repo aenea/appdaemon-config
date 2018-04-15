@@ -15,13 +15,13 @@ import appdaemon.plugins.hass.hassapi as hass
 
 
 class HomeseerSwitch(hass.Hass):
-    
+
     def initialize(self):
- 
+
         self.actuator = self.args['actuator_entity']
         self.scene_id = self.args['scene_id']
         self.zwave_entity = self.args['zwave_entity']
-        
+
         self.listen_event(
             self.scene_on, event='zwave.scene_activated',
             entity_id=self.zwave_entity, 
@@ -31,10 +31,10 @@ class HomeseerSwitch(hass.Hass):
             self.scene_off, event='zwave.scene_activated', 
             entity_id=self.zwave_entity, 
             scene_id=2, scene_data=self.scene_id
-        )        
+        )
 
     def scene_on(self, event_name, data, kwargs):
-        
+
         if self.scene_id == 3 or self.scene_id == 7860:
             # Turn brightness to 100% when top double tapped.
             self.turn_on(self.actuator, brightness_pct=100)
