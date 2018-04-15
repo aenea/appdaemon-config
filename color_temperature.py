@@ -94,3 +94,9 @@ class ColorTemperature(hass.Hass):
 
         self.log(target_temp)
         self.set_value('input_number.ct_target', target_temp)
+        self.call_service(
+            'input_number/set_value',
+            entity_id='input_number.ct_target',
+            value=target_temp
+        )
+
