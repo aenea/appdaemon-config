@@ -63,6 +63,7 @@ class LightControl(hass.Hass):
         # get the list of color temperature enabled bulbs
         ct_group = self.get_state(self.ct_group, attribute='all')
         ct_lights = ct_group['attributes']['entity_id']
+        new = int(float(new))
 
         # set the lights that are on to the current color temperature
         for ct_light in ct_lights:
@@ -71,7 +72,7 @@ class LightControl(hass.Hass):
                 self.call_service(
                     'homeassistant/turn_on',
                     entity_id=ct_light,
-                    kelvin=int(float(new))
+                    kelvin=new
                 )
                 self.call_service(
                     'logbook/log',
@@ -79,6 +80,7 @@ class LightControl(hass.Hass):
                     domain='automation',
                     name='light_control: ',
                     message=('{} color temperature changed to {}'.format(
-                        ct_light, new)
+                        ct_light,
+                        new)
                     )
                 )
