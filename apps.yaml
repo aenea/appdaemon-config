@@ -38,6 +38,16 @@ laundry_room_light:
   sensor_entity: binary_sensor.laundry_room_motion_sensor_sensor
   tracking_entity: input_select.laundry_room_status
 
+back_bathroom_light:
+  module: sensor_light
+  class: SensorLight
+  actuator_entity: light.second_bathroom_main_lights
+  brightness: 100
+  delay: 1200
+  max_run_seconds: 5400
+  sensor_entity: binary_sensor.bathroom_2_motion_sensor_sensor
+  tracking_entity: input_select.bathroom_2_status
+
 pantry_light:
   module: sensor_light
   class: SensorLight
