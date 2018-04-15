@@ -64,7 +64,7 @@ class PicoLight(hass.Hass):
         new_brightness = brightness_pct + change
 
         # round the new brightness to the nearest 10
-        new_brightness = round((new_brightness / 10), 0) * 10
+        new_brightness = int(round((new_brightness / 10), 0) * 10)
 
         # maximum brightness is 100%
         if new_brightness > 100:
@@ -77,7 +77,7 @@ class PicoLight(hass.Hass):
         self.log('{} {} {}'.format(old_brightness, brightness_pct, new_brightness))
 
         # change the light to the new brightness
-        self.turn_on(self.light_group, brightness_pct=new_brightness)
+        self.turn_on(self.light_group, brightness_pct=str(new_brightness))
         self.call_service(
             'logbook/log',
             entity_id=self.actuator,
