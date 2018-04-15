@@ -92,4 +92,5 @@ class ColorTemperature(hass.Hass):
 
             target_temp = int(noon_temp + (temp_change * elapsed_pct))
 
+        self.log(target_temp)
         self.set_value('input_number.ct_target', target_temp)
