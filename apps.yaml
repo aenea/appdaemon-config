@@ -139,7 +139,7 @@ light_control:
   module: light_control
   class: LightControl
   ct_group_entity: group.ct_lights
-  target_temp_entity: input_number.kelvin_current
+  target_temp_entity: input_number.ct_target
 
 office_light:
   module: pico_light

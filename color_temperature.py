@@ -46,9 +46,9 @@ class ColorTemperature(hass.Hass):
         now = datetime.datetime.now(pytz.timezone(config['time_zone']))
 
         if now < sunrise or now > sunset:
-            # get the target color temperatures
+            # use the sunset ct if the time is after sunset
             target_temp = int(float(self.get_state(
-                'input_number.kelvin_sunset',
+                'input_number.ct_sunset',
                 attribute='state'
             )))
         elif now < solar_noon:
@@ -57,13 +57,13 @@ class ColorTemperature(hass.Hass):
             elapsed_time = now - sunrise
             elapsed_pct = elapsed_time / before_noon
 
-            # get the target color temperatures
+            # get the sunrise and noon color temperatures
             sunrise_temp = int(float(self.get_state(
-                'input_number.kelvin_sunrise',
+                'input_number.ct_sunrise',
                 attribute='state'
             )))
             noon_temp = int(float(self.get_state(
-                'input_number.kelvin_noon',
+                'input_number.ct_noon',
                 attribute='state'
             )))
             temp_change = noon_temp - sunrise_temp
@@ -75,13 +75,13 @@ class ColorTemperature(hass.Hass):
             elapsed_time = now - solar_noon
             elapsed_pct = elapsed_time / after_noon
 
-            # get the target color temperatures
+            # get the noon and sunset color temperatures
             sunset_temp = int(float(self.get_state(
-                'input_number.kelvin_sunset',
+                'input_number.ct_sunset',
                 attribute='state'
             )))
             noon_temp = int(float(self.get_state(
-                'input_number.kelvin_noon',
+                'input_number.ct_noon',
                 attribute='state'
             )))
             temp_change = sunset_temp - noon_temp
@@ -89,4 +89,4 @@ class ColorTemperature(hass.Hass):
             target_temp = int(noon_temp + (temp_change * elapsed_pct))
 
         self.log(str(target_temp))
-        self.set_value('input_number.kelvin_current', target_temp)
+        self.set_value('input_number.ct_target', target_temp)
