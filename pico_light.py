@@ -73,6 +73,8 @@ class PicoLight(hass.Hass):
         # minimum brightness is 5%
         if new_brightness < 5:
             new_brightness = 5
+        
+        self.log('{} {} {}'.format(old_brightness, brightness_pct, new_brightness))
 
         # change the light to the new brightness
         self.turn_on(self.light_group, brightness_pct=new_brightness)
