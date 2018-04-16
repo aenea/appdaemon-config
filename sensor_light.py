@@ -111,7 +111,7 @@ class SensorLight(hass.Hass):
         lighting_state = self.get_state(self.tracker, attribute='state')
 
         if lighting_state == 'Automated':
-            self.select_option(self.tracker, 'Warning')
+           self.select_option(self.tracker, 'Warning')
 
             # dim the lights to warn about an impending turn off
             current_brightness = self.get_state(
@@ -140,8 +140,8 @@ class SensorLight(hass.Hass):
             self.tracker,
             attribute='state'
         )
-        if self.brightness is not None and lighting_state == 'Automated':
-            self.turn_off_warning()
+        # if self.brightness is not None and lighting_state == 'Automated':
+        #    self.turn_off_warning()
 
         # turn off the light if it was turned on by automation
         if lighting_state != 'Manual':

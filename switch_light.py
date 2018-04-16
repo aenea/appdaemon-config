@@ -55,7 +55,7 @@ class SwitchLight(hass.Hass):
         
         # Turn the lights off if the lights turn on while a restart
         # is blocked
-        if self.block_restart == True:
+        if self.block_restart is True:
             self.turn_off(self.light_group)
 
         # Synchronize the switch with the state of the lights
