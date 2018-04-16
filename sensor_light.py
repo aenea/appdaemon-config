@@ -98,13 +98,10 @@ class SensorLight(hass.Hass):
             return
 
         if self.delay > 0:
-            if self.brightness is not None:
-                self.off_timer = self.run_in(self.turn_off_warning, 30)
-            else:
-                self.off_timer = self.run_in(
-                    self.turn_off_actuator,
-                    self.delay
-                )
+            self.off_timer = self.run_in(
+                self.turn_off_actuator,
+                self.delay
+            )
         else:
             self.turn_off_actuator(self)
 
@@ -143,6 +140,8 @@ class SensorLight(hass.Hass):
             self.tracker,
             attribute='state'
         )
+        if self.brightness is not None and lighting_state == 'Automated':
+            self.turn_off_warning()
 
         # turn off the light if it was turned on by automation
         if lighting_state != 'Manual':

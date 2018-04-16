@@ -97,4 +97,3 @@ class ColorTemperature(hass.Hass):
             entity_id='input_number.ct_target',
             value=target_temp
         )
-

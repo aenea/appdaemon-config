@@ -1,5 +1,6 @@
 import appdaemon.plugins.hass.hassapi as hass
 
+
 class ManualLight(hass.Hass):
 
     def initialize(self):
@@ -11,17 +12,19 @@ class ManualLight(hass.Hass):
 
         self.listen_state(self.actuator_on, self.actuator, new='on')
         self.listen_state(self.actuator_off, self.actuator, new='off')
-        
+
     def actuator_on(self, entity, attribute, old, new, kwargs):
 
         # get the current state of the entity
-        entity_state = self.get_state(self.tracking_entity, attribute='state') 
+        entity_state = self.get_state(self.tracking_entity, attribute='state')
 
         if entity_state == 'Automated':
             # start a timer to turn off the light
-            self.off_timer = self.run_in(self.turn_off_actuator, 
-                                         self.max_run_time)
-    
+            self.off_timer = self.run_in(
+                self.turn_off_actuator,
+                self.max_run_time
+            )
+
     def actuator_off(self, entity, attribute, old, new, kwargs):
 
         # clear the status flag
@@ -39,5 +42,3 @@ class ManualLight(hass.Hass):
         # cancel any pending timers
         self.cancel_timer(self.off_timer)
         self.off_timer = None
-
-    

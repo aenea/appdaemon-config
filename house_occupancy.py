@@ -182,7 +182,7 @@ class HouseOccupancy(hass.Hass):
                 domain='automation',
                 name='house_occupancy: ',
                 message=('thermostat climate set to Home')
-            )       
+            )
 
         # get the house mode
         house_mode = self.get_state(
