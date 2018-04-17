@@ -43,12 +43,14 @@ class HouseOccupancy(hass.Hass):
 
     def door_opens(self, entity, attribute, old, new, kwargs):
 
-        # don't do anything if guest mode is active
-        guest_mode = self.get_state(
-            'input_boolean.guest_mode',
+        # is the automation in an allowed state?
+        allowed_modes = set(['normal', 'away', 'sleep'])
+        automation_mode = self.get_state(
+            'input_select.automation_mode',
             attribute='state'
         )
-        if guest_mode.casefold() == 'on':
+        automation_mode = automation_mode.casefold()
+        if automation_mode is not in allowed_modes:
             return
 
         # if the porch light was turned on by automation, turn
@@ -63,14 +65,6 @@ class HouseOccupancy(hass.Hass):
 
     def set_occupancy_on(self, entity, attribute, old, new, kwargs):
 
-        # don't do anything if guest mode is active
-        guest_mode = self.get_state(
-            'input_boolean.guest_mode',
-            attribute='state'
-        )
-        if guest_mode.casefold() == 'on':
-            return
-
         self.turn_on(self.occupancy)
         self.call_service(
             'logbook/log',
@@ -81,14 +75,6 @@ class HouseOccupancy(hass.Hass):
         )
 
     def set_occupancy_off(self, entity, attribute, old, new, kwargs):
-
-        # don't do anything if guest mode is active
-        guest_mode = self.get_state(
-            'input_boolean.guest_mode',
-            attribute='state'
-        )
-        if guest_mode.casefold() == 'on':
-            return
 
         self.turn_off(self.occupancy)
         self.call_service(
@@ -101,12 +87,14 @@ class HouseOccupancy(hass.Hass):
 
     def someone_arrives(self, entity, attribute, old, new, kwargs):
 
-        # don't do anything if guest mode is active
-        guest_mode = self.get_state(
-            'input_boolean.guest_mode',
+        # is the automation in an allowed state?
+        allowed_modes = set(['normal', 'away', 'sleep'])
+        automation_mode = self.get_state(
+            'input_select.automation_mode',
             attribute='state'
         )
-        if guest_mode.casefold() == 'on':
+        automation_mode = automation_mode.casefold()
+        if automation_mode is not in allowed_modes:
             return
 
         # get the house mode
@@ -145,12 +133,14 @@ class HouseOccupancy(hass.Hass):
 
     def home_occupied(self, entity, attribute, old, new, kwargs):
 
-        # don't do anything if guest mode is active
-        guest_mode = self.get_state(
-            'input_boolean.guest_mode',
+        # is the automation in an allowed state?
+        allowed_modes = set(['normal', 'away', 'sleep'])
+        automation_mode = self.get_state(
+            'input_select.automation_mode',
             attribute='state'
         )
-        if guest_mode.casefold() == 'on':
+        automation_mode = automation_mode.casefold()
+        if automation_mode is not in allowed_modes:
             return
 
         # stop the dog music
@@ -215,12 +205,14 @@ class HouseOccupancy(hass.Hass):
 
     def home_unoccupied(self, entity, attribute, old, new, kwargs):
 
-        # don't do anything if guest mode is active
-        guest_mode = self.get_state(
-            'input_boolean.guest_mode',
+        # is the automation in an allowed state?
+        allowed_modes = set(['normal', 'away', 'sleep'])
+        automation_mode = self.get_state(
+            'input_select.automation_mode',
             attribute='state'
         )
-        if guest_mode.casefold() == 'on':
+        automation_mode = automation_mode.casefold()
+        if automation_mode is not in allowed_modes:
             return
 
         self.call_service(
@@ -283,12 +275,14 @@ class HouseOccupancy(hass.Hass):
 
     def climate_mode_change(self, entity, attribute, old, new, kwargs):
 
-        # don't do anything if guest mode is active
-        guest_mode = self.get_state(
-            'input_boolean.guest_mode',
+        # is the automation in an allowed state?
+        allowed_modes = set(['normal', 'away', 'sleep'])
+        automation_mode = self.get_state(
+            'input_select.automation_mode',
             attribute='state'
         )
-        if guest_mode.casefold() == 'on':
+        automation_mode = automation_mode.casefold()
+        if automation_mode is not in allowed_modes:
             return
 
         # Is the house occupied?

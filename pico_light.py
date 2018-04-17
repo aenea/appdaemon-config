@@ -18,7 +18,7 @@ class PicoLight(hass.Hass):
         self.listen_state(self.switch_on, self.actuator, new='1')
         self.listen_state(self.switch_off, self.actuator, new='4')
         self.listen_state(self.brighter, self.actuator, new='8')
-        self.listen_state(self.dimmer, self.actuator, new='16')
+        self.listen_state(self.dimmer, self.actuator, new='16')        
 
     def switch_on(self, entity, attribute, old, new, kwargs):
 
