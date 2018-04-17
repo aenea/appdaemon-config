@@ -246,7 +246,7 @@ class HouseOccupancy(hass.Hass):
 
         # resume thermostat schedule
         self.call_service(
-            'climate/resume_program',
+            'climate/ecobee_resume_program',
             entity_id=self.climate,
             resume_all='true'
         )
