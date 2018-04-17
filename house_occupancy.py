@@ -50,7 +50,7 @@ class HouseOccupancy(hass.Hass):
             attribute='state'
         )
         automation_mode = automation_mode.casefold()
-        if automation_mode is not in allowed_modes:
+        if automation_mode not in allowed_modes:
             return
 
         # if the porch light was turned on by automation, turn
@@ -94,7 +94,7 @@ class HouseOccupancy(hass.Hass):
             attribute='state'
         )
         automation_mode = automation_mode.casefold()
-        if automation_mode is not in allowed_modes:
+        if automation_mode not in allowed_modes:
             return
 
         # get the house mode
@@ -140,7 +140,7 @@ class HouseOccupancy(hass.Hass):
             attribute='state'
         )
         automation_mode = automation_mode.casefold()
-        if automation_mode is not in allowed_modes:
+        if automation_mode not in allowed_modes:
             return
 
         # stop the dog music
@@ -212,7 +212,7 @@ class HouseOccupancy(hass.Hass):
             attribute='state'
         )
         automation_mode = automation_mode.casefold()
-        if automation_mode is not in allowed_modes:
+        if automation_mode not in allowed_modes:
             return
 
         self.call_service(
@@ -282,7 +282,7 @@ class HouseOccupancy(hass.Hass):
             attribute='state'
         )
         automation_mode = automation_mode.casefold()
-        if automation_mode is not in allowed_modes:
+        if automation_mode not in allowed_modes:
             return
 
         # Is the house occupied?
