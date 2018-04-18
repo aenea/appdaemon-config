@@ -71,6 +71,10 @@ class LightControl(hass.Hass):
             kelvin=target_temp
         )
 
+    def light_off(self, entity, attribute, old, new, kwargs):
+
+        return
+
     def target_temp_change(self, entity, attribute, old, new, kwargs):
 
         # get the list of color temperature enabled bulbs
