@@ -105,5 +105,6 @@ class LightControl(hass.Hass):
                 # tag the light
                 self.set_state(
                     ct_light,
-                    attributes={'ct_controled': True}
+                    state='on',
+                    attributes={'ct_controled': 'true'}
                 )
