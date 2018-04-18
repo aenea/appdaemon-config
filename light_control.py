@@ -73,7 +73,15 @@ class LightControl(hass.Hass):
 
     def light_off(self, entity, attribute, old, new, kwargs):
 
-        return
+        # get the light tags
+        ct_controlled = self.get_state(ct_light, attribute='ct_controlled')
+
+        if ct_controlled == 'true':
+            # untag the light
+            self.set_state(
+                ct_light,
+                attributes={'ct_controlled': 'false'}
+            )
 
     def target_temp_change(self, entity, attribute, old, new, kwargs):
 
@@ -84,13 +92,14 @@ class LightControl(hass.Hass):
 
         # set the lights that are on to the current color temperature
         for ct_light in ct_lights:
+            # get the light state
             light_state = self.get_state(ct_light, attribute='state')
             if light_state == 'on':
                 self.call_service(
                     'homeassistant/turn_on',
                     entity_id=ct_light,
                     kelvin=new
-                )
+                )                
                 self.call_service(
                     'logbook/log',
                     entity_id=ct_light,
@@ -101,12 +110,8 @@ class LightControl(hass.Hass):
                         new)
                     )
                 )
-
                 # tag the light
                 self.set_state(
                     ct_light,
-                    state='on',
                     attributes={'ct_controlled': 'true'}
                 )
-
-                self.log(self.get_state(ct_light, attribute='ct_controlled'))
