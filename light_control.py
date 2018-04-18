@@ -39,6 +39,19 @@ class LightControl(hass.Hass):
                 )
             )
 
+        # monitor the turn off event for the color temperature lights
+        for ct_light in ct_lights:
+            self.listen_state(self.light_off, ct_light, new='off', old='on')
+            self.call_service(
+                'logbook/log',
+                entity_id=ct_light,
+                domain='automation',
+                name='ct_light: ',
+                message=(
+                    'monitoring {} for turn off events'.format(ct_light)
+                )
+            )
+
         # monitor changes in the target color temperature
         self.listen_state(self.target_temp_change, self.target_temp)
 
@@ -83,4 +96,10 @@ class LightControl(hass.Hass):
                         ct_light,
                         new)
                     )
+                )
+
+                # tag the light
+                self.set_state(
+                    ct_light,
+                    attributes={'ct_controled': True}
                 )
