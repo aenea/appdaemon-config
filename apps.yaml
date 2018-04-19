@@ -51,7 +51,7 @@ back_bathroom_light:
 pantry_light:
   module: sensor_light
   class: SensorLight
-  actuator_entity: switch.pantry_light_switch_switch
+  actuator_entity: switch.pantry_main_lights
   brightness: null
   delay: 0
   max_run_seconds: 5400
