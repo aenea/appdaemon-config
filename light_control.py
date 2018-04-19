@@ -74,7 +74,7 @@ class LightControl(hass.Hass):
     def light_off(self, entity, attribute, old, new, kwargs):
 
         # get the light tags
-        ct_controlled = self.get_state(ct_light, attribute='ct_controlled')
+        ct_controlled = self.get_state(entity, attribute='ct_controlled')
 
         if ct_controlled == 'true':
             # untag the light
