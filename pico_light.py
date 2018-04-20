@@ -16,6 +16,7 @@ class PicoLight(hass.Hass):
         self.block_restart = False
 
         self.listen_state(self.switch_on, self.actuator, new='1')
+        self.listen_state(self.switch_on, self.actuator, new='2')
         self.listen_state(self.switch_off, self.actuator, new='4')
         self.listen_state(self.brighter, self.actuator, new='8')
         self.listen_state(self.dimmer, self.actuator, new='16')        
@@ -28,10 +29,11 @@ class PicoLight(hass.Hass):
             attribute='state'
         )
 
-        if state == 'on':
-            # turn the light to full brightness if it is already on
+        if new == 1:
+            # top button turns the light on with full brightness
             self.turn_on(self.light_group, brightness_pct='100')
         else:
+            # favorite turns on the previous brightness
             self.turn_on(self.light_group)
 
     def switch_off(self, entity, attribute, old, new, kwargs):
