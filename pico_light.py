@@ -29,7 +29,7 @@ class PicoLight(hass.Hass):
             attribute='state'
         )
 
-        if new == 1:
+        if new == '1':
             # top button turns the light on with full brightness
             self.turn_on(self.light_group, brightness_pct='100')
         else:
