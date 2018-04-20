@@ -33,7 +33,7 @@ class PicoLight(hass.Hass):
             # top button turns the light on with full brightness
             self.turn_on(self.light_group, brightness_pct='100')
         else:
-            # favorite turns on the previous brightness
+            # favorite button turns on the previous brightness
             self.turn_on(self.light_group)
 
     def switch_off(self, entity, attribute, old, new, kwargs):
