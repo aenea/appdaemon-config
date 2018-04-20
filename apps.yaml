@@ -82,12 +82,12 @@ bar_light:
   brightness: 100
   light_group: light.bar
 
-fireplace_light:
-  module: switch_light
-  class: SwitchLight
-  actuator_entity: switch.fireplace_light_switch_switch
-  brightness: 100
-  light_group: light.fireplace
+#fireplace_light:
+#  module: switch_light
+#  class: SwitchLight
+#  actuator_entity: switch.fireplace_light_switch_switch
+#  brightness: 100
+#  light_group: light.fireplace
 
 kitchen_sink_double_tap:
   module: homeseer_switch
