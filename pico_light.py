@@ -77,7 +77,11 @@ class PicoLight(hass.Hass):
             new_brightness = 5
 
         # change the light to the new brightness
-        self.turn_on(self.light_group, brightness_pct=str(new_brightness))
+        self.turn_on(
+            self.light_group,
+            brightness_pct=str(new_brightness),
+            transition=0
+        )
         self.call_service(
             'logbook/log',
             entity_id=self.actuator,
