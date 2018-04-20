@@ -98,7 +98,7 @@ class LightControl(hass.Hass):
                     'homeassistant/turn_on',
                     entity_id=ct_light,
                     kelvin=new
-                )                
+                )
                 self.call_service(
                     'logbook/log',
                     entity_id=ct_light,
