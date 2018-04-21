@@ -81,7 +81,7 @@ class PicoLight(hass.Hass):
             )
             new_brightness += change
             new_brightness = max(min(100, new_brightness), 5)
-            time.sleep(.1)
+            time.sleep(.15)
 
         # change the light to the new brightness
         self.turn_on(
@@ -105,9 +105,9 @@ class PicoLight(hass.Hass):
     def brighter(self, entity, attribute, old, new, kwargs):
 
         # increase the brightness by 5%
-        self.change_brightness(2, new)
+        self.change_brightness(3, new)
 
     def dimmer(self, entity, attribute, old, new, kwargs):
 
         # decrease the brightness by 5%
-        self.change_brightness(-2, new)
+        self.change_brightness(-3, new)
