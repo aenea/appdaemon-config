@@ -72,8 +72,6 @@ class PicoLight(hass.Hass):
 
         while self.get_state(self.actuator, attribute='state') == button:
             # continue changing the brightness while the button is held down
-            # for light in lights:
-            # change the individual lights to cut the latency
             self.turn_on(
                 self.light_group,
                 brightness_pct=str(new_brightness),

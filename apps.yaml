@@ -154,3 +154,11 @@ fireplace_bulb_1:
 #  actuator_entity: sensor.office_pico
 #  light_group: light.fireplace_bulb_2
 #  brightness: 100
+
+bar_lights:
+  module: pico_light
+  class: PicoLight
+  actuator_entity: sensor.bar_pico
+  light_group: light.bar_lights
+  brightness: 100
+
