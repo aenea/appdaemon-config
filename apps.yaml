@@ -145,12 +145,12 @@ fireplace_bulb_1:
   module: pico_light
   class: PicoLight
   actuator_entity: sensor.office_pico
-  light_group: light.fireplace_bulb_1
+  light_group: light.mantle_lights
   brightness: 100
 
-fireplace_bulb_2:
-  module: pico_light
-  class: PicoLight
-  actuator_entity: sensor.office_pico
-  light_group: light.fireplace_bulb_2
-  brightness: 100
+#fireplace_bulb_2:
+#  module: pico_light
+#  class: PicoLight
+#  actuator_entity: sensor.office_pico
+#  light_group: light.fireplace_bulb_2
+#  brightness: 100
