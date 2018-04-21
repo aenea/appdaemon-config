@@ -144,7 +144,7 @@ light_control:
 fireplace_bulb_1:
   module: pico_light
   class: PicoLight
-  actuator_entity: sensor.office_pico
+  actuator_entity: sensor.fireplace_pico
   light_group: light.mantle_lights
   brightness: 100
 
