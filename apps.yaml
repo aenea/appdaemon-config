@@ -162,3 +162,10 @@ bar_lights:
   light_group: light.bar_lights
   brightness: 100
 
+tv_room_lights:
+  module: pico_light
+  class: PicoLight
+  actuator_entity: sensor.media_room_pico
+  light_group: light.tv_room_lights
+  brightness: 100
+
