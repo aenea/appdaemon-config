@@ -1,11 +1,5 @@
 import appdaemon.plugins.hass.hassapi as hass
 
-#
-# sensorLight App
-#
-# Args: asdf
-#
-
 
 class SensorLight(hass.Hass):
 

@@ -169,3 +169,7 @@ tv_room_lights:
   light_group: light.tv_room_lights
   brightness: 100
 
+kitchen_lights:
+  module: kitchen_lights
+  class: KitchenLights
+
