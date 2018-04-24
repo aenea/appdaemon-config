@@ -11,10 +11,10 @@ class KitchenLights(hass.Hass):
 
         # turn on the kitchen lights at low level at night if
         # the kitchen is unoccupied
-        sun_elevation = int(float(self.get_state(
+        sun_elevation = float(self.get_state(
             'sun.sun',
             attribute='elevation'
-        )))
+        ))
 
         bed_time = self.get_state(
             'input_boolean.bed_time',
