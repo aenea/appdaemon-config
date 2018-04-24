@@ -26,6 +26,8 @@ class KitchenLights(hass.Hass):
             attribute='state'
         )
 
+        self.log(sun_elevation)
+
         if sun_elevation < 0 and bed_time is False and light_status == 'off':
             self.turn_on(
                 'light.kitchen_sink_light_switch_level',
