@@ -5,14 +5,14 @@ class KitchenLights(hass.Hass):
 
     def initialize(self):
 
-        self.listen_state(self.stage_lights, sun.sun)
+        self.listen_state(self.stage_lights, 'sun.sun')
 
     def stage_lights(self, entity, attribute, old, new, kwargs):
 
         # turn on the kitchen lights at low level at night if
         # the kitchen is unoccupied
         sun_elevation = int(float(self.get_state(
-            sun.sun,
+            'sun.sun',
             attribute='elevation'
         )))
 
