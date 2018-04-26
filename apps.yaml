@@ -141,12 +141,12 @@ light_control:
   ct_group_entity: group.ct_lights
   target_temp_entity: input_number.ct_target
 
-fireplace_bulb_1:
-  module: pico_light
-  class: PicoLight
-  actuator_entity: sensor.office_pico
-  light_group: light.mantle_lights
-  brightness: 100
+#fireplace_bulb_1:
+#  module: pico_light
+#  class: PicoLight
+#  actuator_entity: sensor.office_pico
+#  light_group: light.mantle_lights
+#  brightness: 100
 
 #fireplace_bulb_2:
 #  module: pico_light
