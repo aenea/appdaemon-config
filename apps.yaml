@@ -21,7 +21,7 @@ washing_machine_power_monitor:
 laundry_room_stage_light:
   module: stage_light
   class: StageLight
-  actuator_entity: light.laundry_room_light_switch_level
+  actuator_entity: light.laundry_room_main_lights
   brightness: 5
   delay: 300
   sensor_entity: binary_sensor.bathroom_2_motion_sensor_sensor
@@ -31,7 +31,7 @@ laundry_room_stage_light:
 laundry_room_light:
   module: sensor_light
   class: SensorLight
-  actuator_entity: light.laundry_room_light_switch_level
+  actuator_entity: light.laundry_room_main_lights
   brightness: 100
   delay: 300
   max_run_seconds: 5400
