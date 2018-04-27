@@ -74,8 +74,7 @@ class PicoLight(hass.Hass):
             # continue changing the brightness while the button is held down
             self.turn_on(
                 self.light_group,
-                brightness_pct=str(new_brightness),
-                transition=0.1
+                brightness_pct=str(new_brightness)
             )
             new_brightness += change
             new_brightness = max(min(100, new_brightness), 5)
