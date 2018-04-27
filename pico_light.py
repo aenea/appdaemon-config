@@ -14,7 +14,9 @@ class PicoLight(hass.Hass):
         self.light_group = self.args['light_group']
         self.brightness = self.args['brightness']
         self.block_restart = False
+        self.state = 0
 
+        self.listen_state(self.no_button, self.actuator, new='0')
         self.listen_state(self.switch_on, self.actuator, new='1')
         self.listen_state(self.switch_on, self.actuator, new='2')
         self.listen_state(self.switch_off, self.actuator, new='4')
@@ -22,6 +24,8 @@ class PicoLight(hass.Hass):
         self.listen_state(self.dimmer, self.actuator, new='16')
 
     def switch_on(self, entity, attribute, old, new, kwargs):
+
+        self.state = new
 
         # get the current state of the light
         state = self.get_state(
@@ -38,6 +42,7 @@ class PicoLight(hass.Hass):
 
     def switch_off(self, entity, attribute, old, new, kwargs):
 
+        self.state = new
         # turn off the light
         self.turn_off(self.light_group)
 
@@ -70,7 +75,7 @@ class PicoLight(hass.Hass):
         new_brightness = brightness_pct + change
         new_brightness = max(min(100, new_brightness), 5)
 
-        while self.get_state(self.actuator, attribute='state') == button:
+        while self.state != '0':
             # continue changing the brightness while the button is held down
             self.turn_on(
                 self.light_group,
@@ -78,7 +83,7 @@ class PicoLight(hass.Hass):
             )
             new_brightness += change
             new_brightness = max(min(100, new_brightness), 5)
-            time.sleep(.2)
+            time.sleep(.15)
 
         # change the light to the new brightness
         self.turn_on(
@@ -101,10 +106,18 @@ class PicoLight(hass.Hass):
 
     def brighter(self, entity, attribute, old, new, kwargs):
 
+        self.state = new
+
         # increase the brightness by 4%
         self.change_brightness(4, new)
 
     def dimmer(self, entity, attribute, old, new, kwargs):
 
+        self.state = new
+
         # decrease the brightness by 4%
         self.change_brightness(-4, new)
+
+    def no_button(self, entity, attribute, old, new, kwargs):
+
+        self.state = new
