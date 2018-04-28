@@ -148,12 +148,12 @@ fireplace_lights:
   light_group: light.mantle_lights
   brightness: 100
 
-bar_lights:
-  module: pico_light
-  class: PicoLight
-  actuator_entity: sensor.bar_pico
-  light_group: light.bar_lights
-  brightness: 100
+#bar_lights:
+#  module: pico_light
+#  class: PicoLight
+#  actuator_entity: sensor.bar_pico
+#  light_group: light.bar_lights
+#  brightness: 100
 
 tv_room_lights:
   module: pico_light
