@@ -141,12 +141,12 @@ light_control:
   ct_group_entity: group.ct_lights
   target_temp_entity: input_number.ct_target
 
-fireplace_lights:
-  module: pico_light
-  class: PicoLight
-  actuator_entity: sensor.fireplace_pico
-  light_group: light.mantle_lights
-  brightness: 100
+#fireplace_lights:
+#  module: pico_light
+#  class: PicoLight
+#  actuator_entity: sensor.fireplace_pico
+#  light_group: light.mantle_lights
+#  brightness: 100
 
 #bar_lights:
 #  module: pico_light
@@ -155,12 +155,12 @@ fireplace_lights:
 #  light_group: light.bar_lights
 #  brightness: 100
 
-tv_room_lights:
-  module: pico_light
-  class: PicoLight
-  actuator_entity: sensor.media_room_pico
-  light_group: light.tv_room_lights
-  brightness: 100
+#tv_room_lights:
+#  module: pico_light
+#  class: PicoLight
+#  actuator_entity: sensor.media_room_pico
+#  light_group: light.tv_room_lights
+#  brightness: 100
 
 kitchen_lights:
   module: kitchen_lights
