@@ -12,6 +12,7 @@ class PicoLight(hass.Hass):
     def initialize(self):
         self.actuator = self.args['actuator_entity']
         self.light_group = self.args['light_group']
+        self.light_subset = self.args['light_subset']
         self.brightness = self.args['brightness']
         self.block_restart = False
         self.state = 0
@@ -37,8 +38,8 @@ class PicoLight(hass.Hass):
             # top button turns the light on with full brightness
             self.turn_on(self.light_group, brightness_pct='100')
         else:
-            # favorite button turns on the previous brightness
-            self.turn_on(self.light_group)
+            # favorite button turns on a subset of lights
+            self.turn_on(self.light_subset, brightness_pct='100')
 
     def switch_off(self, entity, attribute, old, new, kwargs):
 
@@ -59,8 +60,8 @@ class PicoLight(hass.Hass):
             return
 
         # get a list of lights in the group
-        # group_entity = self.get_state(self.light_group, attribute='all')
-        # ights = group_entity['attributes']['entity_id']
+        group_entity = self.get_state(self.light_group, attribute='all')
+        lights = group_entity['attributes']['entity_id']
 
         # get the current brightness level
         old_brightness = self.get_state(
@@ -76,11 +77,13 @@ class PicoLight(hass.Hass):
         new_brightness = max(min(100, new_brightness), 5)
 
         while self.state != '0':
-            # continue changing the brightness while the button is held down
-            self.turn_on(
-                self.light_group,
-                brightness_pct=str(new_brightness)
-            )
+            for light in lights:
+                if self.get_state(light, attribute='state') == 'on':
+                    # continue changing the brightness while the button is held down
+                    self.turn_on(
+                        self.light_group,
+                        brightness_pct=str(new_brightness)
+                    )
             new_brightness += change
             new_brightness = max(min(100, new_brightness), 5)
             time.sleep(.15)
