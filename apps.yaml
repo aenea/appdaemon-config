@@ -166,7 +166,7 @@ living_room_lights:
   module: pico_light
   class: PicoLight
   actuator_entity: sensor.living_room_pico
-  light_group: group.lr_lights
+  light_group: light.living_room_lights
   light_subset: light.living_room_1
   brightness: 100
 
