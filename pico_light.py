@@ -14,7 +14,6 @@ class PicoLight(hass.Hass):
         self.light_group = self.args['light_group']
         self.light_subset = self.args['light_subset']
         self.brightness = self.args['brightness']
-        self.block_restart = False
         self.state = 0
 
         self.listen_state(self.no_button, self.actuator, new='0')
@@ -34,7 +33,7 @@ class PicoLight(hass.Hass):
             attribute='state'
         )
 
-        if new == '1':
+        if self.state == '1':
             # top button turns the light on with full brightness
             self.turn_on(self.light_group, brightness_pct='100')
         else:
@@ -44,6 +43,7 @@ class PicoLight(hass.Hass):
     def switch_off(self, entity, attribute, old, new, kwargs):
 
         self.state = new
+
         # turn off the light
         self.turn_off(self.light_group)
 
@@ -55,7 +55,8 @@ class PicoLight(hass.Hass):
             attribute='state'
         )
 
-        # turn on the light group, if it is off
+        # If the light group is off, start a 5% if brightening
+        # or 95% if dimming
         if state == 'off':
             if change > 0:
                 # brightening the light - start at 5%
@@ -67,8 +68,8 @@ class PicoLight(hass.Hass):
                     transition='0.1'
                 )
             else:
-                # dimming the light - start at 100%
-                brightness_pct = '100'
+                # dimming the light - start at 95%
+                brightness_pct = '95'
                 new_brightness = brightness_pct
                 self.turn_on(
                     self.light_group,
@@ -83,20 +84,19 @@ class PicoLight(hass.Hass):
         # loop while the button is held down
         while self.state != '0':
             for light in lights:
-                # get the current state of the light
+                # get the current state of each light
                 light_state = self.get_state(light, attribute='all')
+
                 if light_state['state'] == 'on':
                     brightness = light_state['attributes']['brightness']
-                    self.log('brightness {}'.format(brightness))
                     brightness_pct = round(
                         (float(brightness / 255) * 100), 0
                     )
-                    self.log('brightness_pct {}'.format(brightness_pct))
+
                     # change the brightness level
                     new_brightness = brightness_pct + change
+                    # cap the brightness at 100% and 5%
                     new_brightness = max(min(100, new_brightness), 5)
-                    self.log(brightness_pct)
-                    self.log(new_brightness)
 
                     self.turn_on(
                         light,
@@ -120,15 +120,15 @@ class PicoLight(hass.Hass):
 
         self.state = new
 
-        # increase the brightness by 4%
-        self.change_brightness(4, new)
+        # increase the brightness by 5%
+        self.change_brightness(5, new)
 
     def dimmer(self, entity, attribute, old, new, kwargs):
 
         self.state = new
 
-        # decrease the brightness by 4%
-        self.change_brightness(-4, new)
+        # decrease the brightness by 5%
+        self.change_brightness(-5, new)
 
     def no_button(self, entity, attribute, old, new, kwargs):
 
