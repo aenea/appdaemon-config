@@ -71,7 +71,7 @@ class PicoLight(hass.Hass):
                 if light_state['state'] == 'on':
                     brightness = light_state['attributes']['brightness']
                     brightness_pct = round(
-                        (float(old_brightness / 255) * 100), 0
+                        (float(brightness / 255) * 100), 0
                     )
                     # change the brightness level
                     new_brightness = brightness_pct + change
