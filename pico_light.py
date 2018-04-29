@@ -56,24 +56,25 @@ class PicoLight(hass.Hass):
         )
 
         # turn on the light group, if it is off
-        if state == 'off' and change > 0:
-            # brightening the light - start at 5%
-            brightness_pct = '5'
-            new_brightness = brightness_pct
-            self.turn_on(
-                self.light_group,
-                brightness_pct=brightness_pct,
-                transition='0.1'
-            )
-        else:
-            # dimming the light - start at 100%
-            brightness_pct = 100
-            new_brightness = brightness_pct
-            self.turn_on(
-                self.light_group,
-                brightness_pct=brightness_pct,
-                transition='0.1'
-            )
+        if state == 'off':
+            if change > 0:
+                # brightening the light - start at 5%
+                brightness_pct = '5'
+                new_brightness = brightness_pct
+                self.turn_on(
+                    self.light_group,
+                    brightness_pct=brightness_pct,
+                    transition='0.1'
+                )
+            else:
+                # dimming the light - start at 100%
+                brightness_pct = '100'
+                new_brightness = brightness_pct
+                self.turn_on(
+                    self.light_group,
+                    brightness_pct=brightness_pct,
+                    transition='0.1'
+                )
 
         # get a list of lights in the group
         group_entity = self.get_state(self.light_group, attribute='all')
