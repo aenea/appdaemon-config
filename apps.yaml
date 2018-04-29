@@ -135,11 +135,11 @@ bar_double_tap:
 #  module: color_temperature
 #  class: ColorTemperature
 
-light_control:
-  module: light_control
-  class: LightControl
-  ct_group_entity: group.ct_lights
-  target_temp_entity: input_number.ct_target
+#light_control:
+#  module: light_control
+#  class: LightControl
+#  ct_group_entity: group.ct_lights
+#  target_temp_entity: input_number.ct_target
 
 #fireplace_lights:
 #  module: pico_light
