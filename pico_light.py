@@ -60,9 +60,9 @@ class PicoLight(hass.Hass):
             return
 
         # get a list of lights in the group
-        group_entity = self.get_state(self.light_group, attribute='all')
-        self.log(group_entity)
-        lights = group_entity['attributes']['entity_id']
+        #group_entity = self.get_state(self.light_group, attribute='all')
+        #self.log(group_entity)
+        #lights = group_entity['attributes']['entity_id']
 
         # get the current brightness level
         old_brightness = self.get_state(
@@ -78,13 +78,11 @@ class PicoLight(hass.Hass):
         new_brightness = max(min(100, new_brightness), 5)
 
         while self.state != '0':
-            for light in lights:
-                if self.get_state(light, attribute='state') == 'on':
-                    # continue changing the brightness while the button is held down
-                    self.turn_on(
-                        self.light_group,
-                        brightness_pct=str(new_brightness)
-                    )
+            # continue changing the brightness while the button is held down
+            self.turn_on(
+                self.light_group,
+                brightness_pct=str(new_brightness)
+            )
             new_brightness += change
             new_brightness = max(min(100, new_brightness), 5)
             time.sleep(.15)
