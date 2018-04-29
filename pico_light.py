@@ -67,7 +67,6 @@ class PicoLight(hass.Hass):
             for light in lights:
                 # get the current state of the light
                 light_state = self.get_state(light, attribute='all')
-                self.log(light_state)
                 if light_state['state'] == 'on':
                     brightness = light_state['attributes']['brightness']
                     brightness_pct = round(
@@ -78,9 +77,8 @@ class PicoLight(hass.Hass):
                     new_brightness = max(min(100, new_brightness), 5)
 
                     self.turn_on(
-                        self.light_group,
-                        brightness_pct=str(new_brightness),
-                        transition=0
+                        light,
+                        brightness_pct=str(new_brightness)
                     )
             time.sleep(.10)
 
