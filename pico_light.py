@@ -59,6 +59,7 @@ class PicoLight(hass.Hass):
         if state == 'off' and change > 0:
             # brightening the light - start at 5%
             brightness_pct = '5'
+            new_brightness = brightness_pct
             self.turn_on(
                 self.light_group,
                 brightness_pct=brightness_pct,
@@ -67,6 +68,7 @@ class PicoLight(hass.Hass):
         else:
             # dimming the light - start at 100%
             brightness_pct = 100
+            new_brightness = brightness_pct
             self.turn_on(
                 self.light_group,
                 brightness_pct=brightness_pct,
