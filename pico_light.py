@@ -61,6 +61,7 @@ class PicoLight(hass.Hass):
 
         # get a list of lights in the group
         group_entity = self.get_state(self.light_group, attribute='all')
+        self.log(group_entity)
         lights = group_entity['attributes']['entity_id']
 
         # get the current brightness level
