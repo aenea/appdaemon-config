@@ -67,6 +67,7 @@ class PicoLight(hass.Hass):
             for light in lights:
                 # get the current state of the light
                 light_state = self.get_state(light, attribute='all')
+                self.log(light_state)
                 if light_state.state == 'on':
                     brightness = light_state.brightness
                     brightness_pct = round(
