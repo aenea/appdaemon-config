@@ -60,15 +60,15 @@ class PicoLight(hass.Hass):
             # brightening the light - start at 5%
             self.turn_on(
                 self.light_group,
-                brightness_pct=5,
-                transition=0.1
+                brightness_pct='5',
+                transition='0.1'
             )
         else:
             # dimming the light - start at 100%
             self.turn_on(
                 self.light_group,
-                brightness_pct=100,
-                transition=0.1
+                brightness_pct='100',
+                transition='0.1'
             )
 
         # get a list of lights in the group
