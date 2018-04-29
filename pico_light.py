@@ -85,7 +85,7 @@ class PicoLight(hass.Hass):
             )
             new_brightness += change
             new_brightness = max(min(100, new_brightness), 5)
-            time.sleep(.25)
+            time.sleep(.10)
 
         # change the light to the new brightness
         self.turn_on(
