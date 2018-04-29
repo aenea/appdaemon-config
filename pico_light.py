@@ -60,39 +60,28 @@ class PicoLight(hass.Hass):
             return
 
         # get a list of lights in the group
-        #group_entity = self.get_state(self.light_group, attribute='all')
-        #self.log(group_entity)
-        #lights = group_entity['attributes']['entity_id']
-
-        # get the current brightness level
-        old_brightness = self.get_state(
-            self.light_group,
-            attribute='brightness'
-        )
-
-        # convert the brightness to a percentage
-        brightness_pct = round((float(old_brightness / 255) * 100), 0)
-
-        # change the brightness level
-        new_brightness = brightness_pct + change
-        new_brightness = max(min(100, new_brightness), 5)
+        group_entity = self.get_state(self.light_group, attribute='all')
+        lights = group_entity['attributes']['entity_id']
 
         while self.state != '0':
-            # continue changing the brightness while the button is held down
-            self.turn_on(
-                self.light_group,
-                brightness_pct=str(new_brightness)
-            )
-            new_brightness += change
-            new_brightness = max(min(100, new_brightness), 5)
-            time.sleep(.10)
+            for light in lights:
+                # get the current state of the light
+                light_state = self.get_state(light)
+                if light_state.state == 'on':
+                    brightness = light_state.brightness
+                    brightness_pct = round(
+                        (float(old_brightness / 255) * 100), 0
+                    )
+                    # change the brightness level
+                    new_brightness = brightness_pct + change
+                    new_brightness = max(min(100, new_brightness), 5)
 
-        # change the light to the new brightness
-        self.turn_on(
-            self.light_group,
-            brightness_pct=str(new_brightness),
-            transition=0
-        )
+                    self.turn_on(
+                        self.light_group,
+                        brightness_pct=str(new_brightness),
+                        transition=0
+                    )
+            time.sleep(.10)
 
         self.call_service(
             'logbook/log',
