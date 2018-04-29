@@ -5,18 +5,18 @@ house_occupancy:
   doors_entity: group.entry_doors
   climate_entity: climate.home
 
-washing_machine_power_monitor:
-  module: power_monitor
-  class: PowerMonitor
-  max_idle_seconds: 180
-  notify: True
-  notify_message: "The washing machine cycle has completed."
-  notify_target: "notify/pushbullet_scott"
-  notify_title: "Washing machine cycle complete"
-  off_load: 2
-  on_load: 10
-  sensor_entity: sensor.washing_machine_outlet_power
-  tracking_entity: input_select.washing_machine_status
+#washing_machine_power_monitor:
+#  module: power_monitor
+#  class: PowerMonitor
+#  max_idle_seconds: 180
+#  notify: True
+#  notify_message: "The washing machine cycle has completed."
+#  notify_target: "notify/pushbullet_scott"
+#  notify_title: "Washing machine cycle complete"
+#  off_load: 2
+#  on_load: 10
+#  sensor_entity: sensor.washing_machine_outlet_power
+#  tracking_entity: input_select.washing_machine_status
 
 laundry_room_stage_light:
   module: stage_light
