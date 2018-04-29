@@ -131,9 +131,9 @@ bar_double_tap:
   scene_id: 7860
   zwave_entity: zwave.bar_light_switch
 
-ct_lights:
-  module: color_temperature
-  class: ColorTemperature
+#ct_lights:
+#  module: color_temperature
+#  class: ColorTemperature
 
 light_control:
   module: light_control
