@@ -29,7 +29,12 @@ class HouseOccupancy(hass.Hass):
             old='home'
         )
         # track the arrival of individuals
-        self.listen_state(self.someone_arrives, 'device_tracker', new='home', old='not_home')
+        self.listen_state(
+            self.someone_arrives,
+            'device_tracker',
+            new='home',
+            old='not_home'
+        )
 
         # track entry door status
         self.listen_state(self.door_opens, self.doors, new='on')
@@ -39,6 +44,14 @@ class HouseOccupancy(hass.Hass):
             self.climate_mode_change,
             self.climate,
             attribute='climate_mode'
+        )
+
+        # track sleep status
+        self.listen_state(
+            self.bed_time,
+            'input_boolean.bed_time',
+            new='on',
+            old='off'
         )
 
     def door_opens(self, entity, attribute, old, new, kwargs):
@@ -296,3 +309,35 @@ class HouseOccupancy(hass.Hass):
                 entity_id=self.climate,
                 hold_mode='home'
             )
+
+    def bed_time(self, entity, attribute, old, new, kwargs):
+
+        # turn off all the lights
+        self.turn_off('group.all_switches')
+        self.turn_off('group.all_lights')
+
+        # turn on the night lights
+        self.turn_on(
+            'light.kitchen_sink_light_switch_level',
+            brightness_pct='2'
+        )
+
+        # turn off the remotes
+        self.call_service(
+            'remote/turn_off',
+            entity_id='remote.living_room'
+        )
+        self.call_service(
+            'remote/turn_off',
+            entity_id='remote.tv_room'
+        )
+
+        # set the thermostat mode to 'sleep'
+        self.call_service(
+            'climate/set_hold_mode',
+            entity_id=self.climate,
+            hold_mode='sleep'
+        )
+
+        # flip the flag back off
+        self.turn_off('input_boolean.bed_time')
