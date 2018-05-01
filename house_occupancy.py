@@ -339,5 +339,13 @@ class HouseOccupancy(hass.Hass):
             hold_mode='sleep'
         )
 
+        self.call_service(
+            'logbook/log',
+            entity_id=self.occupancy,
+            domain='automation',
+            name='house_occupancy: ',
+            message=('Bed time routine triggered')
+        )
+
         # flip the flag back off
         self.turn_off('input_boolean.bed_time')
