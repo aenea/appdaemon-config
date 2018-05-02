@@ -31,6 +31,8 @@ laundry_room_stage_light:
 laundry_room_light:
   module: sensor_light
   class: SensorLight
+  active_modes:
+    - Normal
   actuator_entity: light.laundry_room_main_lights
   brightness: 100
   delay: 300
@@ -41,6 +43,8 @@ laundry_room_light:
 back_bathroom_light:
   module: sensor_light
   class: SensorLight
+  active_modes:
+    - Normal
   actuator_entity: light.second_bathroom_main_lights
   brightness: 100
   delay: 1200
@@ -51,6 +55,11 @@ back_bathroom_light:
 pantry_light:
   module: sensor_light
   class: SensorLight
+  active_modes:
+    - Normal
+    - Away
+    - Sleep
+    - Guest
   actuator_entity: switch.pantry_main_lights
   brightness: null
   delay: 0
@@ -68,6 +77,11 @@ porch_light:
 utility_room_light:
   module: sensor_light
   class: SensorLight
+  active_modes:
+    - Normal
+    - Away
+    - Sleep
+    - Guest
   actuator_entity: switch.utility_room_light_switch_switch
   brightness: null
   delay: 0

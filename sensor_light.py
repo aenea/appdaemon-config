@@ -5,6 +5,7 @@ class SensorLight(hass.Hass):
 
     def initialize(self):
         self.sensor = self.args['sensor_entity']
+        self.active_modes = [x.casefold() for x in self.args['active_modes']]
         self.actuator = self.args['actuator_entity']
         self.tracker = self.args['tracking_entity']
         self.delay = self.args['delay']
@@ -30,13 +31,12 @@ class SensorLight(hass.Hass):
 
     def sensor_on(self, entity, attribute, old, new, kwargs):
 
-        # check for guest mode
-        guest_mode = self.get_state(
-            'input_boolean.guest_mode',
+        # only run in allowed modes
+        automation_mode = self.get_state(
+            'input_select.automation_mode',
             attribute='state'
-        )
-
-        if guest_mode is True:
+        ).casefold()
+        if automation_mode not in self.active_modes:
             return
 
         # get the state of the switch
@@ -83,12 +83,12 @@ class SensorLight(hass.Hass):
 
     def sensor_off(self, entity, attribute, old, new, kwargs):
 
-        # check for guest mode
-        guest_mode = self.get_state(
-            'input_boolean.guest_mode',
+        # only run in allowed modes
+        automation_mode = self.get_state(
+            'input_select.automation_mode',
             attribute='state'
-        )
-        if guest_mode is True:
+        ).casefold()
+        if automation_mode not in self.active_modes:
             return
 
         if self.delay > 0:
@@ -143,12 +143,12 @@ class SensorLight(hass.Hass):
 
     def actuator_off(self, entity, attribute, old, new, kwargs):
 
-        # check for guest mode
-        guest_mode = self.get_state(
-            'input_boolean.guest_mode',
+        # only run in allowed modes
+        automation_mode = self.get_state(
+            'input_select.automation_mode',
             attribute='state'
-        )
-        if guest_mode is True:
+        ).casefold()
+        if automation_mode not in self.active_modes:
             return
 
         # clear the timer handles
@@ -167,6 +167,14 @@ class SensorLight(hass.Hass):
         self.select_option(self.tracker, 'Off')
 
     def actuator_on(self, entity, attribute, old, new, kwargs):
+
+        # only run in allowed modes
+        automation_mode = self.get_state(
+            'input_select.automation_mode',
+            attribute='state'
+        ).casefold()
+        if automation_mode not in self.active_modes:
+            return
 
         lighting_state = self.get_state(
             self.tracker,
