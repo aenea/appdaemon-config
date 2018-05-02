@@ -155,6 +155,9 @@ class HouseOccupancy(hass.Hass):
         automation_mode = automation_mode.casefold()
         if automation_mode not in allowed_modes:
             return
+        else:
+            # Set the automation mode to 'Normal'
+            self.select_option('input_select.automation_mode', 'Normal')
 
         # stop the dog music
         self.call_service(
@@ -286,6 +289,9 @@ class HouseOccupancy(hass.Hass):
             message=(' dog music started')
         )
 
+        # set the house to away mode
+        self.select_option('input_select.automation_mode', 'Away')
+
     def climate_mode_change(self, entity, attribute, old, new, kwargs):
 
         # is the automation in an allowed state?
@@ -311,6 +317,16 @@ class HouseOccupancy(hass.Hass):
             )
 
     def bed_time(self, entity, attribute, old, new, kwargs):
+
+        # is the automation in an allowed state?
+        allowed_modes = set(['normal', 'away', 'sleep'])
+        automation_mode = self.get_state(
+            'input_select.automation_mode',
+            attribute='state'
+        )
+        automation_mode = automation_mode.casefold()
+        if automation_mode not in allowed_modes:
+            return
 
         # turn off all the lights
         self.turn_off('group.all_switches')

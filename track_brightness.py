@@ -27,4 +27,4 @@ class TrackBrightness(hass.Hass):
             self.brightness = 
 
 
-        self.log(sun_elevation, level='INFO')
+        # self.log(sun_elevation, level='INFO')
