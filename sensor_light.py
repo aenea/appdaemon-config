@@ -183,3 +183,6 @@ class SensorLight(hass.Hass):
 
         if lighting_state == 'Off':
             self.select_option(self.tracker, 'Manual')
+        
+        if automation_mode == 'sleep':
+            self.select_option('input_select.automation_mode', 'Normal')
