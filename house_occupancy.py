@@ -327,6 +327,8 @@ class HouseOccupancy(hass.Hass):
         automation_mode = automation_mode.casefold()
         if automation_mode not in allowed_modes:
             return
+        else:
+            self.set_option('input_select.automation_mode', 'Sleep')
 
         # turn off all the lights
         self.turn_off('group.all_switches')
