@@ -240,8 +240,7 @@ class HouseOccupancy(hass.Hass):
         )
 
         # turn off lights
-        self.turn_off('group.all_lights')
-        self.turn_off('group.all_switches')
+        self.turn_off('group.lights')
         self.call_service(
             'logbook/log',
             entity_id=self.occupancy,
@@ -331,8 +330,7 @@ class HouseOccupancy(hass.Hass):
             self.select_option('input_select.automation_mode', 'Sleep')
 
         # turn off all the lights
-        self.turn_off('group.all_switches')
-        self.turn_off('group.all_lights')
+        self.turn_off('group.lights_sleep_off')
 
         # turn on the night lights
         self.turn_on(
