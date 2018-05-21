@@ -240,7 +240,7 @@ class HouseOccupancy(hass.Hass):
         )
 
         # turn off lights
-        self.turn_off('group.lights')
+        self.turn_off('group.all_lights')
         self.call_service(
             'logbook/log',
             entity_id=self.occupancy,
