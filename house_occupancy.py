@@ -46,13 +46,13 @@ class HouseOccupancy(hass.Hass):
             attribute='climate_mode'
         )
 
-        # track sleep status
-        self.listen_state(
-            self.bed_time,
-            'input_boolean.bed_time',
-            new='on',
-            old='off'
-        )
+#        # track sleep status
+#        self.listen_state(
+#            self.bed_time,
+#            'input_boolean.bed_time',
+#            new='on',
+#            old='off'
+#        )
 
     def door_opens(self, entity, attribute, old, new, kwargs):
 
