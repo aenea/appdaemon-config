@@ -13,7 +13,7 @@ class HouseOccupancy(hass.Hass):
         # react to arrivals
         self.listen_state(self.home_occupied, self.occupancy, new='on')
         # react to departures
-        self.listen_state(self.home_unoccupied, self.occupancy, new='off')
+#        self.listen_state(self.home_unoccupied, self.occupancy, new='off')
         # set ocupancy state
         self.listen_state(
             self.set_occupancy_on,
