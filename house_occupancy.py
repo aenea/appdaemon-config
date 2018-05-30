@@ -11,7 +11,7 @@ class HouseOccupancy(hass.Hass):
         self.climate = self.args['climate_entity']
 
         # react to arrivals
-        self.listen_state(self.home_occupied, self.occupancy, new='on')
+#        self.listen_state(self.home_occupied, self.occupancy, new='on')
         # react to departures
 #        self.listen_state(self.home_unoccupied, self.occupancy, new='off')
         # set ocupancy state
