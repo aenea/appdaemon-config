@@ -46,13 +46,13 @@ class HouseOccupancy(hass.Hass):
             attribute='climate_mode'
         )
 
-#        # track sleep status
-#        self.listen_state(
-#            self.bed_time,
-#            'input_boolean.bed_time',
-#            new='on',
-#            old='off'
-#        )
+        # track sleep status
+        self.listen_state(
+            self.bed_time,
+            'input_boolean.bed_time',
+            new='on',
+            old='off'
+        )
 
     def door_opens(self, entity, attribute, old, new, kwargs):
 
@@ -341,11 +341,7 @@ class HouseOccupancy(hass.Hass):
         # turn off the remotes
         self.call_service(
             'remote/turn_off',
-            entity_id='remote.living_room'
-        )
-        self.call_service(
-            'remote/turn_off',
-            entity_id='remote.tv_room'
+            entity_id='group.all_remotes'
         )
 
         # set the thermostat mode to 'sleep'
@@ -353,6 +349,18 @@ class HouseOccupancy(hass.Hass):
             'climate/set_hold_mode',
             entity_id=self.climate,
             hold_mode='sleep'
+        )
+
+        # turn off living room fan
+        self.call_service(
+            'ifttt/trigger',
+            event='lr_fan_off'
+        )
+
+        # set living room fan mode
+        self.select_option(
+            'input_select.living_room_fan_status',
+            'Manual'
         )
 
         self.call_service(
