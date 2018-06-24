@@ -52,20 +52,20 @@ back_bathroom_light:
   sensor_entity: binary_sensor.bathroom_2_motion_sensor_sensor
   tracking_entity: input_select.bathroom_2_status
 
-#pantry_light:
-#  module: sensor_light
-#  class: SensorLight
-#  active_modes:
-#    - Normal
-#    - Away
-#    - Sleep
-#    - Guest
-#  actuator_entity: switch.pantry_main_lights
-#  brightness: null
-#  delay: 0
-#  max_run_seconds: 5400
-#  sensor_entity: binary_sensor.pantry_door_sensor_sensor
-#  tracking_entity: input_select.pantry_status
+pantry_light:
+  module: sensor_light
+  class: SensorLight
+  active_modes:
+    - Normal
+    - Away
+    - Sleep
+    - Guest
+  actuator_entity: switch.pantry_main_lights
+  brightness: null
+  delay: 0
+  max_run_seconds: 5400
+  sensor_entity: binary_sensor.pantry_door_sensor_sensor
+  tracking_entity: input_select.pantry_status
 
 porch_light:
   module: manual_light
