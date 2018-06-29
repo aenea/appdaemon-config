@@ -46,6 +46,7 @@ class FanControl(hass.Hass):
 
         self.log(automation_mode)
         self.log(current_temp)
+        self.log(fan_state)
 
         # turn on the fan if it's too warm
         if current_temp >= self.fan_on_temp:
