@@ -62,7 +62,7 @@ class FanControl(hass.Hass):
                 )
                 self.call_service(
                     'logbook/log',
-                    entity_id=self.occupancy,
+                    entity_id=self.temp_sensor,
                     domain='automation',
                     name='fan_control: ',
                     message=(
@@ -86,7 +86,7 @@ class FanControl(hass.Hass):
                 )
                 self.call_service(
                     'logbook/log',
-                    entity_id=self.occupancy,
+                    entity_id=self.temp_sensor,
                     domain='automation',
                     name='fan_control: ',
                     message=(
