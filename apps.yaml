@@ -124,7 +124,7 @@ living_room_fan:
   module: fan_control
   class: FanControl
   active_modes:
-    - Normal
+    - normal
   fan_off_temp: 69
   fan_on_temp: 71
   fan_off_trigger: lr_fan_off

@@ -4,7 +4,7 @@ import appdaemon.plugins.hass.hassapi as hass
 class FanControl(hass.Hass):
 
     def initialize(self):
-        self.active_modes = self.args['active_modes']
+        self.active_modes = self.args['active_modes'].casefold()
         self.fan_off_temp = int(self.args['fan_off_temp'])
         self.fan_on_temp = int(self.args['fan_on_temp'])
         self.fan_off_trigger = self.args['fan_off_trigger']
