@@ -24,8 +24,7 @@ class FanControl(hass.Hass):
         automation_mode = self.get_state(
             'input_select.automation_mode',
             attribute='state'
-        )
-        automation_mode = automation_mode.casefold()
+        ).casefold()
         if automation_mode not in self.active_modes:
             return
 

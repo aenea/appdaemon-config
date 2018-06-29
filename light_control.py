@@ -19,6 +19,7 @@ import appdaemon.plugins.hass.hassapi as hass
 class LightControl(hass.Hass):
 
     def initialize(self):
+        self.active_modes = [x.casefold() for x in self.args['active_modes']]
         self.ct_group = self.args['ct_group_entity']
         self.target_temp = self.args['target_temp_entity']
 
@@ -83,6 +84,14 @@ class LightControl(hass.Hass):
             )
 
     def target_temp_change(self, entity, attribute, old, new, kwargs):
+
+        # is the automation mode in an allowed state?
+        automation_mode = self.get_state(
+            'input_select.automation_mode',
+            attribute='state'
+        ).casefold()
+        if automation_mode not in self.active_modes:
+            return
 
         # get the list of color temperature enabled bulbs
         ct_group = self.get_state(self.ct_group, attribute='all')
