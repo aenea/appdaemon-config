@@ -296,7 +296,7 @@ class HouseOccupancy(hass.Hass):
             domain='automation',
             name='house_occupancy: ',
             message=(' living room fan turned off')
-        )       
+        )
 
         # start the dog music
         self.call_service(
