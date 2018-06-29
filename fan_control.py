@@ -26,9 +26,6 @@ class FanControl(hass.Hass):
             attribute='state'
         )
         automation_mode = automation_mode.casefold()
-
-        self.log(automation_mode)
-        self.log(self.active_modes)
         if automation_mode not in self.active_modes:
             return
 
@@ -43,10 +40,6 @@ class FanControl(hass.Hass):
             self.tracking_entity,
             attribute='state'
         ).casefold()
-
-        self.log(automation_mode)
-        self.log(current_temp)
-        self.log(fan_state)
 
         # turn on the fan if it's too warm
         if current_temp >= self.fan_on_temp:
