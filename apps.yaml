@@ -117,6 +117,8 @@ ct_lights:
 light_control:
   module: light_control
   class: LightControl
+  active_modes:
+    - normal
   ct_group_entity: group.ct_lights
   target_temp_entity: input_number.ct_target
 
