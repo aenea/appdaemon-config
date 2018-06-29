@@ -11,9 +11,9 @@ class HouseOccupancy(hass.Hass):
         self.climate = self.args['climate_entity']
 
         # react to arrivals
-#        self.listen_state(self.home_occupied, self.occupancy, new='on')
+        self.listen_state(self.home_occupied, self.occupancy, new='on')
         # react to departures
-#        self.listen_state(self.home_unoccupied, self.occupancy, new='off')
+        self.listen_state(self.home_unoccupied, self.occupancy, new='off')
         # set ocupancy state
         self.listen_state(
             self.set_occupancy_on,
@@ -50,6 +50,14 @@ class HouseOccupancy(hass.Hass):
         self.listen_state(
             self.bed_time,
             'input_boolean.bed_time',
+            new='on',
+            old='off'
+        )
+
+        # track the quiet time sensor
+        self.listen_state(
+            self.bed_time,
+            'binary_sensor.sleeping',
             new='on',
             old='off'
         )
@@ -240,7 +248,7 @@ class HouseOccupancy(hass.Hass):
         )
 
         # turn off lights
-        self.turn_off('group.all_lights')
+        self.turn_off('group.lights')
         self.call_service(
             'logbook/log',
             entity_id=self.occupancy,
@@ -250,7 +258,7 @@ class HouseOccupancy(hass.Hass):
         )
 
         # turn off remotes
-        self.turn_off('group.remotes')
+        self.turn_off('group.all_remotes')
         self.call_service(
             'logbook/log',
             entity_id=self.occupancy,
@@ -273,6 +281,23 @@ class HouseOccupancy(hass.Hass):
             message=(' thermostat schedule resumed')
         )
 
+        # turn off living room fan
+        self.call_service(
+            'ifttt/trigger',
+            event='lr_fan_off'
+        )
+        self.select_option(
+            'input_select.living_room_fan_status',
+            'Manual'
+        )
+        self.call_service(
+            'logbook/log',
+            entity_id=self.occupancy,
+            domain='automation',
+            name='house_occupancy: ',
+            message=(' living room fan turned off')
+        )       
+
         # start the dog music
         self.call_service(
             'media_player/squeezebox_call_method',
@@ -288,7 +313,7 @@ class HouseOccupancy(hass.Hass):
             message=(' dog music started')
         )
 
-        # set the house to away mode
+        # change the automation mode to Away
         self.select_option('input_select.automation_mode', 'Away')
 
     def climate_mode_change(self, entity, attribute, old, new, kwargs):
