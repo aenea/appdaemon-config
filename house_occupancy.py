@@ -66,7 +66,7 @@ class HouseOccupancy(hass.Hass):
         self.listen_state(
             self.bed_time,
             'sensor.hallway_keypad',
-            new=4
+            new='4'
         )
 
     def door_opens(self, entity, attribute, old, new, kwargs):
