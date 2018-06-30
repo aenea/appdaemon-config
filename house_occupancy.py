@@ -62,6 +62,13 @@ class HouseOccupancy(hass.Hass):
             old='off'
         )
 
+        # track the bed time switch
+        self.listen_state(
+            self.bed_time,
+            'sensor.hallway_keypad',
+            new=4
+        )
+
     def door_opens(self, entity, attribute, old, new, kwargs):
 
         # is the automation in an allowed state?
@@ -247,6 +254,9 @@ class HouseOccupancy(hass.Hass):
             message=(' house is not occupied')
         )
 
+        # change the automation mode to Away
+        self.select_option('input_select.automation_mode', 'Away')
+
         # turn off lights
         self.turn_off('group.lights')
         self.call_service(
@@ -312,9 +322,6 @@ class HouseOccupancy(hass.Hass):
             name='house_occupancy: ',
             message=(' dog music started')
         )
-
-        # change the automation mode to Away
-        self.select_option('input_select.automation_mode', 'Away')
 
     def climate_mode_change(self, entity, attribute, old, new, kwargs):
 
