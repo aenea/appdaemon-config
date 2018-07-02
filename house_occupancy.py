@@ -39,12 +39,12 @@ class HouseOccupancy(hass.Hass):
         # track entry door status
         self.listen_state(self.door_opens, self.doors, new='on')
 
-        # track thermostat climate mode changes
-        self.listen_state(
-            self.climate_mode_change,
-            self.climate,
-            attribute='climate_mode'
-        )
+#        # track thermostat climate mode changes
+#        self.listen_state(
+#            self.climate_mode_change,
+#            self.climate,
+#            attribute='climate_mode'
+#        )
 
         # track sleep status
         self.listen_state(
