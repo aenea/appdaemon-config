@@ -28,13 +28,13 @@ class HouseOccupancy(hass.Hass):
             new='not_home',
             old='home'
         )
-        # track the arrival of individuals
-        self.listen_state(
-            self.someone_arrives,
-            'device_tracker',
-            new='home',
-            old='not_home'
-        )
+#        # track the arrival of individuals
+#        self.listen_state(
+#            self.someone_arrives,
+#            'device_tracker',
+#            new='home',
+#            old='not_home'
+#        )
 
         # track entry door status
         self.listen_state(self.door_opens, self.doors, new='on')
