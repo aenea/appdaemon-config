@@ -11,23 +11,23 @@ class HouseOccupancy(hass.Hass):
         self.climate = self.args['climate_entity']
 
         # react to arrivals
-        self.listen_state(self.home_occupied, self.occupancy, new='on')
+#        self.listen_state(self.home_occupied, self.occupancy, new='on')
         # react to departures
-        self.listen_state(self.home_unoccupied, self.occupancy, new='off')
+#        self.listen_state(self.home_unoccupied, self.occupancy, new='off')
         # set ocupancy state
-        self.listen_state(
-            self.set_occupancy_on,
-            'group.presence_all',
-            new='home',
-            old='not_home'
-        )
+#        self.listen_state(
+#            self.set_occupancy_on,
+#            'group.presence_all',
+#            new='home',
+#            old='not_home'
+#        )
         # set occupancy state
-        self.listen_state(
-            self.set_occupancy_off,
-            'group.presence_all',
-            new='not_home',
-            old='home'
-        )
+#        self.listen_state(
+#            self.set_occupancy_off,
+#            'group.presence_all',
+#            new='not_home',
+#            old='home'
+#        )
 #        # track the arrival of individuals
 #        self.listen_state(
 #            self.someone_arrives,
@@ -37,7 +37,7 @@ class HouseOccupancy(hass.Hass):
 #        )
 
         # track entry door status
-        self.listen_state(self.door_opens, self.doors, new='on')
+#        self.listen_state(self.door_opens, self.doors, new='on')
 
 #        # track thermostat climate mode changes
 #        self.listen_state(
@@ -46,28 +46,28 @@ class HouseOccupancy(hass.Hass):
 #            attribute='climate_mode'
 #        )
 
-        # track sleep status
-        self.listen_state(
-            self.bed_time,
-            'input_boolean.bed_time',
-            new='on',
-            old='off'
-        )
+#        # track sleep status
+#        self.listen_state(
+#            self.bed_time,
+#            'input_boolean.bed_time',
+#            new='on',
+#            old='off'
+#        )
 
-        # track the quiet time sensor
-        self.listen_state(
-            self.bed_time,
-            'binary_sensor.sleeping',
-            new='on',
-            old='off'
-        )
+#        # track the quiet time sensor
+#        self.listen_state(
+#            self.bed_time,
+#            'binary_sensor.sleeping',
+#            new='on',
+#            old='off'
+#        )
 
-        # track the bed time switch
-        self.listen_state(
-            self.bed_time,
-            'sensor.hallway_keypad',
-            new='4'
-        )
+#        # track the bed time switch
+#        self.listen_state(
+#            self.bed_time,
+#            'sensor.hallway_keypad',
+#            new='4'
+#        )
 
     def door_opens(self, entity, attribute, old, new, kwargs):
 
