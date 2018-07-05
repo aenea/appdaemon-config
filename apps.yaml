@@ -18,27 +18,27 @@ washing_machine_power_monitor:
   sensor_entity: sensor.washing_machine_outlet_power
   tracking_entity: input_select.washing_machine_status
 
-laundry_room_stage_light:
-  module: stage_light
-  class: StageLight
-  actuator_entity: light.laundry_room_main_lights
-  brightness: 5
-  delay: 300
-  sensor_entity: binary_sensor.bathroom_2_motion_sensor_sensor
-  tracking_entity: input_select.laundry_room_status
-  constraint_input_boolean: input_boolean.home_occupancy,on
+#laundry_room_stage_light:
+#  module: stage_light
+#  class: StageLight
+#  actuator_entity: light.laundry_room_main_lights
+#  brightness: 5
+#  delay: 300
+#  sensor_entity: binary_sensor.bathroom_2_motion_sensor_sensor
+#  tracking_entity: input_select.laundry_room_status
+#  constraint_input_boolean: input_boolean.home_occupancy,on
   
-laundry_room_light:
-  module: sensor_light
-  class: SensorLight
-  active_modes:
-    - Normal
-  actuator_entity: light.laundry_room_main_lights
-  brightness: 100
-  delay: 300
-  max_run_seconds: 5400
-  sensor_entity: binary_sensor.laundry_room_motion_sensor_sensor
-  tracking_entity: input_select.laundry_room_status
+#laundry_room_light:
+#  module: sensor_light
+#  class: SensorLight
+#  active_modes:
+#    - Normal
+#  actuator_entity: light.laundry_room_main_lights
+#  brightness: 100
+#  delay: 300
+#  max_run_seconds: 5400
+#  sensor_entity: binary_sensor.laundry_room_motion_sensor_sensor
+#  tracking_entity: input_select.laundry_room_status
 
 back_bathroom_light:
   module: sensor_light
