@@ -158,13 +158,13 @@ tv_room_lights:
   light_subset: light.tv_room_bulb_1
   brightness: 100
 
-living_room_lights:
-  module: pico_light
-  class: PicoLight
-  actuator_entity: sensor.living_room_pico
-  light_group: group.living_room_lights
-  light_subset: light.living_room_1
-  brightness: 100
+#living_room_lights:
+#  module: pico_light
+#  class: PicoLight
+#  actuator_entity: sensor.living_room_pico
+#  light_group: group.living_room_lights
+#  light_subset: light.living_room_1
+#  brightness: 100
 
 kitchen_lights:
   module: kitchen_lights
