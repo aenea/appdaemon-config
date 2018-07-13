@@ -7,7 +7,7 @@ class MotionLight(hass.Hass):
         self.active_modes = [item.casefold() for item in self.args['active_modes']]        
         self.actuator = self.args['actuator_entity']
         self.brightness = self.args['brightness']
-        self.normal_run_time = self.args['delay']
+        self.normal_run_time = self.args['normal_run_time']
         self.max_run_seconds = self.args['max_run_seconds']
         self.max_timer = None
         self.off_timer = None
