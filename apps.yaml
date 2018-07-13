@@ -36,19 +36,20 @@ laundry_room_light:
     - Sleep
   actuator_entity: light.laundry_room_main_lights
   brightness: 100
-  delay: 600
+  normal_run_seconds: 600
   max_run_seconds: 5400
   sensor_entity: binary_sensor.laundry_room_motion_sensor_sensor
   tracking_entity: input_select.laundry_room_status
 
 back_bathroom_light:
-  module: sensor_light
-  class: SensorLight
+  module: motion_light
+  class: MotionLight
   active_modes:
     - Normal
+    - Sleep
   actuator_entity: light.second_bathroom_main_lights
   brightness: 100
-  delay: 1200
+  normal_run_seconds: 1200
   max_run_seconds: 5400
   sensor_entity: binary_sensor.bathroom_2_motion_sensor_sensor
   tracking_entity: input_select.bathroom_2_status
