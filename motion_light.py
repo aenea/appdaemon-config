@@ -4,10 +4,12 @@ import appdaemon.plugins.hass.hassapi as hass
 class MotionLight(hass.Hass):
 
     def initialize(self):
-        self.active_modes = [item.casefold() for item in self.args['active_modes']]        
+        self.active_modes = [
+            item.casefold() for item in self.args['active_modes']
+        ]        
         self.actuator = self.args['actuator_entity']
         self.brightness = self.args['brightness']
-        self.normal_run_time = self.args['normal_run_seconds']
+        self.normal_run_seconds = self.args['normal_run_seconds']
         self.max_run_seconds = self.args['max_run_seconds']
         self.max_timer = None
         self.off_timer = None
@@ -78,10 +80,10 @@ class MotionLight(hass.Hass):
                 self.turn_off_warning,
                 self.max_run_seconds
             )
-        if self.normal_run_time > 0:
+        if self.normal_run_seconds > 0:
             self.off_timer = self.run_in(
                 self.turn_off_warning,
-                self.normal_run_time
+                self.normal_run_seconds
             )
 
     def turn_off_warning(self, kwargs):

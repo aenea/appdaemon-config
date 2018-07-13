@@ -1,10 +1,18 @@
 import appdaemon.plugins.hass.hassapi as hass
 
 
+# Uses the Bond IFTTT channel to control fans through their wireless
+# remote interface. Turns on the fan if the temperature >= on_temp.
+# Turns off the fan if the temperature <= off_temp. Listens for changes
+# to the house automation mode and re-evalutes if the mode changes to 
+# an allowed mode
+
 class FanControl(hass.Hass):
 
     def initialize(self):
-        self.active_modes = [item.casefold() for item in self.args['active_modes']]
+        self.active_modes = [
+            item.casefold() for item in self.args['active_modes']
+        ]
         self.fan_off_temp = float(self.args['fan_off_temp'])
         self.fan_on_temp = float(self.args['fan_on_temp'])
         self.fan_off_trigger = self.args['fan_off_trigger']
