@@ -53,9 +53,9 @@ class PicoLight(hass.Hass):
         light_state = self.get_state(
             self.light_group,
             attribute='state'
-        )
+        ).casefold()
 
-        # If the light group is off, start a 5% if brightening
+        # If the light group is off, start at 5% if brightening
         # or 95% if dimming
         if light_state == 'off':
             if change > 0:

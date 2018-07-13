@@ -1,6 +1,11 @@
 import appdaemon.plugins.hass.hassapi as hass
 
 
+# Turns on lights in response to a motion sensor. The light turns off
+# if the motion doesn't re-trigger within normal_run_seconds or after
+# max_run_seconds. The light is dimmed for 30 seconds as a warning
+# before the light is turned off
+
 class MotionLight(hass.Hass):
 
     def initialize(self):
@@ -41,16 +46,22 @@ class MotionLight(hass.Hass):
             return
 
         # get the state of the switch
-        switch_state = self.get_state(self.actuator, attribute='state')
+        switch_state = self.get_state(
+            self.actuator, 
+            attribute='state'
+        ).casefold()
 
         # get the state of the lighting flag
-        lighting_state = self.get_state(self.tracker, attribute='state')
+        lighting_state = self.get_state(
+            self.tracker,
+            attribute='state'
+        ).casefold()
 
         # turn on the light if it is not fully on
-        if (switch_state == 'off' or lighting_state == 'Stage' or
-                lighting_state == 'Warning'):
+        if (switch_state == 'off' or lighting_state == 'stage' or
+                lighting_state == 'warning'):
 
-            # turn on the automation tracking flag
+            # turn lighting state tracking flag to Automated
             self.select_option(self.tracker, 'Automated')
 
             if self.brightness is None:
@@ -62,7 +73,7 @@ class MotionLight(hass.Hass):
                 'logbook/log',
                 entity_id=self.actuator,
                 domain='automation',
-                name='sensor_light: ',
+                name='motion_light: ',
                 message='{} turned on'.format(self.actuator)
             )
 
@@ -88,10 +99,13 @@ class MotionLight(hass.Hass):
 
     def turn_off_warning(self, kwargs):
 
-        # get the state of the lighting flag
-        lighting_state = self.get_state(self.tracker, attribute='state')
+        # get the state of the lighting tracking flag
+        lighting_state = self.get_state(
+            self.tracker, 
+            attribute='state'
+        ).casefold()
 
-        if lighting_state == 'Automated':
+        if lighting_state == 'automated':
             self.select_option(self.tracker, 'Warning')
 
             # dim the lights to warn about an impending turn off
@@ -108,7 +122,7 @@ class MotionLight(hass.Hass):
                 'logbook/log',
                 entity_id=self.actuator,
                 domain='automation',
-                name='sensor_light: ',
+                name='motion_light: ',
                 message='{} dimmed by turn off warning'.format(self.actuator)
             )
 
@@ -120,21 +134,19 @@ class MotionLight(hass.Hass):
         lighting_state = self.get_state(
             self.tracker,
             attribute='state'
-        )
+        ).casefold()
 
         # turn off the light if it was turned on by automation
-        if lighting_state != 'Manual':
+        if lighting_state != 'manual':
             self.turn_off(self.actuator)
 
     def actuator_off(self, entity, attribute, old, new, kwargs):
 
-        # check for guest mode
-        guest_mode = self.get_state(
-            'input_boolean.guest_mode',
-            attribute='state'
-        )
-        if guest_mode is True:
-            return
+        # cancel any remaining timers
+        if self.max_timer is not None:
+            self.cancel_timer(self.max_timer)
+        if self.off_timer is not None:
+            self.cancel_timer(self.off_timer)
 
         # clear the timer handles
         self.max_timer = None
@@ -144,7 +156,7 @@ class MotionLight(hass.Hass):
             'logbook/log',
             entity_id=self.actuator,
             domain='automation',
-            name='sensor_light: ',
+            name='motion_light: ',
             message='{} turned off'.format(self.actuator)
         )
 
@@ -156,7 +168,7 @@ class MotionLight(hass.Hass):
         lighting_state = self.get_state(
             self.tracker,
             attribute='state'
-        )
+        ).casefold()
 
-        if lighting_state == 'Off':
+        if lighting_state == 'off':
             self.select_option(self.tracker, 'Manual')

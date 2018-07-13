@@ -22,19 +22,32 @@ import appdaemon.plugins.hass.hassapi as hass
 class StageLight(hass.Hass):
 
     def initialize(self):
-        self.sensor = self.args['sensor_entity']
+        self.active_modes = [
+            item.casefold() for item in self.args['active_modes']
+        ]        
         self.actuator = self.args['actuator_entity']
-        self.tracker = self.args['tracking_entity']
-        self.delay = self.args['delay']
         self.brightness = self.args['brightness']
         self.off_timer = None
+        self.run_time_seconds = self.args['delay']
+        self.sensor = self.args['sensor_entity']
+        self.tracker = self.args['tracking_entity']
 
         self.listen_state(self.sensor_on, self.sensor, new='on', old='off')
 
     def sensor_on(self, entity, attribute, old, new, kwargs):
 
+        # is the automation mode in an allowed state?
+        automation_mode = self.get_state(
+            'input_select.automation_mode',
+            attribute='state'
+        ).casefold()
+        if automation_mode not in self.active_modes:
+            return
+
         # get the state of the switch
-        switch_state = self.get_state(self.actuator, attribute='state')
+        switch_state = self.get_state(
+            self.actuator, attribute='state'
+        ).casefold()
 
         # turn on the switch if it is off
         if switch_state == 'off':
@@ -67,21 +80,31 @@ class StageLight(hass.Hass):
             self.off_timer = None
 
         # create a callback to turn off the light
-        if self.delay > 0:
-            self.off_timer = self.run_in(self.actuator_off, self.delay)
+        if self.run_time_seconds > 0:
+            self.off_timer = self.run_in(
+                self.actuator_off,
+                self.run_time_seconds
+            )
         else:
             self.actuator_off(self)
 
     def actuator_off(self, kwargs):
 
+        # cancel any existing timers
+        if self.off_timer is not None:
+            self.cancel_timer(self.off_timer)
+
         # Remove the timer handle
         self.off_timer = None
 
         # get the state of the lighting flag
-        lighting_state = self.get_state(self.tracker, attribute='state')
+        lighting_state = self.get_state(
+            self.tracker,
+            attribute='state'
+        ).casefold()
 
         # turn off the light if the state is still 'Stage'
-        if lighting_state == 'Stage':
+        if lighting_state == 'stage':
             self.turn_off(self.actuator)
 
             self.call_service(
