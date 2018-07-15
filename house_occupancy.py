@@ -368,7 +368,7 @@ class HouseOccupancy(hass.Hass):
             return
 
         # set the automation mode to normal
-        self.select_option('input_select.automation_modes', 'Normal')
+        self.select_option('input_select.automation_mode', 'Normal')
 
         # turn of night lights
         self.turn_off('light.kitchen_sink_light_switch_level')
