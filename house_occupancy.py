@@ -69,6 +69,14 @@ class HouseOccupancy(hass.Hass):
             new='4'
         )
 
+        # track quiet time ending
+        self.listen_state(
+            self.end_quiet_time,
+            'binary_sensor.sleeping',
+            new='off',
+            old='on'
+        )
+
     def door_opens(self, entity, attribute, old, new, kwargs):
 
         # is the automation in an allowed state?
@@ -346,6 +354,24 @@ class HouseOccupancy(hass.Hass):
                 entity_id=self.climate,
                 hold_mode='home'
             )
+
+    def end_quiet_time(self, entity, attribute, old, new, kwargs):
+
+        # is the automation in an allowed state?
+        allowed_modes = set(['normal', 'away', 'sleep'])
+        automation_mode = self.get_state(
+            'input_select.automation_mode',
+            attribute='state'
+        )
+        automation_mode = automation_mode.casefold()
+        if automation_mode not in allowed_modes:
+            return
+
+        # set the automation mode to normal
+        self.select_option('input_select.automation_modes', 'Normal')
+
+        # turn of night lights
+        self.turn_off('light.kitchen_sink_light_switch_level')
 
     def bed_time(self, entity, attribute, old, new, kwargs):
 
