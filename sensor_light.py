@@ -81,6 +81,16 @@ class SensorLight(hass.Hass):
                 self.turn_off_actuator,
                 self.max_run_seconds
             )
+            self.call_service(
+                'logbook/log',
+                entity_id=self.actuator,
+                domain='automation',
+                name='sensor_light: ',
+                message='{} scheduled for turn off in {} seconds'.format(
+                    self.actuator,
+                    self.max_run_seconds
+                )
+            )
 
     def sensor_off(self, entity, attribute, old, new, kwargs):
 

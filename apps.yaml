@@ -84,7 +84,7 @@ porch_light:
 #  class: SensorLight
 #  active_modes:
 #    - Normal
-#    - Away
+#   - Away
 #    - Sleep
 #    - Guest
 #  actuator_entity: switch.utility_room_main_lights
