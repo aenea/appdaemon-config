@@ -11,33 +11,33 @@ class HouseOccupancy(hass.Hass):
         self.climate = self.args['climate_entity']
 
         # react to arrivals
-        self.listen_state(self.home_occupied, self.occupancy, new='on')
+ #       self.listen_state(self.home_occupied, self.occupancy, new='on')
         # react to departures
-        self.listen_state(self.home_unoccupied, self.occupancy, new='off')
+ #       self.listen_state(self.home_unoccupied, self.occupancy, new='off')
         # set ocupancy state
-        self.listen_state(
-            self.set_occupancy_on,
-            'group.presence_all',
-            new='home',
-            old='not_home'
-        )
+ #       self.listen_state(
+ #           self.set_occupancy_on,
+ #           'group.presence_all',
+ #           new='home',
+ #           old='not_home'
+ #       )
         # set occupancy state
-        self.listen_state(
-            self.set_occupancy_off,
-            'group.presence_all',
-            new='not_home',
-            old='home'
-        )
-        # track the arrival of individuals
-        self.listen_state(
-            self.someone_arrives,
-            'device_tracker',
-            new='home',
-            old='not_home'
-        )
+ #       self.listen_state(
+ #           self.set_occupancy_off,
+ #           'group.presence_all',
+ #           new='not_home',
+ #           old='home'
+ #       )
+#        # track the arrival of individuals
+#        self.listen_state(
+#            self.someone_arrives,
+#            'device_tracker',
+#            new='home',
+#            old='not_home'
+#        )
 
-        # track entry door status
-        self.listen_state(self.door_opens, self.doors, new='on')
+#        # track entry door status
+#        self.listen_state(self.door_opens, self.doors, new='on')
 
         # track thermostat climate mode changes
         self.listen_state(
