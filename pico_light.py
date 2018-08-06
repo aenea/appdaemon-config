@@ -93,6 +93,7 @@ class PicoLight(hass.Hass):
         bulbs = []
         for light in lights:
             # get the current brightness
+            light_state = self.get_state(light, attribute='all')
             brightness = light_state['attributes']['brightness']
             brightness_pct = round(
                 (float(brightness / 255) * 100), 0
