@@ -13,8 +13,7 @@ class PicoLight(hass.Hass):
         def __init__(
             self,
             entity_name,
-            brightness
-        )
+            brightness)
 
     def initialize(self):
         self.actuator = self.args['actuator_entity']
