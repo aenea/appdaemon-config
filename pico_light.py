@@ -9,6 +9,13 @@ import time
 
 class PicoLight(hass.Hass):
 
+    class Bulb:
+        def __init__(
+            self,
+            entity_name,
+            brightness,
+        )
+
     def initialize(self):
         self.actuator = self.args['actuator_entity']
         self.light_group = self.args['light_group']
@@ -81,9 +88,31 @@ class PicoLight(hass.Hass):
         group_entity = self.get_state(self.light_group, attribute='all')
         lights = group_entity['attributes']['entity_id']
 
+        # construct the array of bulb objects
+        bulbs = []
+        for light in lights:
+            # get the current brightness
+            brightness = light_state['attributes']['brightness']
+            brightness_pct = round(
+                (float(brightness / 255) * 100), 0
+            )
+
+            t = Bulb(
+                entity_id=light,
+                brightness=brightness_pct
+            )
+            bulbs.append(t)
+
         # loop while the button is held down
         while self.state != '0':
-            for light in lights:
+            for bulb in bulbs:
+                # change the desired brightness
+                bulb.brightness += change
+
+                # cap the brightness at 100% and 5%
+                bulb.brightness = max(min(100, bulb.brightness), 5)
+
+"""             for light in lights:
                 # get the current state of each light
                 light_state = self.get_state(light, attribute='all')
 
@@ -97,11 +126,12 @@ class PicoLight(hass.Hass):
                     new_brightness = brightness_pct + change
                     # cap the brightness at 100% and 5%
                     new_brightness = max(min(100, new_brightness), 5)
-
-                    self.turn_on(
-                        light,
-                        brightness_pct=str(new_brightness)
-                    )
+ """
+                # apply the new brightness level
+                self.turn_on(
+                    light,
+                    brightness_pct=str(new_brightness)
+                )
             time.sleep(.15)
 
         self.call_service(
