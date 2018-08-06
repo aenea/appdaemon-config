@@ -119,25 +119,9 @@ class PicoLight(hass.Hass):
                     brightness_pct=str(new_brightness)
                 )
 
-"""             for light in lights:
-                # get the current state of each light
-                light_state = self.get_state(light, attribute='all')
-
-                if light_state['state'] == 'on':
-                    brightness = light_state['attributes']['brightness']
-                    brightness_pct = round(
-                        (float(brightness / 255) * 100), 0
-                    )
-
-                    # change the brightness level
-                    new_brightness = brightness_pct + change
-                    # cap the brightness at 100% and 5%
-                    new_brightness = max(min(100, new_brightness), 5)
- """
-
             time.sleep(.15)
-
-        self.call_service(
+            
+         self.call_service(
             'logbook/log',
             entity_id=self.actuator,
             domain='automation',
