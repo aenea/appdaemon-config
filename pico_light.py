@@ -113,6 +113,12 @@ class PicoLight(hass.Hass):
                 # cap the brightness at 100% and 5%
                 bulb.brightness = max(min(100, bulb.brightness), 5)
 
+                # apply the new brightness level
+                self.turn_on(
+                    light,
+                    brightness_pct=str(new_brightness)
+                )
+
 """             for light in lights:
                 # get the current state of each light
                 light_state = self.get_state(light, attribute='all')
@@ -128,11 +134,7 @@ class PicoLight(hass.Hass):
                     # cap the brightness at 100% and 5%
                     new_brightness = max(min(100, new_brightness), 5)
  """
-                # apply the new brightness level
-                self.turn_on(
-                    light,
-                    brightness_pct=str(new_brightness)
-                )
+
             time.sleep(.15)
 
         self.call_service(
