@@ -9,13 +9,6 @@ import time
 
 class PicoLight(hass.Hass):
 
-    class Bulb:
-        def __init__(
-            self,
-            entity_name,
-            brightness0
-        ):
-            pass
 
     def initialize(self):
         self.actuator = self.args['actuator_entity']
@@ -56,6 +49,15 @@ class PicoLight(hass.Hass):
         self.turn_off(self.light_group)
 
     def change_brightness(self, change, button):
+
+        class Bulb:
+            def __init__(
+                self,
+                entity_name,
+                brightness0
+            ):
+                pass
+
 
         # get the current state of the light group
         light_state = self.get_state(
