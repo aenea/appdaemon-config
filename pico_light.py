@@ -120,8 +120,8 @@ class PicoLight(hass.Hass):
                 )
 
             time.sleep(.15)
-            
-         self.call_service(
+
+        self.call_service(
             'logbook/log',
             entity_id=self.actuator,
             domain='automation',
