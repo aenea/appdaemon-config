@@ -30,7 +30,7 @@ class ColorTemperature(hass.Hass):
         else:
             return False
 
-    def calc_temp(self):
+    def calc_temp(self, **kwargs):
 
         # get the hass config
         config = self.get_hass_config()
