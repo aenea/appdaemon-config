@@ -105,7 +105,7 @@ class PicoLight(hass.Hass):
                 entity_id=light,
                 brightness=brightness_pct
             )
-            self.log(self.change_brightness.t.brightness)
+            self.log(dir(t)
             bulbs.append(t)
             
 
