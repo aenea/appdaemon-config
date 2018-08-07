@@ -126,9 +126,9 @@ class PicoLight(hass.Hass):
                     'light/turn_on',
                     entity_id=bulb.entity_id,
                     brightness_pct=str(bulb.brightness),
-                    transition='.2'
+                    transition='.1'
                 )
-            time.sleep(.2)
+            time.sleep(.15)
 
            
 
