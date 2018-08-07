@@ -13,7 +13,8 @@ class Bulb:
         entity_id,
         brightness
     ):
-        pass
+        self.entity_id = entity_id
+        self.brightness = brightness
 
 
 class PicoLight(hass.Hass):
