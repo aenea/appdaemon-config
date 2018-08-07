@@ -128,7 +128,7 @@ class PicoLight(hass.Hass):
                     brightness_pct=str(bulb.brightness),
                     transition='.1'
                 )
-            time.sleep(.15)
+            time.sleep(.2)
 
            
 
