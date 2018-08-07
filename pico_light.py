@@ -125,7 +125,8 @@ class PicoLight(hass.Hass):
                 self.call_service(
                     'light/lifx_set_state',
                     entity_id=bulb.entity_id,
-                    brightness_pct=str(bulb.brightness)
+                    brightness_pct=str(bulb.brightness),
+                    transition='.2'
                 )
 
            
