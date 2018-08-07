@@ -53,7 +53,7 @@ class PicoLight(hass.Hass):
         class Bulb:
             def __init__(
                 self,
-                entity_name,
+                entity_id,
                 brightness0
             ):
                 pass
