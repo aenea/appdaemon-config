@@ -123,7 +123,7 @@ class PicoLight(hass.Hass):
                 # apply the new brightness level
                 self.turn_on(
                     light,
-                    brightness_pct=str(new_brightness)
+                    brightness_pct=str(bulb.brightness)
                 )
 
             time.sleep(.15)
@@ -135,8 +135,8 @@ class PicoLight(hass.Hass):
             name='pico_light: ',
             message=('{} brightness changed from {} to {}'.format(
                 self.light_group,
-                brightness_pct,
-                new_brightness)
+                self.brightness,
+                self.brightness)
             )
         )
 
