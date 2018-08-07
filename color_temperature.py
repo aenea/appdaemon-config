@@ -12,9 +12,6 @@ class ColorTemperature(hass.Hass):
 
     def initialize(self):
 
-        # run the color temperature calculation once
-        self.calc_temp()
-
         # run the color temperature calculation every 5 minutes
         self.register_constraint("is_daylight")
         self.periodic = self.run_every(
@@ -30,7 +27,7 @@ class ColorTemperature(hass.Hass):
         else:
             return False
 
-    def calc_temp(self, kwargs=''):
+    def calc_temp(self, kwargs):
 
         # get the hass config
         config = self.get_hass_config()
