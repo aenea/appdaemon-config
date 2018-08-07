@@ -127,7 +127,7 @@ class PicoLight(hass.Hass):
                     brightness_pct=str(bulb.brightness)
                 )
 
-            time.sleep(.15)
+           
 
         self.call_service(
             'logbook/log',
