@@ -121,6 +121,7 @@ class PicoLight(hass.Hass):
                 bulb.brightness = max(min(100, bulb.brightness), 5)
 
                 # apply the new brightness level
+                self.log("%s %s", bulb.entity_id, bulb.brightness)
                 self.turn_on(
                     bulb.entity_id,
                     brightness_pct=str(bulb.brightness)
