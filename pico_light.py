@@ -7,6 +7,15 @@ import time
 # asf
 
 
+class Bulb:
+    def __init__(
+        self,
+        entity_id,
+        brightness
+    ):
+        pass
+
+
 class PicoLight(hass.Hass):
 
 
@@ -49,14 +58,6 @@ class PicoLight(hass.Hass):
         self.turn_off(self.light_group)
 
     def change_brightness(self, change, button):
-
-        class Bulb:
-            def __init__(
-                self,
-                entity_id,
-                brightness
-            ):
-                pass
 
 
         # get the current state of the light group
