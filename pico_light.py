@@ -124,7 +124,8 @@ class PicoLight(hass.Hass):
                 self.log("{} {}".format(bulb.entity_id, bulb.brightness))
                 self.turn_on(
                     bulb.entity_id,
-                    brightness_pct=str(bulb.brightness)
+                    brightness_pct=str(bulb.brightness),
+                    transition=.1
                 )
 
            
