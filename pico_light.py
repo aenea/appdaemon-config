@@ -105,8 +105,9 @@ class PicoLight(hass.Hass):
                 entity_id=light,
                 brightness=brightness_pct
             )
+            self.log(t.brightness)
             bulbs.append(t)
-            self.log(bulbs)
+            
 
         # loop while the button is held down
         while self.state != '0':
