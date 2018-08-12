@@ -94,13 +94,6 @@ porch_light:
 #  sensor_entity: binary_sensor.utility_room_door_sensor_sensor
 #  tracking_entity: input_select.utility_room_status
 
-kitchen_sink_double_tap:
-  module: homeseer_switch
-  class: HomeseerSwitch
-  actuator_entity: light.kitchen_sink_light_switch_level
-  scene_id: 3
-  zwave_entity: zwave.kitchen_sink_light_switch
-
 kitchen_double_tap:
   module: homeseer_switch
   class: HomeseerSwitch
