@@ -132,7 +132,7 @@ living_room_fan:
   temp_sensor: sensor.living_room_temperature
   tracking_entity: input_select.living_room_fan_status
 
-fireplace_lights:
+fireplace_lights_1:
   module: pico_light
   class: PicoLight
   actuator_entity: sensor.fireplace_pico
@@ -140,7 +140,7 @@ fireplace_lights:
   light_subset: group.fireplace_lights
   brightness: 100
 
-fireplace_lights:
+fireplace_lights_2:
   module: pico_light
   class: PicoLight
   actuator_entity: sensor.fireplace_pico_2
