@@ -147,6 +147,14 @@ fireplace_lights:
   light_subset: group.fireplace_lights
   brightness: 100
 
+fireplace_lights:
+  module: pico_light
+  class: PicoLight
+  actuator_entity: sensor.fireplace_pico_2
+  light_group: group.fireplace_lights
+  light_subset: group.fireplace_lights
+  brightness: 100
+
 bar_lights:
   module: pico_light
   class: PicoLight
