@@ -107,9 +107,7 @@ class PicoLight(hass.Hass):
                 entity_id=light,
                 brightness=brightness_pct
             )
-            self.log(t.brightness)
             bulbs.append(t)
-            
 
         # loop while the button is held down
         while self.state != '0':
@@ -121,7 +119,6 @@ class PicoLight(hass.Hass):
                 bulb.brightness = max(min(100, bulb.brightness), 5)
 
                 # apply the new brightness level
-                self.log("{} {}".format(bulb.entity_id, bulb.brightness))
                 self.call_service(
                     'light/turn_on',
                     entity_id=bulb.entity_id,
