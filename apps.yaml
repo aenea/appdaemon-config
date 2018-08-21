@@ -18,31 +18,31 @@
 #  sensor_entity: sensor.washing_machine_outlet_power
 #  tracking_entity: input_select.washing_machine_status
 
-laundry_room_stage_light:
-  module: stage_light
-  class: StageLight
-  active_modes:
-    - Normal
-    - Sleep
-  actuator_entity: light.laundry_room_main_lights
-  brightness: 5
-  delay: 600
-  sensor_entity: binary_sensor.bathroom_2_motion_sensor_sensor
-  tracking_entity: input_select.laundry_room_status
-  constraint_input_boolean: input_boolean.home_occupancy,on
+#laundry_room_stage_light:
+#  module: stage_light
+#  class: StageLight
+#  active_modes:
+#    - Normal
+#    - Sleep
+#  actuator_entity: light.laundry_room_main_lights
+#  brightness: 5
+#  delay: 600
+#  sensor_entity: binary_sensor.bathroom_2_motion_sensor_sensor
+#  tracking_entity: input_select.laundry_room_status
+#  constraint_input_boolean: input_boolean.home_occupancy,on
   
-laundry_room_light:
-  module: motion_light
-  class: MotionLight
-  active_modes:
-    - Normal
-    - Sleep
-  actuator_entity: light.laundry_room_main_lights
-  brightness: 100
-  normal_run_seconds: 600
-  max_run_seconds: 5400
-  sensor_entity: binary_sensor.laundry_room_motion_sensor_sensor
-  tracking_entity: input_select.laundry_room_status
+#laundry_room_light:
+#  module: motion_light
+#  class: MotionLight
+#  active_modes:
+#    - Normal
+#    - Sleep
+#  actuator_entity: light.laundry_room_main_lights
+#  brightness: 100
+#  normal_run_seconds: 600
+#  max_run_seconds: 5400
+#  sensor_entity: binary_sensor.laundry_room_motion_sensor_sensor
+#  tracking_entity: input_select.laundry_room_status
 
 #back_bathroom_light:
 #  module: motion_light
@@ -72,12 +72,12 @@ laundry_room_light:
 #  sensor_entity: binary_sensor.pantry_door_sensor_sensor
 #  tracking_entity: input_select.pantry_status
 
-porch_light:
-  module: manual_light
-  class: ManualLight
-  actuator_entity: switch.front_porch_light_switch_switch
-  max_run_time: 1200
-  tracking_entity: input_select.front_porch_light_status
+#porch_light:
+#  module: manual_light
+#  class: ManualLight
+#  actuator_entity: switch.front_porch_light_switch_switch
+#  max_run_time: 1200
+#  tracking_entity: input_select.front_porch_light_status
 
 #utility_room_light:
 #  module: sensor_light
@@ -120,17 +120,17 @@ light_control:
   ct_group_entity: group.ct_lights
   target_temp_entity: input_number.ct_target
 
-living_room_fan:
-  module: fan_control
-  class: FanControl
-  active_modes:
-    - normal
-  fan_off_temp: 69
-  fan_on_temp: 71
-  fan_off_trigger: lr_fan_off
-  fan_on_trigger: lr_fan_1
-  temp_sensor: sensor.living_room_temperature
-  tracking_entity: input_select.living_room_fan_status
+#living_room_fan:
+#  module: fan_control
+#  class: FanControl
+#  active_modes:
+#    - normal
+#  fan_off_temp: 69
+#  fan_on_temp: 71
+#  fan_off_trigger: lr_fan_off
+#  fan_on_trigger: lr_fan_1
+#  temp_sensor: sensor.living_room_temperature
+#  tracking_entity: input_select.living_room_fan_status
 
 fireplace_lights_1:
   module: pico_light
