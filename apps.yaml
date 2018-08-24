@@ -60,17 +60,15 @@
 #pantry_light:
 #  module: sensor_light
 #  class: SensorLight
-#  active_modes:
-#    - Normal
-#    - Away
-#    - Sleep
-#    - Guest
-#  actuator_entity: switch.pantry_main_lights
+#  actuator_entity: group.pantry_lights
 #  brightness: null
+#  disabled_modes: []
 #  delay: 0
 #  max_run_seconds: 5400
+#  moonlight: false
+#  moonlight_pct: null
 #  sensor_entity: binary_sensor.pantry_door_sensor_sensor
-#  tracking_entity: input_select.pantry_status
+#  tracking_entity: input_select.pantry_lights_tracker
 
 #porch_light:
 #  module: manual_light
@@ -172,7 +170,7 @@ living_room_lights:
   light_subset: light.living_room_1
   brightness: 100
 
-#kitchen_lights:
-#  module: kitchen_lights
-#  class: KitchenLights
+kitchen_lights:
+  module: kitchen_lights
+  class: KitchenLights
 

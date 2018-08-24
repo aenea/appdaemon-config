@@ -4,6 +4,9 @@ import appdaemon.plugins.hass.hassapi as hass
 class SensorLight(hass.Hass):
 
     def initialize(self):
+        self.disabled_modes = [
+            item.casefold() for item in self.args['disabled_modes']
+        ]   
         self.sensor = self.args['sensor_entity']
         self.actuator = self.args['actuator_entity']
         self.tracker = self.args['tracking_entity']
@@ -30,20 +33,21 @@ class SensorLight(hass.Hass):
 
     def sensor_on(self, entity, attribute, old, new, kwargs):
 
-        # is the automation in an allowed state?
-        allowed_modes = set(['normal', 'away', 'sleep'])
-        automation_mode = self.get_state(
-            'input_select.automation_mode',
-            attribute='state'
-        )
-        automation_mode = automation_mode.casefold()
-        if automation_mode not in allowed_modes:
-            return
+        # is the automation mode in an allowed state?
+        if 'away' in self.disabled_modes:
+            if self.get_state(input_boolean.home_occupancy) == 'off':
+                return
+        if 'guest' in self.disabled_modes:
+            if self.get_state(input_boolean.guest_mode) == 'on':
+                return
+        if 'quiet' in self.disabled_modes:
+            if self.get_state(input_boolean.quiet_mode) == 'on':
+                return
 
         # get the state of the switch
         switch_state = self.get_state(self.actuator, attribute='state')
 
-        # get the state of the lighting flag
+        # get the state of the tracking flag
         lighting_state = self.get_state(self.tracker, attribute='state')
 
         # turn on the light if it is not fully on
