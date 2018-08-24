@@ -5,10 +5,6 @@ class KitchenLights(hass.Hass):
 
     def initialize(self):
 
-        _guest_mode = None
-        _moonlight = None
-        _night_mode = None
-
         self.off_timer = None
 
         self.listen_state(
@@ -50,8 +46,9 @@ class KitchenLights(hass.Hass):
     def __repr__(self):
 
         return (
-            'KitchenLights(moonlight=%s, night_mode=%s, off_timer=%s)' %
-            (self.moonlight, self.night_mode, self.off_timer)
+            ('KitchenLights(guest_mode=%s, moonlight=%s, night_mode=%s,'
+             ' off_timer=%s)') %
+            (self.guest_mode, self.moonlight, self.night_mode, self.off_timer)
         )
 
     def sensor_off(self, entity, attribute, old, new, kwargs):
