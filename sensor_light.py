@@ -6,7 +6,7 @@ class SensorLight(hass.Hass):
     def initialize(self):
         self.disabled_modes = [
             item.casefold() for item in self.args['disabled_modes']
-        ]   
+        ]
         self.sensor = self.args['sensor_entity']
         self.actuator = self.args['actuator_entity']
         self.tracker = self.args['tracking_entity']
@@ -30,6 +30,58 @@ class SensorLight(hass.Hass):
             old='off',
             new='on'
         )
+
+    def current_state(self):
+
+        return (
+            'current_state('
+            'actuator_value=%s, '
+            'away_mode=%s, '
+            'guest_mode=%s, '
+            'moonlight=%s, '
+            'night_mode=%s, '
+            'quiet_mode=%s, '
+            'tracker_value=%s, '
+            ')'
+            %
+            (
+                self.actuator_value,
+                self.away_mode,
+                self.guest_mode,
+                self.moonlight,
+                self.night_mode,
+                self.quiet_mode,
+                self.tracker_value
+            )
+        )
+
+    @property
+    def actuator_value(self):
+        return self.get_state(self.actuator)
+
+    @property
+    def away_mode(self):
+        return self.get_state('input_boolean.home_occupancy')
+
+    @property
+    def guest_mode(self):
+        return self.get_state('input_boolean.guest_mode')
+
+    @property
+    def moonlight(self):
+        return self.get_state('input_boolean.moonlight')
+
+    @property
+    def night_mode(self):
+        return self.get_state('input_boolean.night_mode')
+
+    @property
+    def quiet_mode(self):
+        return self.get_state('input_boolean.quiet_mode')
+
+    @property
+    def tracker_value(self):
+        return self.get_state(self.tracker)
 
     def sensor_on(self, entity, attribute, old, new, kwargs):
 
