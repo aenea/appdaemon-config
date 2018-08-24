@@ -77,8 +77,6 @@ class KitchenLights(hass.Hass):
         if self.off_timer is not None:
             self.cancel_timer(self.off_timer)
             self.off_timer = None
-        
-        self.log('kitchen lights moonlit' + self.current_state())
 
     def night_mode_on(self, kwargs):
 
@@ -101,7 +99,7 @@ class KitchenLights(hass.Hass):
         if self.moonlight == 'off':
             self.turn_off('group.kitchen_lights')
 
-            self.log('kitchen lights turned off' + self.current_state)
+            self.log('kitchen lights turned off - ' + self.current_state())
         else:
             self.turn_off('group.kitchen_lights_moonlight_off')
             self.turn_on(
@@ -110,4 +108,4 @@ class KitchenLights(hass.Hass):
                 transition=20
             )
 
-            self.log('kitchen lights moonlit' + self.current_state)
+            self.log('kitchen lights moonlit - ' + self.current_state())
