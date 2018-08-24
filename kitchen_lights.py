@@ -5,6 +5,8 @@ class KitchenLights(hass.Hass):
 
     def initialize(self):
 
+        self.moonlight = None
+        self.night_mode = None
         self.off_timer = None
 
         self.listen_state(
@@ -12,23 +14,27 @@ class KitchenLights(hass.Hass):
             'group.kitchen_occupancy',
             new='off'
         )
-
         self.listen_state(
             self.sensor_on,
             'group.kitchen_occupancy',
             new='on'
         )
-
         self.listen_state(
-            self.night_mode,
+            self.night_mode_on,
             'input_boolean.night_mode'
             new='on'
         )
-
         self.listen_state(
-            self.night_mode,
+            self.night_mode_on,
             'input_boolean.moonlight'
             new='on'
+        )
+
+    def __repr__(self):
+
+        return (
+            'KitchenLights(moonlight=%s, night_mode=%s, off_timer=%s)' % 
+            (self.moonlight, self.night_mode, self.off_timer)
         )
 
     def sensor_off(self, entity, attribute, old, new, kwargs):
@@ -46,8 +52,9 @@ class KitchenLights(hass.Hass):
         if self.off_timer is not None:
             self.cancel_timer(self.off_timer)
             self.off_timer = None
+        self.log(self)
 
-    def night_mode(self, kwargs):
+    def night_mode_on(self, kwargs):
 
         # Night mode or moonlight mode has turned on
         # if no timers are active wait 10 minutes and then
@@ -60,12 +67,17 @@ class KitchenLights(hass.Hass):
 
         # Turn off the kitchen lights if night mode is active
         # Moonlight the kitchen if appropriate
-
-        if self.get_state('input_boolean.night_mode') == 'off':
+        self.night_mode = self.get_state('input_boolean.night_mode')
+        if self.night_mode == 'off':
             return
 
-        if self.get_state('input_boolean.moonlight') == 'off':
+        self.moonlight = self.get_state('input_boolean.moonlight')
+        if self.moonlight == 'off':
             self.turn_off('group.kitchen_lights')
         else:
             self.turn_off('group.kitchen_lights_moonlight_off')
-            self.turn_on("group.kitchen_lights_moonlight", brightness_pct=10)
+            self.turn_on(
+                "group.kitchen_lights_moonlight",
+                brightness_pct=10,
+                transition=20
+            )
