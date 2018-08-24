@@ -26,7 +26,7 @@ class KitchenLights(hass.Hass):
             self.cancel_timer(self.off_timer)
             self.off_timer = None
         
-        self.off_timer = self.run_in(self.turn_off_lights, 6)
+        self.off_timer = self.run_in(self.turn_off_lights, 600)
 
     def sensor_on(self, entity, attribute, old, new, kwargs):
 
