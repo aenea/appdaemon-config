@@ -5,8 +5,10 @@ class KitchenLights(hass.Hass):
 
     def initialize(self):
 
-        self.moonlight = None
-        self.night_mode = None
+        _guest_mode = None
+        _moonlight = None
+        _night_mode = None
+
         self.off_timer = None
 
         self.listen_state(
@@ -30,10 +32,25 @@ class KitchenLights(hass.Hass):
             new='on'
         )
 
+    @property
+    def guest_mode(self):
+
+        return self.get_state('input_boolean.guest_mode')
+
+    @property
+    def moonlight(self):
+
+        return self.get_state('input_boolean.moonlight')
+
+    @property
+    def night_mode(self):
+
+        return self.get_state('input_boolean.night_mode')
+
     def __repr__(self):
 
         return (
-            'KitchenLights(moonlight=%s, night_mode=%s, off_timer=%s)' % 
+            'KitchenLights(moonlight=%s, night_mode=%s, off_timer=%s)' %
             (self.moonlight, self.night_mode, self.off_timer)
         )
 
@@ -65,13 +82,10 @@ class KitchenLights(hass.Hass):
 
     def turn_off_lights(self, kwargs):
 
-        # Turn off the kitchen lights if night mode is active
-        # Moonlight the kitchen if appropriate
-        self.night_mode = self.get_state('input_boolean.night_mode')
+        # update the state trackers
         if self.night_mode == 'off':
             return
 
-        self.moonlight = self.get_state('input_boolean.moonlight')
         if self.moonlight == 'off':
             self.turn_off('group.kitchen_lights')
         else:
