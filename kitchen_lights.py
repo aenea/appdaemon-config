@@ -50,11 +50,11 @@ class KitchenLights(hass.Hass):
     def night_mode(self, kwargs):
 
         # Night mode or moonlight mode has turned on
-        # if no timers are activewait 10 minutes and then 
+        # if no timers are active wait 10 minutes and then
         # turn off the lights if not cancelled by activity
 
         if self.off_timer is None:
-            self.off_timer = self.run_in(self.turn_off_lights, 600) 
+            self.off_timer = self.run_in(self.turn_off_lights, 600)
 
     def turn_off_lights(self, kwargs):
 
