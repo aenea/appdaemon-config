@@ -18,14 +18,26 @@ class KitchenLights(hass.Hass):
             'group.kitchen_occupancy',
             new='on'
         )
-    
+
+        self.listen_state(
+            self.night_mode,
+            'input_boolean.night_mode'
+            new='on'
+        )
+
+        self.listen_state(
+            self.night_mode,
+            'input_boolean.moonlight'
+            new='on'
+        )
+
     def sensor_off(self, entity, attribute, old, new, kwargs):
 
         # motion has stopped - wait for 10 minutes
         if self.off_timer is not None:
             self.cancel_timer(self.off_timer)
             self.off_timer = None
-        
+
         self.off_timer = self.run_in(self.turn_off_lights, 600)
 
     def sensor_on(self, entity, attribute, old, new, kwargs):
@@ -34,6 +46,15 @@ class KitchenLights(hass.Hass):
         if self.off_timer is not None:
             self.cancel_timer(self.off_timer)
             self.off_timer = None
+
+    def night_mode(self, kwargs):
+
+        # Night mode or moonlight mode has turned on
+        # if no timers are activewait 10 minutes and then 
+        # turn off the lights if not cancelled by activity
+
+        if self.off_timer is None:
+            self.off_timer = self.run_in(self.turn_off_lights, 600) 
 
     def turn_off_lights(self, kwargs):
 
