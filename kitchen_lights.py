@@ -66,8 +66,8 @@ class KitchenLights(hass.Hass):
         if self.off_timer is not None:
             self.cancel_timer(self.off_timer)
             self.off_timer = None
-        self.log('test ' + self)      
-        
+        self.log('test ' + print(self))
+
     def night_mode_on(self, kwargs):
 
         # Night mode or moonlight mode has turned on
