@@ -46,5 +46,5 @@ class KitchenLights(hass.Hass):
         if self.get_state('input_boolean.moonlight') == 'off':
             self.turn_off('group.kitchen_lights')
         else:
-            self.turn_off('light.kitchen_light_switch_level')
+            self.turn_off('group.kitchen_lights_moonlight_off')
             self.turn_on("group.kitchen_lights_moonlight", brightness_pct=10)
