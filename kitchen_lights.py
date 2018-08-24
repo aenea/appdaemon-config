@@ -30,25 +30,36 @@ class KitchenLights(hass.Hass):
 
     @property
     def guest_mode(self):
-
         return self.get_state('input_boolean.guest_mode')
 
     @property
     def moonlight(self):
-
         return self.get_state('input_boolean.moonlight')
 
     @property
     def night_mode(self):
-
         return self.get_state('input_boolean.night_mode')
 
-    def __repr__(self):
+    @property
+    def quiet_mode(self):
+        return self.get_state('input_boolean.quiet_mode')
+
+    def current_state(self):
 
         return (
-            ('KitchenLights(guest_mode=%s, moonlight=%s, night_mode=%s,'
-             ' off_timer=%s)') %
-            (self.guest_mode, self.moonlight, self.night_mode, self.off_timer)
+            'current_state('
+            'guest_mode=%s, '
+            'moonlight=%s, '
+            'night_mode=%s, '
+            'quiet_mode=%s, '
+            ')'
+            %
+            (
+                self.guest_mode,
+                self.moonlight,
+                self.night_mode,
+                self.quiet_mode,
+            )
         )
 
     def sensor_off(self, entity, attribute, old, new, kwargs):
@@ -78,14 +89,17 @@ class KitchenLights(hass.Hass):
 
     def turn_off_lights(self, kwargs):
 
-        if self.night_mode == 'off' or self.guest_mode == 'on':
+        if self.night_mode == 'off':
+            return
+        if self.guest_mode == 'on':
+            return
+        if self.quiet_mode == 'on':
             return
 
         if self.moonlight == 'off':
             self.turn_off('group.kitchen_lights')
 
-            self.log('kitchen lights turned off')
-            self.log(self)
+            self.log('kitchen lights turned off' + self.current_state)
         else:
             self.turn_off('group.kitchen_lights_moonlight_off')
             self.turn_on(
@@ -94,5 +108,4 @@ class KitchenLights(hass.Hass):
                 transition=20
             )
 
-            self.log('kitchen lights moonlit')
-            self.log(self)
+            self.log('kitchen lights moonlit' + self.current_state)
