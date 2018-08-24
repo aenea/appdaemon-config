@@ -21,12 +21,12 @@ class KitchenLights(hass.Hass):
         )
         self.listen_state(
             self.night_mode_on,
-            'input_boolean.night_mode'
+            'input_boolean.night_mode',
             new='on'
         )
         self.listen_state(
             self.night_mode_on,
-            'input_boolean.moonlight'
+            'input_boolean.moonlight',
             new='on'
         )
 
