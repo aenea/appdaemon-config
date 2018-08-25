@@ -68,7 +68,7 @@ pantry_light:
   max_run_seconds: 5400
   moonlight: false
   moonlight_pct: null
-  sensor_entity: binary_sensor.pantry_door_sensor_sensor
+  sensor_entity: binary_sensor.pantry_door_sensor
   tracking_entity: input_select.pantry_lights_tracker
 
 #porch_light:
