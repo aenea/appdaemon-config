@@ -19,18 +19,6 @@ class SensorLight(hass.Hass):
 
         self.listen_state(self.sensor_on, self.sensor, new='on')
         self.listen_state(self.sensor_off, self.sensor, new='off')
-        self.listen_state(
-            self.sensor_off,
-            self.actuator,
-            old='on',
-            new='off'
-        )
-        self.listen_state(
-            self.sensor_on,
-            self.actuator,
-            old='off',
-            new='on'
-        )
 
         self.listen_state(
             self.tracker_off,
