@@ -86,12 +86,11 @@ class LightControl(hass.Hass):
     def target_temp_change(self, entity, attribute, old, new, kwargs):
 
         # is the automation mode in an allowed state?
-        automation_mode = self.get_state(
-            'input_select.automation_mode',
-            attribute='state'
-        ).casefold()
-        if automation_mode not in self.active_modes:
-            return
+        #automation_mode = self.get_state(
+        #    attribute='state'
+        #).casefold()
+        #if automation_mode not in self.active_modes:
+        #    return
 
         # get the list of color temperature enabled bulbs
         ct_group = self.get_state(self.ct_group, attribute='all')
