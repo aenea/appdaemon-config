@@ -155,4 +155,4 @@ class SensorLight(hass.Hass):
             )
         else:
             self.turn_off_tracker(self)
-            self.log('light turned off by sensor ' + self.current_state())
+            self.log('light turned off by sensor - ' + self.current_state())
