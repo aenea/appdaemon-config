@@ -39,7 +39,7 @@ class SensorLight(hass.Hass):
         )
         self.listen_state(
             self.tracker_on,
-            self.tracker
+            self.tracker,
             new='on'
         )
 
