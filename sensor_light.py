@@ -48,7 +48,7 @@ class SensorLight(hass.Hass):
         return (
             'current_state('
             'actuator_value=%s, '
-            'away_mode=%s, '
+            'home_occupancy=%s, '
             'guest_mode=%s, '
             'moonlight=%s, '
             'night_mode=%s, '
@@ -58,7 +58,7 @@ class SensorLight(hass.Hass):
             %
             (
                 self.actuator_value,
-                self.away_mode,
+                self.home_occupancy,
                 self.guest_mode,
                 self.moonlight,
                 self.night_mode,
