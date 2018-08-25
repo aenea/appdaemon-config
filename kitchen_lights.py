@@ -78,7 +78,7 @@ class KitchenLights(hass.Hass):
             self.cancel_timer(self.off_timer)
             self.off_timer = None
 
-    def night_mode_on(self, kwargs):
+    def night_mode_on(self, entity, attribute, old, new, kwargs):
 
         # Night mode or moonlight mode has turned on
         # if no timers are active start a timer and then
