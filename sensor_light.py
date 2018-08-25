@@ -9,6 +9,7 @@ class SensorLight(hass.Hass):
         ]
         self.sensor = self.args['sensor_entity']
         self.actuator = self.args['actuator_entity']
+        self.allow_moonlight = self.args['allow_moonlight']
         self.tracker = self.args['tracking_entity']
         self.delay = self.args['delay']
         self.max_run_seconds = self.args['max_run_seconds']
@@ -60,7 +61,7 @@ class SensorLight(hass.Hass):
         return self.get_state(self.actuator)
 
     @property
-    def away_mode(self):
+    def home_occupancy(self):
         return self.get_state('input_boolean.home_occupancy')
 
     @property
@@ -83,44 +84,40 @@ class SensorLight(hass.Hass):
     def tracker_value(self):
         return self.get_state(self.tracker)
 
+    def tracker_on(self, entity, attribute, old, new, kwargs):
+
+        if self.brightness is None:
+            self.turn_on(self.actuator)
+        else:
+            self.turn_on(self.actuator, brightness_pct=self.brightness)
+
+    def tracker_off(self, entity, attribute, old, new, kwargs):
+
+        if self.allow_moonlight is True and self.moonlight == 'on':
+            self.turn_on(self.actuator, brightness_pct=10)
+            self.log(self.actuator + ' moonlit - ' + self.current_state())
+        else:
+            self.turn_off(self.actuator)
+
+    def turn_off_tracker(self, kwargs):
+
+        self.select_option(self.tracker, 'off')
+
     def sensor_on(self, entity, attribute, old, new, kwargs):
 
         # is the automation mode in an allowed state?
         if 'away' in self.disabled_modes:
-            if self.get_state(input_boolean.home_occupancy) == 'off':
+            if self.home_occupancy == 'off':
                 return
         if 'guest' in self.disabled_modes:
-            if self.get_state(input_boolean.guest_mode) == 'on':
+            if self.guest_mode == 'on':
                 return
         if 'quiet' in self.disabled_modes:
-            if self.get_state(input_boolean.quiet_mode) == 'on':
+            if self.quiet_mode == 'on':
                 return
 
-        # get the state of the switch
-        switch_state = self.get_state(self.actuator, attribute='state')
-
-        # get the state of the tracking flag
-        lighting_state = self.get_state(self.tracker, attribute='state')
-
-        # turn on the light if it is not fully on
-        if (switch_state == 'off' or lighting_state == 'Stage' or
-                lighting_state == 'Warning'):
-
-            # turn on the automation tracking flag
-            self.select_option(self.tracker, 'Automated')
-
-            if self.brightness is None:
-                self.turn_on(self.actuator)
-            else:
-                self.turn_on(self.actuator, brightness_pct=self.brightness)
-
-            self.call_service(
-                'logbook/log',
-                entity_id=self.actuator,
-                domain='automation',
-                name='sensor_light: ',
-                message='{} turned on'.format(self.actuator)
-            )
+        # turn on the tracking flag
+        self.select_option(self.tracker, 'on')
 
         # cancel any existing timers
         if self.max_timer is not None:
@@ -134,111 +131,27 @@ class SensorLight(hass.Hass):
         # set a timer to turn off the light after max_run_seconds
         if self.max_run_seconds > 0:
             self.max_timer = self.run_in(
-                self.turn_off_actuator,
+                self.turn_off_tracker,
                 self.max_run_seconds
-            )
-            self.call_service(
-                'logbook/log',
-                entity_id=self.actuator,
-                domain='automation',
-                name='sensor_light: ',
-                message='{} scheduled for turn off in {} seconds'.format(
-                    self.actuator,
-                    self.max_run_seconds
-                )
             )
 
     def sensor_off(self, entity, attribute, old, new, kwargs):
 
-        # check for guest mode
-        guest_mode = self.get_state(
-            'input_boolean.guest_mode',
-            attribute='state'
-        )
-        if guest_mode is True:
-            return
+        # is the automation mode in an allowed state?
+        if 'away' in self.disabled_modes:
+            if self.home_occupancy == 'off':
+                return
+        if 'guest' in self.disabled_modes:
+            if self.guest_mode == 'on':
+                return
+        if 'quiet' in self.disabled_modes:
+            if self.quiet_mode == 'on':
+                return
 
         if self.delay > 0:
             self.off_timer = self.run_in(
-                self.turn_off_actuator,
+                self.turn_off_tracker,
                 self.delay
             )
         else:
-            self.turn_off_actuator(self)
-
-    def turn_off_warning(self, kwargs):
-
-        # get the state of the lighting flag
-        lighting_state = self.get_state(self.tracker, attribute='state')
-
-        if lighting_state == 'Automated':
-            self.select_option(self.tracker, 'Warning')
-
-            # dim the lights to warn about an impending turn off
-            current_brightness = self.get_state(
-                self.actuator,
-                attribute='brightness'
-            )
-            self.turn_on(
-                self.actuator,
-                brightness=int(current_brightness * .4)
-            )
-
-            self.call_service(
-                'logbook/log',
-                entity_id=self.actuator,
-                domain='automation',
-                name='sensor_light: ',
-                message='{} dimmed by turn off warning'.format(self.actuator)
-            )
-
-            # schedule the final turn off
-            self.off_timer = self.run_in(self.turn_off_actuator, 30)
-
-    def turn_off_actuator(self, kwargs):
-
-        lighting_state = self.get_state(
-            self.tracker,
-            attribute='state'
-        )
-        # if self.brightness is not None and lighting_state == 'Automated':
-        #    self.turn_off_warning()
-
-        # turn off the light if it was turned on by automation
-        if lighting_state != 'Manual':
-            self.turn_off(self.actuator)
-
-    def actuator_off(self, entity, attribute, old, new, kwargs):
-
-        # check for guest mode
-        guest_mode = self.get_state(
-            'input_boolean.guest_mode',
-            attribute='state'
-        )
-        if guest_mode is True:
-            return
-
-        # clear the timer handles
-        self.max_timer = None
-        self.off_timer = None
-
-        self.call_service(
-            'logbook/log',
-            entity_id=self.actuator,
-            domain='automation',
-            name='sensor_light: ',
-            message='{} turned off'.format(self.actuator)
-        )
-
-        # turn off the tracking variable
-        self.select_option(self.tracker, 'Off')
-
-    def actuator_on(self, entity, attribute, old, new, kwargs):
-
-        lighting_state = self.get_state(
-            self.tracker,
-            attribute='state'
-        )
-
-        if lighting_state == 'Off':
-            self.select_option(self.tracker, 'Manual')
+            self.turn_off_tracker(self)
