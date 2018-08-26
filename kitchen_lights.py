@@ -86,6 +86,11 @@ class KitchenLights(hass.Hass):
 
         if self.off_timer is None:
             self.off_timer = self.run_in(self.turn_off_lights, 600)
+        else:
+            self.log(
+                'kitchen moonlight timer declined timer already active - '
+                self.current_state()
+            )
 
     def turn_off_lights(self, kwargs):
 

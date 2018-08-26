@@ -107,12 +107,24 @@ class SensorLight(hass.Hass):
         # is the automation mode in an allowed state?
         if 'away' in self.disabled_modes:
             if self.home_occupancy == 'off':
+                self.log(
+                    'light on by sensor declined - '
+                    self.current_state()
+                )
                 return
         if 'guest' in self.disabled_modes:
             if self.guest_mode == 'on':
+                self.log(
+                    'light on by sensor declined - '
+                    self.current_state()
+                )
                 return
         if 'quiet' in self.disabled_modes:
             if self.quiet_mode == 'on':
+                self.log(
+                    'light on by sensor declined - '
+                    self.current_state()
+                )
                 return
 
         # turn on the tracking flag
@@ -140,12 +152,24 @@ class SensorLight(hass.Hass):
         # is the automation mode in an allowed state?
         if 'away' in self.disabled_modes:
             if self.home_occupancy == 'off':
+                self.log(
+                    'light off by sensor declined - '
+                    self.current_state()
+                )
                 return
         if 'guest' in self.disabled_modes:
             if self.guest_mode == 'on':
+                self.log(
+                    'light off by sensor declined - '
+                    self.current_state()
+                )
                 return
         if 'quiet' in self.disabled_modes:
             if self.quiet_mode == 'on':
+                self.log(
+                    'light off by sensor declined - '
+                    self.current_state()
+                )
                 return
 
         if self.delay > 0:

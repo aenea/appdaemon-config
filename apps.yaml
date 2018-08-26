@@ -66,7 +66,6 @@ pantry_light:
   disabled_modes: []
   delay: 0
   max_run_seconds: 5400
-  moonlight: false
   moonlight_pct: null
   sensor_entity: binary_sensor.pantry_door_sensor
   tracking_entity: input_select.pantry_lights_tracker
@@ -78,20 +77,18 @@ pantry_light:
 #  max_run_time: 1200
 #  tracking_entity: input_select.front_porch_light_status
 
-#utility_room_light:
-#  module: sensor_light
-#  class: SensorLight
-#  active_modes:
-#    - Normal
-#   - Away
-#    - Sleep
-#    - Guest
-#  actuator_entity: switch.utility_room_main_lights
-#  brightness: null
-#  delay: 0
-#  max_run_seconds: 5400
-#  sensor_entity: binary_sensor.utility_room_door_sensor_sensor
-#  tracking_entity: input_select.utility_room_status
+utility_room_light:
+  module: sensor_light
+  class: SensorLight
+  disabled_modes: []
+  actuator_entity: switch.utility_room_main_lights
+  allow_moonlight: false
+  brightness: null
+  delay: 0
+  max_run_seconds: 5400
+  moonlight_pct: null
+  sensor_entity: binary_sensor.utility_room_door_sensor_sensor
+  tracking_entity: input_select.utility_room_status
 
 kitchen_double_tap:
   module: homeseer_switch
