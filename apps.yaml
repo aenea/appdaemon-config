@@ -87,8 +87,8 @@ utility_room_light:
   delay: 0
   max_run_seconds: 5400
   moonlight_pct: null
-  sensor_entity: binary_sensor.utility_room_door_sensor_sensor
-  tracking_entity: input_select.utility_room_status
+  sensor_entity: binary_sensor.utility_room_door_sensor
+  tracking_entity: input_select.utility_room_lights_tracker
 
 kitchen_double_tap:
   module: homeseer_switch
