@@ -108,21 +108,21 @@ class SensorLight(hass.Hass):
         if 'away' in self.disabled_modes:
             if self.home_occupancy == 'off':
                 self.log(
-                    'light on by sensor declined - '
+                    'light on by sensor declined - ' +
                     self.current_state()
                 )
                 return
         if 'guest' in self.disabled_modes:
             if self.guest_mode == 'on':
                 self.log(
-                    'light on by sensor declined - '
+                    'light on by sensor declined - ' +
                     self.current_state()
                 )
                 return
         if 'quiet' in self.disabled_modes:
             if self.quiet_mode == 'on':
                 self.log(
-                    'light on by sensor declined - '
+                    'light on by sensor declined - ' +
                     self.current_state()
                 )
                 return
@@ -153,21 +153,21 @@ class SensorLight(hass.Hass):
         if 'away' in self.disabled_modes:
             if self.home_occupancy == 'off':
                 self.log(
-                    'light off by sensor declined - '
+                    'light off by sensor declined - ' +
                     self.current_state()
                 )
                 return
         if 'guest' in self.disabled_modes:
             if self.guest_mode == 'on':
                 self.log(
-                    'light off by sensor declined - '
+                    'light off by sensor declined - ' +
                     self.current_state()
                 )
                 return
         if 'quiet' in self.disabled_modes:
             if self.quiet_mode == 'on':
                 self.log(
-                    'light off by sensor declined - '
+                    'light off by sensor declined - ' +
                     self.current_state()
                 )
                 return
