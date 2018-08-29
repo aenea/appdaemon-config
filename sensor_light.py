@@ -94,24 +94,41 @@ class SensorLight(hass.Hass):
                 self.current_state()
             )
 
-    def tracker_on(self, entity, attribute, old, new, kwargs):
+    def sensor_off(self, entity, attribute, old, new, kwargs):
 
-        if self.brightness is None:
-            self.turn_on(self.actuator)
+        # is the automation mode in an allowed state?
+        if 'away' in self.disabled_modes:
+            if self.home_occupancy == 'off':
+                self.log(
+                    'light off by sensor declined for occupancy - ' +
+                    self.current_state()
+                )
+                return
+        if 'guest' in self.disabled_modes:
+            if self.guest_mode == 'on':
+                self.log(
+                    'light off by sensor declined guest mode - ' +
+                    self.current_state()
+                )
+                return
+        if 'quiet' in self.disabled_modes:
+            if self.quiet_mode == 'on':
+                self.log(
+                    'light off by sensor declined quiet mode- ' +
+                    self.current_state()
+                )
+                return
+
+        if self.delay > 0:
+            self.off_timer = self.run_in(
+                self.select_option
+                self.delay,
+                entity_id=self.tracker,
+                value='off'
+            )
         else:
-            self.turn_on(self.actuator, brightness_pct=self.brightness)
-
-    def tracker_off(self, entity, attribute, old, new, kwargs):
-
-        if self.allow_moonlight is True and self.moonlight == 'on':
-            self.turn_on(self.actuator, brightness_pct=10)
-            self.log(self.actuator + ' moonlit - ' + self.current_state())
-        else:
-            self.turn_off(self.actuator)
-
-    def turn_off_tracker(self, kwargs):
-
-        self.select_option(self.tracker, 'off')
+            self.select_option(self.tracker, 'off')
+            self.log('light turned off by sensor - ' + self.current_state())
 
     def sensor_on(self, entity, attribute, old, new, kwargs):
 
@@ -142,6 +159,21 @@ class SensorLight(hass.Hass):
         self.select_option(self.tracker, 'on')
         self.log('light turned on by sensor - ' + self.current_state())
 
+    def tracker_off(self, entity, attribute, old, new, kwargs):
+
+        if self.allow_moonlight is True and self.moonlight == 'on':
+            self.turn_on(self.actuator, brightness_pct=10)
+            self.log(self.actuator + ' moonlit - ' + self.current_state())
+        else:
+            self.turn_off(self.actuator)
+
+    def tracker_on(self, entity, attribute, old, new, kwargs):
+
+        if self.brightness is None:
+            self.turn_on(self.actuator)
+        else:
+            self.turn_on(self.actuator, brightness_pct=self.brightness)
+
         # cancel any existing timers
         if self.max_timer is not None:
             self.cancel_timer(self.max_timer)
@@ -157,37 +189,3 @@ class SensorLight(hass.Hass):
                 self.turn_off_tracker,
                 self.max_run_seconds
             )
-
-    def sensor_off(self, entity, attribute, old, new, kwargs):
-
-        # is the automation mode in an allowed state?
-        if 'away' in self.disabled_modes:
-            if self.home_occupancy == 'off':
-                self.log(
-                    'light off by sensor declined for occupancy - ' +
-                    self.current_state()
-                )
-                return
-        if 'guest' in self.disabled_modes:
-            if self.guest_mode == 'on':
-                self.log(
-                    'light off by sensor declined guest mode - ' +
-                    self.current_state()
-                )
-                return
-        if 'quiet' in self.disabled_modes:
-            if self.quiet_mode == 'on':
-                self.log(
-                    'light off by sensor declined quiet mode- ' +
-                    self.current_state()
-                )
-                return
-
-        if self.delay > 0:
-            self.off_timer = self.run_in(
-                self.turn_off_tracker,
-                self.delay
-            )
-        else:
-            self.turn_off_tracker(self)
-            self.log('light turned off by sensor - ' + self.current_state())
