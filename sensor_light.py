@@ -124,7 +124,7 @@ class SensorLight(hass.Hass):
         if 'quiet' in self.disabled_modes:
             if self.quiet_mode == 'on':
                 self.log(
-                    'light off by sensor declined quiet mode- ' +
+                    'light off by sensor declined quiet mode - ' +
                     self.current_state()
                 )
                 return

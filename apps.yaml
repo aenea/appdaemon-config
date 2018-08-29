@@ -116,17 +116,19 @@ light_control:
   ct_group_entity: group.ct_lights
   target_temp_entity: input_number.ct_target
 
-#living_room_fan:
-#  module: fan_control
-#  class: FanControl
-#  active_modes:
-#    - normal
-#  fan_off_temp: 69
-#  fan_on_temp: 71
-#  fan_off_trigger: lr_fan_off
-#  fan_on_trigger: lr_fan_1
-#  temp_sensor: sensor.living_room_temperature
-#  tracking_entity: input_select.living_room_fan_status
+living_room_fan:
+  module: fan_control
+  class: FanControl
+  disabled_modes:
+    - away
+    - guest
+    - quiet
+  fan_off_temp: 69
+  fan_on_temp: 71
+  fan_off_trigger: living_room_fan_off
+  fan_on_trigger: living_room_fan_on
+  temp_sensor: sensor.living_room_temperature
+  tracking_entity: input_select.living_room_fan_tracker
 
 fireplace_lights_1:
   module: pico_light

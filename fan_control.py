@@ -55,8 +55,71 @@ class FanControl(hass.Hass):
         return True
 
     @property
+    def current_state(self):
+
+        return (
+            'current_state('
+            'actuator_value=%s, '
+            'home_occupancy=%s, '
+            'guest_mode=%s, '
+            'moonlight=%s, '
+            'night_mode=%s, '
+            'quiet_mode=%s, '
+            'tracker_value=%s, '
+            ')'
+            %
+            (
+                self.actuator_value,
+                self.home_occupancy,
+                self.guest_mode,
+                self.moonlight,
+                self.night_mode,
+                self.quiet_mode,
+                self.tracker_value
+            )
+        )
+
+    @property
     def tracker_value(self):
         return self.get_state(self.tracker)
+
+    def temp_change(self, entity, attribute, old, new, kwargs):
+
+        # is the automation mode in an allowed state?
+        if self.allowed_mode is False:
+            return
+
+        # get the current temperature
+        current_temp = float(self.get_state(
+            self.temp_sensor,
+            attribute='state'
+        ))
+
+        # turn on the fan if it's too warm
+        if current_temp >= self.fan_on_temp:
+            if self.tracker_value == 'off':
+                # turn on living room fan
+                self.select_option(
+                    self.tracking_entity,
+                    'on'
+                )
+                self.log((
+                    'fan turned on. Temperature is {} - ' +
+                    self.current_state).format(current_temp)
+                )
+
+        # turn off the fan if it's too cool
+        if current_temp < self.fan_off_temp:
+            if self.tracker_value == 'on':
+                # turn off living room fan
+                self.select_option(
+                    self.tracking_entity,
+                    'off'
+                )
+                self.log((
+                    'fan turned off. Temperature is {} - ' +
+                    self.current_state).format(current_temp)
+                )
 
     def tracker_off(self, entity, attribute, old, new, kwargs):
 
@@ -73,64 +136,3 @@ class FanControl(hass.Hass):
             'ifttt/trigger',
             event=self.fan_on_trigger
         )
-
-    def temp_change(self, entity, attribute, old, new, kwargs):
-
-        # is the automation mode in an allowed state?
-        if self.allowed_mode == False:
-            return
-
-        # get the current temperature
-        current_temp = float(self.get_state(
-            self.temp_sensor,
-            attribute='state'
-        ))
-
-        # turn on the fan if it's too warm
-        if current_temp >= self.fan_on_temp:
-            if fan_state == 'manual':
-                # turn off living room fan
-                self.call_service(
-                    'ifttt/trigger',
-                    event=self.fan_on_trigger
-                )
-                self.select_option(
-                    'input_select.living_room_fan_status',
-                    'Automated'
-                )
-                self.call_service(
-                    'logbook/log',
-                    entity_id=self.temp_sensor,
-                    domain='automation',
-                    name='fan_control: ',
-                    message=(
-                        ' living room fan turned on. Temperature is {}'.format(
-                            current_temp
-                        )
-                    )
-                )
-
-        # turn off the fan if it's too cool
-        if current_temp < self.fan_off_temp:
-            if fan_state == 'automated':
-                # turn off living room fan
-                self.call_service(
-                    'ifttt/trigger',
-                    event=self.fan_off_trigger
-                )
-                self.select_option(
-                    'input_select.living_room_fan_status',
-                    'Manual'
-                )
-                self.call_service(
-                    'logbook/log',
-                    entity_id=self.temp_sensor,
-                    domain='automation',
-                    name='fan_control: ',
-                    message=(
-                        ' living room fan turned off. '
-                        'Temperature is {}'.format(
-                            current_temp
-                        )
-                    )
-                )
