@@ -12,7 +12,8 @@ class SensorLight(hass.Hass):
         self.allow_moonlight = self.args['allow_moonlight']
         self.tracker = self.args['tracking_entity']
         self.delay = self.args['delay']
-        self.max_run_seconds = self.args['max_run_seconds']
+        #self.max_run_seconds = self.args['max_run_seconds']
+        self.max_run_seconds = 5
         self.brightness = self.args['brightness']
         self.max_timer = None
         self.off_timer = None
@@ -186,6 +187,8 @@ class SensorLight(hass.Hass):
         # set a timer to turn off the light after max_run_seconds
         if self.max_run_seconds > 0:
             self.max_timer = self.run_in(
-                self.turn_off_tracker,
-                self.max_run_seconds
+                self.select_option,
+                self.max_run_seconds,
+                entity_id=self.tracker,
+                value='off'
             )
