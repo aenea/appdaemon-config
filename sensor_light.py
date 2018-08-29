@@ -121,7 +121,7 @@ class SensorLight(hass.Hass):
 
         if self.delay > 0:
             self.off_timer = self.run_in(
-                self.select_option
+                self.select_option,
                 self.delay,
                 entity_id=self.tracker,
                 value='off'
