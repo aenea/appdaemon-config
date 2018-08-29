@@ -119,7 +119,7 @@ class PicoLight(hass.Hass):
 
                 # apply the new brightness level
                 self.call_service(
-                    'light/turn_on',
+                    'lifx/set_state',
                     entity_id=bulb.entity_id,
                     brightness_pct=bulb.brightness
                 )
