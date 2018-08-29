@@ -10,7 +10,7 @@ import appdaemon.plugins.hass.hassapi as hass
 class FanControl(hass.Hass):
 
     def initialize(self):
-        self.active_modes = [
+        self.disabled_modes = [
             item.casefold() for item in self.args['active_modes']
         ]
         self.fan_off_temp = float(self.args['fan_off_temp'])
