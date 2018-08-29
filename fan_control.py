@@ -18,7 +18,7 @@ class FanControl(hass.Hass):
         self.fan_off_trigger = self.args['fan_off_trigger']
         self.fan_on_trigger = self.args['fan_on_trigger']
         self.temp_sensor = self.args['temp_sensor']
-        self.tracking_entity = self.args['tracking_entity']
+        self.tracker = self.args['tracking_entity']
 
         self.listen_state(self.temp_change, self.temp_sensor)
         self.listen_state(
@@ -124,7 +124,7 @@ class FanControl(hass.Hass):
             if self.tracker_value == 'off':
                 # turn on living room fan
                 self.select_option(
-                    self.tracking_entity,
+                    self.tracker,
                     'on'
                 )
                 self.log((
@@ -137,7 +137,7 @@ class FanControl(hass.Hass):
             if self.tracker_value == 'on':
                 # turn off living room fan
                 self.select_option(
-                    self.tracking_entity,
+                    self.tracker,
                     'off'
                 )
                 self.log((
