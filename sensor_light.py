@@ -125,7 +125,7 @@ class SensorLight(hass.Hass):
                 self.select_option,
                 self.delay,
                 entity_id=self.tracker,
-                value='off'
+                option='off'
             )
         else:
             self.select_option(self.tracker, 'off')
@@ -190,5 +190,5 @@ class SensorLight(hass.Hass):
                 self.select_option,
                 self.max_run_seconds,
                 entity_id=self.tracker,
-                value='off'
+                option='off'
             )
