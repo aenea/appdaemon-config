@@ -12,8 +12,7 @@ class SensorLight(hass.Hass):
         self.allow_moonlight = self.args['allow_moonlight']
         self.tracker = self.args['tracking_entity']
         self.delay = self.args['delay']
-        #self.max_run_seconds = self.args['max_run_seconds']
-        self.max_run_seconds = 5
+        self.max_run_seconds = self.args['max_run_seconds']
         self.brightness = self.args['brightness']
         self.max_timer = None
         self.off_timer = None
