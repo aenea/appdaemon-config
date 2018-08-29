@@ -193,3 +193,4 @@ class SensorLight(hass.Hass):
 
         # wrapper function for the turn off call backs
         self.select_option(self.tracker, 'off')
+        self.log('light turned off by time out - ' + self.current_state())
