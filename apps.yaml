@@ -168,7 +168,7 @@ living_room_lights:
   light_subset: light.living_room_1
   brightness: 100
 
-#kitchen_lights:
-#  module: kitchen_lights
-#  class: KitchenLights
+kitchen_lights:
+  module: kitchen_lights
+  class: KitchenLights
 
