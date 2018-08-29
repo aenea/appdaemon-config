@@ -60,7 +60,6 @@ class PicoLight(hass.Hass):
 
     def change_brightness(self, change, button):
 
-
         # get the current state of the light group
         light_state = self.get_state(
             self.light_group,
@@ -122,8 +121,7 @@ class PicoLight(hass.Hass):
                 self.call_service(
                     'light/turn_on',
                     entity_id=bulb.entity_id,
-                    brightness_pct=str(bulb.brightness),
-                    transition='.1'
+                    brightness_pct=bulb.brightness
                 )
             time.sleep(.2)
 
