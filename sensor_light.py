@@ -19,6 +19,7 @@ class SensorLight(hass.Hass):
 
         self.listen_state(self.sensor_on, self.sensor, new='on')
         self.listen_state(self.sensor_off, self.sensor, new='off')
+        self.listen_state(self.actuator_off, self.actuator, new='off')
 
         self.listen_state(
             self.tracker_off,
@@ -83,6 +84,16 @@ class SensorLight(hass.Hass):
     def tracker_value(self):
         return self.get_state(self.tracker)
 
+    def actuator_off(self, entity, attribute, old, new, kwargs):
+
+        if self.tracker_value != 'off':
+            self.select_option(self.tracker, 'off')
+            self.log(
+                self.actuator +
+                ' turned off manually - ' +
+                self.current_state()
+            )
+
     def tracker_on(self, entity, attribute, old, new, kwargs):
 
         if self.brightness is None:
@@ -108,21 +119,21 @@ class SensorLight(hass.Hass):
         if 'away' in self.disabled_modes:
             if self.home_occupancy == 'off':
                 self.log(
-                    'light on by sensor declined - ' +
+                    'light on by sensor declined for occupancy - ' +
                     self.current_state()
                 )
                 return
         if 'guest' in self.disabled_modes:
             if self.guest_mode == 'on':
                 self.log(
-                    'light on by sensor declined - ' +
+                    'light on by sensor declined for guest mode - ' +
                     self.current_state()
                 )
                 return
         if 'quiet' in self.disabled_modes:
             if self.quiet_mode == 'on':
                 self.log(
-                    'light on by sensor declined - ' +
+                    'light on by sensor declined for quiet mode - ' +
                     self.current_state()
                 )
                 return
@@ -153,21 +164,21 @@ class SensorLight(hass.Hass):
         if 'away' in self.disabled_modes:
             if self.home_occupancy == 'off':
                 self.log(
-                    'light off by sensor declined - ' +
+                    'light off by sensor declined for occupancy - ' +
                     self.current_state()
                 )
                 return
         if 'guest' in self.disabled_modes:
             if self.guest_mode == 'on':
                 self.log(
-                    'light off by sensor declined - ' +
+                    'light off by sensor declined guest mode - ' +
                     self.current_state()
                 )
                 return
         if 'quiet' in self.disabled_modes:
             if self.quiet_mode == 'on':
                 self.log(
-                    'light off by sensor declined - ' +
+                    'light off by sensor declined quiet mode- ' +
                     self.current_state()
                 )
                 return
