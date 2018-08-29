@@ -122,10 +122,8 @@ class SensorLight(hass.Hass):
 
         if self.delay > 0:
             self.off_timer = self.run_in(
-                self.select_option,
-                self.delay,
-                entity_id=self.tracker,
-                option='off'
+                self.turn_off_tracker,
+                self.delay
             )
         else:
             self.select_option(self.tracker, 'off')
@@ -187,8 +185,11 @@ class SensorLight(hass.Hass):
         # set a timer to turn off the light after max_run_seconds
         if self.max_run_seconds > 0:
             self.max_timer = self.run_in(
-                self.select_option,
-                self.max_run_seconds,
-                self.tracker,
-                'off'
+                self.turn_off_tracker,
+                self.max_run_seconds
             )
+
+    def turn_off_tracker(self): 
+
+        # wrapper function for the turn off call backs
+        self.select_option(self.tracker, 'off')
