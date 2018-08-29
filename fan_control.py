@@ -80,6 +80,30 @@ class FanControl(hass.Hass):
         )
 
     @property
+    def actuator_value(self):
+        return self.get_state(self.actuator)
+
+    @property
+    def home_occupancy(self):
+        return self.get_state('input_boolean.home_occupancy')
+
+    @property
+    def guest_mode(self):
+        return self.get_state('input_boolean.guest_mode')
+
+    @property
+    def moonlight(self):
+        return self.get_state('input_boolean.moonlight')
+
+    @property
+    def night_mode(self):
+        return self.get_state('input_boolean.night_mode')
+
+    @property
+    def quiet_mode(self):
+        return self.get_state('input_boolean.quiet_mode')
+
+    @property
     def tracker_value(self):
         return self.get_state(self.tracker)
 
