@@ -189,6 +189,6 @@ class SensorLight(hass.Hass):
             self.max_timer = self.run_in(
                 self.select_option,
                 self.max_run_seconds,
-                entity_id=self.tracker,
-                option='off'
+                self.tracker,
+                'off'
             )
