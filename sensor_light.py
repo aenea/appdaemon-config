@@ -86,6 +86,7 @@ class SensorLight(hass.Hass):
 
     def actuator_off(self, entity, attribute, old, new, kwargs):
 
+        # if the light was turned off manually, turn off the tracker
         if self.tracker_value != 'off':
             self.select_option(self.tracker, 'off')
             self.log(
@@ -93,6 +94,15 @@ class SensorLight(hass.Hass):
                 ' turned off manually - ' +
                 self.current_state()
             )
+
+        # cancel any existing timers
+        if self.max_timer is not None:
+            self.cancel_timer(self.max_timer)
+            self.max_timer = None
+
+        if self.off_timer is not None:
+            self.cancel_timer(self.off_timer)
+            self.off_timer = None
 
     def sensor_off(self, entity, attribute, old, new, kwargs):
 
