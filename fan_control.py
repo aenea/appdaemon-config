@@ -23,7 +23,7 @@ class FanControl(hass.Hass):
         self.listen_state(self.temp_change, self.temp_sensor)
         self.listen_state(
             self.temp_change,
-            'input_select.automation_mode'
+            'input_boolean.home_occupancy'
         )
 
     @property
