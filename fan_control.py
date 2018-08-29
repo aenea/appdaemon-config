@@ -11,7 +11,7 @@ class FanControl(hass.Hass):
 
     def initialize(self):
         self.disabled_modes = [
-            item.casefold() for item in self.args['active_modes']
+            item.casefold() for item in self.args['disabled_modes']
         ]
         self.fan_off_temp = float(self.args['fan_off_temp'])
         self.fan_on_temp = float(self.args['fan_on_temp'])
