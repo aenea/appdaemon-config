@@ -123,7 +123,7 @@ class PicoLight(hass.Hass):
                     entity_id=bulb.entity_id,
                     brightness_pct=bulb.brightness
                 )
-            time.sleep(.2)
+            time.sleep(.1)
 
            
 
