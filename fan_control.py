@@ -26,6 +26,38 @@ class FanControl(hass.Hass):
             'input_select.automation_mode'
         )
 
+    @property
+    def allowed_mode(self):
+
+        # is the automation mode in an allowed state?
+        if 'away' in self.disabled_modes:
+            if self.home_occupancy == 'off':
+                self.log(
+                    'automation declined for occupancy - ' +
+                    self.current_state()
+                )
+                return False
+        if 'guest' in self.disabled_modes:
+            if self.guest_mode == 'on':
+                self.log(
+                    'automation declined for guest mode - ' +
+                    self.current_state()
+                )
+                return False
+        if 'quiet' in self.disabled_modes:
+            if self.quiet_mode == 'on':
+                self.log(
+                    'automation declined for quiet mode - ' +
+                    self.current_state()
+                )
+                return False
+
+        return True
+
+    @property
+    def tracker_value(self):
+        return self.get_state(self.tracker)
+
     def tracker_off(self, entity, attribute, old, new, kwargs):
 
         # call IFTTT to turn off the fan
@@ -45,11 +77,7 @@ class FanControl(hass.Hass):
     def temp_change(self, entity, attribute, old, new, kwargs):
 
         # is the automation mode in an allowed state?
-        automation_mode = self.get_state(
-            'input_select.automation_mode',
-            attribute='state'
-        ).casefold()
-        if automation_mode not in self.active_modes:
+        if self.allowed_mode == False:
             return
 
         # get the current temperature
@@ -57,12 +85,6 @@ class FanControl(hass.Hass):
             self.temp_sensor,
             attribute='state'
         ))
-
-        # get the current state of the fan
-        fan_state = self.get_state(
-            self.tracking_entity,
-            attribute='state'
-        ).casefold()
 
         # turn on the fan if it's too warm
         if current_temp >= self.fan_on_temp:
