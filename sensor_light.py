@@ -189,7 +189,7 @@ class SensorLight(hass.Hass):
                 self.max_run_seconds
             )
 
-    def turn_off_tracker(self): 
+    def turn_off_tracker(self, **kwargs):
 
         # wrapper function for the turn off call backs
         self.select_option(self.tracker, 'off')
