@@ -120,7 +120,8 @@ class PicoLight(hass.Hass):
                 # apply the new brightness level
                 self.turn_on(
                     entity_id=bulb.entity_id,
-                    brightness_pct=bulb.brightness
+                    brightness_pct=bulb.brightness,
+                    transition=.1
                 )
             time.sleep(.1)
 
