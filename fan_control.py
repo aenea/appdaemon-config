@@ -59,7 +59,6 @@ class FanControl(hass.Hass):
 
         return (
             'current_state('
-            'actuator_value=%s, '
             'home_occupancy=%s, '
             'guest_mode=%s, '
             'moonlight=%s, '
@@ -69,7 +68,6 @@ class FanControl(hass.Hass):
             ')'
             %
             (
-                self.actuator_value,
                 self.home_occupancy,
                 self.guest_mode,
                 self.moonlight,
