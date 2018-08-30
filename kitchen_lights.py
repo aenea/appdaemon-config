@@ -44,6 +44,7 @@ class KitchenLights(hass.Hass):
     def quiet_mode(self):
         return self.get_state('input_boolean.quiet_mode')
 
+    @property
     def current_state(self):
 
         return (
@@ -89,7 +90,7 @@ class KitchenLights(hass.Hass):
         else:
             self.log(
                 'kitchen moonlight timer declined timer already active - ' +
-                self.current_state()
+                self.current_state
             )
 
     def turn_off_lights(self, kwargs):
@@ -104,7 +105,7 @@ class KitchenLights(hass.Hass):
         if self.moonlight == 'off':
             self.turn_off('group.kitchen_lights')
 
-            self.log('kitchen lights turned off - ' + self.current_state())
+            self.log('kitchen lights turned off - ' + self.current_state)
         else:
             self.turn_off('group.kitchen_lights_moonlight_off')
             self.turn_on(
@@ -113,4 +114,4 @@ class KitchenLights(hass.Hass):
                 transition=20
             )
 
-            self.log('kitchen lights moonlit - ' + self.current_state())
+            self.log('kitchen lights moonlit - ' + self.current_state)
