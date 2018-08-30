@@ -6,38 +6,39 @@ class HouseOccupancy(hass.Hass):
     def initialize(self):
 
         # state tracker for house occupancy
-        self.occupancy = self.args['occupancy_entity']
-        self.doors = self.args['doors_entity']
         self.climate = self.args['climate_entity']
+        self.disabled_modes = []
+        self.doors = self.args['doors_entity']
+        self.occupancy = self.args['occupancy_entity']
 
         # react to arrivals
- #       self.listen_state(self.home_occupied, self.occupancy, new='on')
+        self.listen_state(self.home_occupied, self.occupancy, new='on')
         # react to departures
- #       self.listen_state(self.home_unoccupied, self.occupancy, new='off')
+        self.listen_state(self.home_unoccupied, self.occupancy, new='off')
         # set ocupancy state
- #       self.listen_state(
- #           self.set_occupancy_on,
- #           'group.presence_all',
- #           new='home',
- #           old='not_home'
- #       )
+        self.listen_state(
+            self.set_occupancy_on,
+            'group.presence_all',
+            new='home',
+            old='not_home'
+        )
         # set occupancy state
- #       self.listen_state(
- #           self.set_occupancy_off,
- #           'group.presence_all',
- #           new='not_home',
- #           old='home'
- #       )
-#        # track the arrival of individuals
-#        self.listen_state(
-#            self.someone_arrives,
-#            'device_tracker',
-#            new='home',
-#            old='not_home'
-#        )
+        self.listen_state(
+            self.set_occupancy_off,
+            'group.presence_all',
+            new='not_home',
+            old='home'
+        )
+        # track the arrival of individuals
+        self.listen_state(
+            self.someone_arrives,
+            'device_tracker',
+            new='home',
+            old='not_home'
+        )
 
-#        # track entry door status
-#        self.listen_state(self.door_opens, self.doors, new='on')
+        # track entry door status
+        self.listen_state(self.door_opens, self.doors, new='on')
 
         # track thermostat climate mode changes
         self.listen_state(
@@ -77,110 +78,134 @@ class HouseOccupancy(hass.Hass):
             old='on'
         )
 
+    @property
+    def allowed_mode(self):
+
+        # is the automation mode in an allowed state?
+        if 'away' in self.disabled_modes:
+            if self.home_occupancy == 'off':
+                self.log(
+                    'automation declined for occupancy - ' +
+                    self.current_state
+                )
+                return False
+        if 'guest' in self.disabled_modes:
+            if self.guest_mode == 'on':
+                self.log(
+                    'automation declined for guest mode - ' +
+                    self.current_state
+                )
+                return False
+        if 'quiet' in self.disabled_modes:
+            if self.quiet_mode == 'on':
+                self.log(
+                    'automation declined for quiet mode - ' +
+                    self.current_state
+                )
+                return False
+
+        return True
+
+    @property
+    def current_state(self):
+
+        return (
+            'current_state('
+            'home_occupancy=%s, '
+            'guest_mode=%s, '
+            'moonlight=%s, '
+            'night_mode=%s, '
+            'quiet_mode=%s '
+            ')'
+            %
+            (
+                self.home_occupancy,
+                self.guest_mode,
+                self.moonlight,
+                self.night_mode,
+                self.quiet_mode
+            )
+        )
+
+    @property
+    def home_occupancy(self):
+        return self.get_state('input_boolean.home_occupancy')
+
+    @property
+    def guest_mode(self):
+        return self.get_state('input_boolean.guest_mode')
+
+    @property
+    def moonlight(self):
+        return self.get_state('input_boolean.moonlight')
+
+    @property
+    def night_mode(self):
+        return self.get_state('input_boolean.night_mode')
+
+    @property
+    def quiet_mode(self):
+        return self.get_state('input_boolean.quiet_mode')
+
     def door_opens(self, entity, attribute, old, new, kwargs):
 
         # is the automation in an allowed state?
-        allowed_modes = set(['normal', 'away', 'sleep'])
-        automation_mode = self.get_state(
-            'input_select.automation_mode',
-            attribute='state'
-        )
-        automation_mode = automation_mode.casefold()
-        if automation_mode not in allowed_modes:
+        self.disabled_modes = set(['guest'])
+        if self.allowed_mode is False:
+            self.log('porch light automation declined - ' + self.current_state)
             return
 
         # if the porch light was turned on by automation, turn
         # it off when an entry door opens
         porch_light_status = self.get_state(
-            'input_select.front_porch_light_status',
+            'input_select.front_porch_lights_tracker',
             attribute='state'
         )
 
-        if porch_light_status.casefold() == 'automated':
-            self.turn_off('switch.front_porch_light_switch_switch')
+        if porch_light_status.casefold() == 'on':
+            self.select_option(
+                'input_select.front_porch_lights_tracker',
+                'off'
+            )
+            self.log(
+                'porch light turned off by door opening - ' +
+                self.current_state
+            )
 
     def set_occupancy_on(self, entity, attribute, old, new, kwargs):
 
         self.turn_on(self.occupancy)
-        self.call_service(
-            'logbook/log',
-            entity_id=self.occupancy,
-            domain='automation',
-            name='house_occupancy: ',
-            message=('someone has arrived to an empty house')
-        )
 
     def set_occupancy_off(self, entity, attribute, old, new, kwargs):
 
         self.turn_off(self.occupancy)
-        self.call_service(
-            'logbook/log',
-            entity_id=self.occupancy,
-            domain='automation',
-            name='house_occupancy: ',
-            message=('everyone has left')
-        )
 
     def someone_arrives(self, entity, attribute, old, new, kwargs):
 
         # is the automation in an allowed state?
-        allowed_modes = set(['normal', 'away', 'sleep'])
-        automation_mode = self.get_state(
-            'input_select.automation_mode',
-            attribute='state'
-        )
-        automation_mode = automation_mode.casefold()
-        if automation_mode not in allowed_modes:
+        self.disabled_modes = set(['guest'])
+        if self.allowed_mode is False:
+            self.log('arrival automation declined - ' + self.current_state)
             return
 
-        # get the house mode
-        house_mode = self.get_state(
-            'input_select.house_mode',
-            attribute='state'
-        )
-
-        if house_mode.casefold() == 'night':
+        if self.night_mode == 'on':
             # turn on the porch light
             self.select_option(
-                'input_select.front_porch_light_status',
-                'Automated'
+                'input_select.front_porch_lights_tracker',
+                'on'
             )
-            self.turn_on('switch.porch_light_switch_switch')
-            self.call_service(
-                'logbook/log',
-                entity_id=self.occupancy,
-                domain='automation',
-                name='house_occupancy: ',
-                message=('porch light turned on for arrival')
+            self.log(
+                'front porch light turned on for arrival - ' +
+                self.current_state
             )
-
-        # log the arrival
-        self.call_service(
-            'logbook/log',
-            entity_id=self.occupancy,
-            domain='automation',
-            name='house_occupancy: ',
-            message=(
-                '{} has arrived. House mode is {}'.format(
-                    entity, house_mode
-                )
-            )
-        )
 
     def home_occupied(self, entity, attribute, old, new, kwargs):
 
         # is the automation in an allowed state?
-        allowed_modes = set(['normal', 'away', 'sleep'])
-        automation_mode = self.get_state(
-            'input_select.automation_mode',
-            attribute='state'
-        )
-        automation_mode = automation_mode.casefold()
-        if automation_mode not in allowed_modes:
+        self.disabled_modes = set(['guest'])
+        if self.allowed_mode is False:
+            self.log('home occupation automation declined - ' + self.current_state)
             return
-        else:
-            # Set the automation mode to 'Normal'
-            self.select_option('input_select.automation_mode', 'Normal')
 
         # stop the dog music
         self.call_service(
@@ -188,13 +213,6 @@ class HouseOccupancy(hass.Hass):
             entity_id='media_player.office',
             command='power',
             parameters='0'
-        )
-        self.call_service(
-            'logbook/log',
-            entity_id=self.occupancy,
-            domain='automation',
-            name='house_occupancy: ',
-            message=(' dog music stopped')
         )
 
         # set the thermostat to 'home' mode if necessary
@@ -205,85 +223,32 @@ class HouseOccupancy(hass.Hass):
                 entity_id=self.climate,
                 hold_mode='home'
             )
-            self.call_service(
-                'logbook/log',
-                entity_id=self.occupancy,
-                domain='automation',
-                name='house_occupancy: ',
-                message=('thermostat climate set to Home')
-            )
 
-        # get the house mode
-        house_mode = self.get_state(
-            'input_select.house_mode',
-            attribute='state'
-        )
-
-        if house_mode.casefold() == 'night':
+        if self.night_mode == 'on':
             # turn on the welcome lights
             self.turn_on('group.welcome_lights')
-            self.call_service(
-                'logbook/log',
-                entity_id=self.occupancy,
-                domain='automation',
-                name='house_occupancy: ',
-                message=('welcome lights turned on')
-            )
-        else:
-            self.call_service(
-                'logbook/log',
-                entity_id=self.occupancy,
-                domain='automation',
-                name='house_occupancy: ',
-                message=(
-                    'welcome lights declined - house mode is {}'.format(
-                        house_mode
-                    )
-                )
-            )
+
+        self.log(
+            'home occupation automation triggered - ' + 
+            self.current_state
+        )
 
     def home_unoccupied(self, entity, attribute, old, new, kwargs):
 
         # is the automation in an allowed state?
-        allowed_modes = set(['normal', 'away', 'sleep'])
-        automation_mode = self.get_state(
-            'input_select.automation_mode',
-            attribute='state'
-        )
-        automation_mode = automation_mode.casefold()
-        if automation_mode not in allowed_modes:
+        self.disabled_modes = set(['guest'])
+        if self.allowed_mode is False:
+            self.log(
+                'home unoccupied automation declined - ' + 
+                self.current_state
+            )
             return
-
-        self.call_service(
-            'logbook/log',
-            entity_id=self.occupancy,
-            domain='automation',
-            name='house_occupancy: ',
-            message=(' house is not occupied')
-        )
-
-        # change the automation mode to Away
-        self.select_option('input_select.automation_mode', 'Away')
 
         # turn off lights
         self.turn_off('group.lights')
-        self.call_service(
-            'logbook/log',
-            entity_id=self.occupancy,
-            domain='automation',
-            name='house_occupancy: ',
-            message=(' all lights turned off')
-        )
 
         # turn off remotes
         self.turn_off('group.all_remotes')
-        self.call_service(
-            'logbook/log',
-            entity_id=self.occupancy,
-            domain='automation',
-            name='house_occupancy: ',
-            message=(' all remotes turned off')
-        )
 
         # resume thermostat schedule
         self.call_service(
@@ -291,29 +256,11 @@ class HouseOccupancy(hass.Hass):
             entity_id=self.climate,
             resume_all='true'
         )
-        self.call_service(
-            'logbook/log',
-            entity_id=self.occupancy,
-            domain='automation',
-            name='house_occupancy: ',
-            message=(' thermostat schedule resumed')
-        )
 
         # turn off living room fan
-        self.call_service(
-            'ifttt/trigger',
-            event='lr_fan_off'
-        )
         self.select_option(
-            'input_select.living_room_fan_status',
-            'Manual'
-        )
-        self.call_service(
-            'logbook/log',
-            entity_id=self.occupancy,
-            domain='automation',
-            name='house_occupancy: ',
-            message=(' living room fan turned off')
+            'input_select.living_room_fan_tracker',
+            'off'
         )
 
         # start the dog music
@@ -323,12 +270,10 @@ class HouseOccupancy(hass.Hass):
             command='playlist',
             parameters=['loadtracks', 'album.titlesearch=Through a dogs ears']
         )
-        self.call_service(
-            'logbook/log',
-            entity_id=self.occupancy,
-            domain='automation',
-            name='house_occupancy: ',
-            message=(' dog music started')
+
+        self.log(
+            'home unoccupied automation triggered - ' + 
+            self.current_state
         )
 
     def climate_mode_change(self, entity, attribute, old, new, kwargs):
