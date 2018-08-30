@@ -34,21 +34,21 @@ class FanControl(hass.Hass):
             if self.home_occupancy == 'off':
                 self.log(
                     'automation declined for occupancy - ' +
-                    self.current_state()
+                    self.current_state
                 )
                 return False
         if 'guest' in self.disabled_modes:
             if self.guest_mode == 'on':
                 self.log(
                     'automation declined for guest mode - ' +
-                    self.current_state()
+                    self.current_state
                 )
                 return False
         if 'quiet' in self.disabled_modes:
             if self.quiet_mode == 'on':
                 self.log(
                     'automation declined for quiet mode - ' +
-                    self.current_state()
+                    self.current_state
                 )
                 return False
 
