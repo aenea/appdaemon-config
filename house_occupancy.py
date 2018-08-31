@@ -223,7 +223,7 @@ class HouseOccupancy(hass.Hass):
                 entity_id=self.climate,
                 hold_mode='home'
             )
-            self.log('thermostat set to away mode')
+            self.log('thermostat set to home mode')
 
         if self.night_mode == 'on':
             # turn on the welcome lights

@@ -48,7 +48,31 @@ class PicoLight(hass.Hass):
             # top button turns the light on with full brightness
             self.turn_on(self.light_group, brightness_pct='100')
         else:
-            # favorite button turns on a subset of lights
+            # favorite button turns on one light
+            group_entity = self.get_state(self.light_group, attribute='all')
+            lights = group_entity['attributes']['entity_id']
+            count = len(lights)
+
+            # loop through the lights looking for a light that is on
+            i = 0
+            while i < count:
+                state = self.get_state(lights[i])
+                if state = 'on':
+                    # turn off the current light
+                    self.turn_off(light[i])
+
+                    # turn on the next light in the group
+                    i += 1
+                    if i >= count:
+                        i = 0
+                    self.turn_on(light[1])
+                    break
+
+
+
+
+
+
             self.turn_on(self.light_subset, brightness_pct='100')
 
     def switch_off(self, entity, attribute, old, new, kwargs):
