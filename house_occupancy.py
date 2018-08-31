@@ -62,7 +62,7 @@ class HouseOccupancy(hass.Hass):
         # track the quiet time sensor
         self.listen_state(
             self.bed_time,
-            'binary_sensor.sleep_trigger',
+            'binary_sensor.sleeping',
             new='on',
             old='off'
         )
