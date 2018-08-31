@@ -59,13 +59,13 @@ class PicoLight(hass.Hass):
                 state = self.get_state(lights[i])
                 if state == 'on':
                     # turn off the current light
-                    self.turn_off(light[i])
+                    self.turn_off(lights[i])
 
                     # turn on the next light in the group
                     i += 1
                     if i >= count:
                         i = 0
-                    self.turn_on(light[1])
+                    self.turn_on(lights[1])
                     break
 
 
