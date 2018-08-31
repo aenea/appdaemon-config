@@ -65,7 +65,7 @@ class PicoLight(hass.Hass):
                     i += 1
                     if i >= count:
                         i = 0
-                    self.turn_on(lights[1])
+                    self.turn_on(lights[i])
                     break
 
 
