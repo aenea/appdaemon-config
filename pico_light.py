@@ -57,7 +57,7 @@ class PicoLight(hass.Hass):
             i = 0
             while i < count:
                 state = self.get_state(lights[i])
-                if state = 'on':
+                if state == 'on':
                     # turn off the current light
                     self.turn_off(light[i])
 
