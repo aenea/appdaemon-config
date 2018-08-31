@@ -26,6 +26,7 @@ class PicoLight(hass.Hass):
         self.light_subset = self.args['light_subset']
         self.brightness = self.args['brightness']
         self.state = 0
+        self.single_bulb = 0
 
         self.listen_state(self.no_button, self.actuator, new='0')
         self.listen_state(self.switch_on, self.actuator, new='1')
@@ -53,27 +54,19 @@ class PicoLight(hass.Hass):
             lights = group_entity['attributes']['entity_id']
             count = len(lights)
 
-            # loop through the lights looking for a light that is on
             i = 0
-            while i < count:
-                state = self.get_state(lights[i])
-                if state == 'on':
-                    # turn off the current light
-                    self.turn_off(lights[i])
+            for light in lights:
+                if i == self.single_bulb:
+                    self.turn_on(light)
+                else:
+                    self.turn_off(light)
+                
+                i += 1
+            
+            self.single_bulb += 1
+            if self.single_bulb >= count:
+                self.single_bulb = 0
 
-                    # turn on the next light in the group
-                    i += 1
-                    if i >= count:
-                        i = 0
-                    self.turn_on(lights[i])
-                    break
-
-
-
-
-
-
-            self.turn_on(self.light_subset, brightness_pct='100')
 
     def switch_off(self, entity, attribute, old, new, kwargs):
 
