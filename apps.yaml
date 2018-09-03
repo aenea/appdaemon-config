@@ -71,7 +71,7 @@ second_bathroom_light:
   max_run_seconds: 5400
   moonlight_pct: 10
   sensor_entity: group.second_bathroom_occupancy
-  tracking_entity: input_select.second_bathroom_tracker
+  tracking_entity: input_select.second_bathroom_lights_tracker
 
 pantry_light:
   module: sensor_light

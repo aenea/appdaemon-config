@@ -177,8 +177,6 @@ class SensorLight(hass.Hass):
 
     def tracker_on(self, entity, attribute, old, new, kwargs):
 
-        self.log('tracker on')
-        self.log(self.actuator)
         if self.brightness is None:
             self.turn_on(self.actuator)
         else:
