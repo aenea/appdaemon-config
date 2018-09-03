@@ -146,7 +146,7 @@ class SensorLight(hass.Hass):
             )
         else:
             self.select_option(self.tracker, 'off')
-            self.log('light turned off by sensor - ' + self.current_state)
+            self.log('sensor off - ' + self.current_state)
 
     def sensor_on(self, entity, attribute, old, new, kwargs):
 
@@ -154,9 +154,18 @@ class SensorLight(hass.Hass):
         if self.allowed_mode is False:
             return
 
+        # cancel any existing timers
+        if self.max_timer is not None:
+            self.cancel_timer(self.max_timer)
+            self.max_timer = None
+
+        if self.off_timer is not None:
+            self.cancel_timer(self.off_timer)
+            self.off_timer = None
+
         # turn on the tracking flag
         self.select_option(self.tracker, 'on')
-        self.log('light turned on by sensor - ' + self.current_state)
+        self.log('sensor on - ' + self.current_state)
 
     def tracker_off(self, entity, attribute, old, new, kwargs):
 
