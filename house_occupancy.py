@@ -285,8 +285,6 @@ class HouseOccupancy(hass.Hass):
 
     def climate_mode_change(self, entity, attribute, old, new, kwargs):
 
-        self.log('new value ' + new)
-
         # is the automation in an allowed state?
         self.disabled_modes = set(['guest'])
         if self.allowed_mode is False:
@@ -298,10 +296,11 @@ class HouseOccupancy(hass.Hass):
 
         # don't allow the thermostat to move to away mode if someone
         # is home
+        climate = self.get_state('climate.home')
         if (
             new.casefold() == 'away' and
             self.home_occupancy == 'on' and
-            new.hold_mode != 'home'
+            climate.hold_mode.casefold() != 'home'
         ):
             self.call_service(
                 'climate/set_hold_mode',
