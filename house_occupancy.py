@@ -296,11 +296,11 @@ class HouseOccupancy(hass.Hass):
 
         # don't allow the thermostat to move to away mode if someone
         # is home
-        climate = self.get_state('climate.home')
+        hold_mode = self.get_state('climate.home', attribute='hold_mode')
         if (
             new.casefold() == 'away' and
             self.home_occupancy == 'on' and
-            climate.hold_mode.casefold() != 'home'
+            hold_mode.casefold() != 'home'
         ):
             self.call_service(
                 'climate/set_hold_mode',
