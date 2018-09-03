@@ -10,6 +10,7 @@ class SensorLight(hass.Hass):
         self.sensor = self.args['sensor_entity']
         self.actuator = self.args['actuator_entity']
         self.allow_moonlight = self.args['allow_moonlight']
+        self.moonlight_pct = self.args['moonlight_pct']
         self.tracker = self.args['tracking_entity']
         self.delay = self.args['delay']
         self.max_run_seconds = self.args['max_run_seconds']
@@ -144,6 +145,7 @@ class SensorLight(hass.Hass):
                 self.turn_off_tracker,
                 self.delay
             )
+            self.log('sensor off delay timer started - ' + self.current_state)
         else:
             self.select_option(self.tracker, 'off')
             self.log('sensor off - ' + self.current_state)
@@ -170,7 +172,7 @@ class SensorLight(hass.Hass):
     def tracker_off(self, entity, attribute, old, new, kwargs):
 
         if self.allow_moonlight is True and self.moonlight == 'on':
-            self.turn_on(self.actuator, brightness_pct=10)
+            self.turn_on(self.actuator, brightness_pct=self.moonlight_pct)
             self.log(self.actuator + ' moonlit - ' + self.current_state)
         else:
             self.turn_off(self.actuator)
