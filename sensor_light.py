@@ -21,7 +21,7 @@ class SensorLight(hass.Hass):
 
         self.listen_state(self.sensor_on, self.sensor, new='on')
         self.listen_state(self.sensor_off, self.sensor, new='off')
-        if self.stage_entity is not Null:
+        if self.stage_entity is not None:
             self.listen_state(self.stage_sensor_on, self.stage_entity, new='on')
         self.listen_state(self.actuator_off, self.actuator, new='off')
 
