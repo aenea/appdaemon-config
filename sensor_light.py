@@ -40,9 +40,6 @@ class SensorLight(hass.Hass):
             self.tracker,
             new='stage'
         )
-        self.listen_state(
-            self
-        )
 
     @property
     def allowed_mode(self):
