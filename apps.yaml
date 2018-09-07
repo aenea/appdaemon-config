@@ -31,23 +31,23 @@ house_occupancy:
 #  tracking_entity: input_select.laundry_room_status
 #  constraint_input_boolean: input_boolean.home_occupancy,on
   
-#laundry_room_light:
-#  module: sensor_light
-#  class: SensorLight
-#  actuator_entity: group.laundry_room_lights
-#  allow_moonlight: false
-#  brightness: 100
-#  delay: 900
-#  disabled_modes:
-#    - guest
-#    - away
-#    - quiet
-#  normal_run_seconds: 600
-#  max_run_seconds: 5400
-#  moonlight_pct: 10
-#  sensor_entity: group.laundry_room_occupancy
-#  stage_entity: group.second_bathroom_occupancy
-#  tracking_entity: input_select.laundry_room_lights_tracker
+laundry_room_light:
+  module: sensor_light
+  class: SensorLight
+  actuator_entity: group.laundry_room_lights
+  allow_moonlight: false
+  brightness: 100
+  delay: 900
+  disabled_modes:
+    - guest
+    - away
+    - quiet
+  normal_run_seconds: 600
+  max_run_seconds: 5400
+  moonlight_pct: 10
+  sensor_entity: group.laundry_room_occupancy
+  stage_entity: group.second_bathroom_occupancy
+  tracking_entity: input_select.laundry_room_lights_tracker
 
 second_bathroom_light:
   module: sensor_light
