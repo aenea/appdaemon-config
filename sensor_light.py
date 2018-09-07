@@ -177,7 +177,7 @@ class SensorLight(hass.Hass):
         self.select_option(self.tracker, 'on')
         self.log('sensor on - ' + self.current_state)
 
-    def stage_sensor_on(self,entity, attribute, old, new, kwargs):
+    def stage_sensor_on(self, entity, attribute, old, new, kwargs):
 
         # is the automation mode in an allowed state?
         if self.allowed_mode is False:
