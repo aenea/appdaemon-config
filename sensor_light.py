@@ -8,6 +8,7 @@ class SensorLight(hass.Hass):
             item.casefold() for item in self.args['disabled_modes']
         ]
         self.sensor = self.args['sensor_entity']
+        self.stage_entity = self.args['stage_entity']
         self.actuator = self.args['actuator_entity']
         self.allow_moonlight = self.args['allow_moonlight']
         self.moonlight_pct = self.args['moonlight_pct']
@@ -20,6 +21,7 @@ class SensorLight(hass.Hass):
 
         self.listen_state(self.sensor_on, self.sensor, new='on')
         self.listen_state(self.sensor_off, self.sensor, new='off')
+        self.listen_state(self.stage_sensor_on, self.stage_entity, new='on')
         self.listen_state(self.actuator_off, self.actuator, new='off')
 
         self.listen_state(
@@ -31,6 +33,14 @@ class SensorLight(hass.Hass):
             self.tracker_on,
             self.tracker,
             new='on'
+        )
+        self.listen_state(
+            self.tracker_stage,
+            self.tracker,
+            new='stage'
+        )
+        self.listen_state(
+            self
         )
 
     @property
@@ -169,6 +179,33 @@ class SensorLight(hass.Hass):
         self.select_option(self.tracker, 'on')
         self.log('sensor on - ' + self.current_state)
 
+    def stage_sensor_on(self,entity, attribute, old, new, kwargs):
+
+        # is the automation mode in an allowed state?
+        if self.allowed_mode is False:
+            self.log(
+                'stage declined for automation mode ' +
+                self.current_state
+            )
+            return
+
+        if self.tracker_value != 'off' or self.tracker != 'stage':
+            self.log('stage declined for lighting mode ' + self.current_state)
+            return
+
+        # cancel any existing timers
+        if self.max_timer is not None:
+            self.cancel_timer(self.max_timer)
+            self.max_timer = None
+
+        if self.off_timer is not None:
+            self.cancel_timer(self.off_timer)
+            self.off_timer = None
+
+        # turn on the tracking flag
+        self.select_option(self.tracker, 'stage')
+        self.log('stage sensor on - ' + self.current_state)
+
     def tracker_off(self, entity, attribute, old, new, kwargs):
 
         if self.allow_moonlight is True and self.moonlight == 'on':
@@ -183,6 +220,29 @@ class SensorLight(hass.Hass):
             self.turn_on(self.actuator)
         else:
             self.turn_on(self.actuator, brightness_pct=self.brightness)
+
+        # cancel any existing timers
+        if self.max_timer is not None:
+            self.cancel_timer(self.max_timer)
+            self.max_timer = None
+
+        if self.off_timer is not None:
+            self.cancel_timer(self.off_timer)
+            self.off_timer = None
+
+        # set a timer to turn off the light after max_run_seconds
+        if self.max_run_seconds > 0:
+            self.max_timer = self.run_in(
+                self.turn_off_tracker,
+                self.max_run_seconds
+            )
+
+    def tracker_stage(self, entity, attribute, old, new, kwargs):
+
+        if self.brightness is None:
+            self.turn_on(self.actuator)
+        else:
+            self.turn_on(self.actuator, brightness_pct=self.moonlight_pct)
 
         # cancel any existing timers
         if self.max_timer is not None:
