@@ -301,7 +301,7 @@ class HouseOccupancy(hass.Hass):
             self.home_occupancy == 'on'
         ):
             hold_mode = self.get_state('climate.home', attribute='hold_mode')
-            if hold_mode is None or hold_mode.casefold != 'home':
+            if hold_mode is None or hold_mode.casefold() != 'home':
                 self.call_service(
                     'climate/set_hold_mode',
                     entity_id=self.climate,
