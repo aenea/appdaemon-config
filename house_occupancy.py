@@ -296,18 +296,18 @@ class HouseOccupancy(hass.Hass):
 
         # don't allow the thermostat to move to away mode if someone
         # is home
-        hold_mode = self.get_state('climate.home', attribute='hold_mode')
         if (
             new.casefold() == 'away' and
-            self.home_occupancy == 'on' and
-            hold_mode.casefold() != 'home'
+            self.home_occupancy == 'on'
         ):
-            self.call_service(
-                'climate/set_hold_mode',
-                entity_id=self.climate,
-                hold_mode='home'
-            )
-            self.log('climate mode forced to home ' + self.current_state)
+            hold_mode = self.get_state('climate.home', attribute='hold_mode')
+            if hold_mode is None or hold_mode.casefold != 'home':
+                self.call_service(
+                    'climate/set_hold_mode',
+                    entity_id=self.climate,
+                    hold_mode='home'
+                )
+                self.log('climate mode forced to home ' + self.current_state)
 
     def bed_time(self, entity, attribute, old, new, kwargs):
 
