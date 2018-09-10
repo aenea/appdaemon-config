@@ -18,19 +18,6 @@ washing_machine_power_monitor:
   sensor_entity: sensor.washing_machine_outlet_power
   tracking_entity: input_select.washing_machine_status
 
-#laundry_room_stage_light:
-#  module: stage_light
-#  class: StageLight
-#  active_modes:
-#    - Normal
-#    - Sleep
-#  actuator_entity: light.laundry_room_main_lights
-#  brightness: 5
-#  delay: 600
-#  sensor_entity: binary_sensor.bathroom_2_motion_sensor_sensor
-#  tracking_entity: input_select.laundry_room_status
-#  constraint_input_boolean: input_boolean.home_occupancy,on
-  
 laundry_room_light:
   module: sensor_light
   class: SensorLight
@@ -48,6 +35,20 @@ laundry_room_light:
   sensor_entity: group.laundry_room_occupancy
   stage_entity: group.second_bathroom_occupancy
   tracking_entity: input_select.laundry_room_lights_tracker
+
+front_porch_light:
+  module: sensor_light
+  class: SensorLight
+  actuator_entity: group.front_porch_lights
+  allow_moonlight: false
+  brightness: null
+  disabled_modes: []
+  delay: 0
+  max_run_seconds: 5400
+  moonlight_pct: null
+  sensor_entity: null
+  stage_entity: null
+  tracking_entity: input_select.front_porch_lights_tracker
 
 second_bathroom_light:
   module: sensor_light

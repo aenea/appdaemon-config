@@ -19,8 +19,9 @@ class SensorLight(hass.Hass):
         self.max_timer = None
         self.off_timer = None
 
-        self.listen_state(self.sensor_on, self.sensor, new='on')
-        self.listen_state(self.sensor_off, self.sensor, new='off')
+        if self.sensor is not None:
+            self.listen_state(self.sensor_on, self.sensor, new='on')
+            self.listen_state(self.sensor_off, self.sensor, new='off')
         if self.stage_entity is not None:
             self.listen_state(
                 self.stage_sensor_on,
