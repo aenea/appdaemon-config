@@ -49,22 +49,22 @@ laundry_room_light:
   stage_entity: group.second_bathroom_occupancy
   tracking_entity: input_select.laundry_room_lights_tracker
 
-second_bathroom_light:
-  module: sensor_light
-  class: SensorLight
-  actuator_entity: group.second_bathroom_lights
-  allow_moonlight: true
-  brightness: null
-  disabled_modes:
-    - guest
-    - away
-    - quiet
-  delay: 1200
-  max_run_seconds: 5400
-  moonlight_pct: 10
-  sensor_entity: group.second_bathroom_occupancy
-  stage_entity: null
-  tracking_entity: input_select.second_bathroom_lights_tracker
+#second_bathroom_light:
+#  module: sensor_light
+#  class: SensorLight
+#  actuator_entity: group.second_bathroom_lights
+#  allow_moonlight: true
+#  brightness: null
+#  disabled_modes:
+#    - guest
+#    - away
+#    - quiet
+#  delay: 1200
+#  max_run_seconds: 5400
+#  moonlight_pct: 10
+#  sensor_entity: group.second_bathroom_occupancy
+#  stage_entity: null
+#  tracking_entity: input_select.second_bathroom_lights_tracker
 
 #pantry_light:
 #  module: sensor_light
