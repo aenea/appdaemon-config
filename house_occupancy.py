@@ -29,16 +29,14 @@ class HouseOccupancy(hass.Hass):
         self.listen_state(
             self.set_occupancy_on,
             'group.presence_all',
-            new='home',
-            old='not_home'
+            new='home'
         )
 
         # set occupancy state
         self.listen_state(
             self.set_occupancy_off,
             'group.presence_all',
-            new='not_home',
-            old='home'
+            new='not_home'
         )
 
         # track the arrival of individuals

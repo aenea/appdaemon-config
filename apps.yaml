@@ -116,9 +116,9 @@ kitchen_triple_tap:
   scene_id: 7920
   zwave_entity: zwave.kitchen_light_switch
 
-ct_lights:
-  module: color_temperature
-  class: ColorTemperature
+home_state:
+  module: state
+  class: State
 
 light_control:
   module: light_control
