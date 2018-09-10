@@ -1,9 +1,9 @@
-house_occupancy:
-  module: house_occupancy
-  class: HouseOccupancy
-  occupancy_entity: input_boolean.home_occupancy
-  doors_entity: group.entry_doors
-  climate_entity: climate.home
+#house_occupancy:
+#  module: house_occupancy
+#  class: HouseOccupancy
+#  occupancy_entity: input_boolean.home_occupancy
+#  doors_entity: group.entry_doors
+#  climate_entity: climate.home
 
 #washing_machine_power_monitor:
 #  module: power_monitor
@@ -127,19 +127,19 @@ light_control:
   ct_group_entity: group.ct_lights
   target_temp_entity: input_number.ct_target
 
-living_room_fan:
-  module: fan_control
-  class: FanControl
-  disabled_modes:
-    - away
-    - guest
-    - quiet
-  fan_off_temp: 69
-  fan_on_temp: 71
-  fan_off_trigger: living_room_fan_off
-  fan_on_trigger: living_room_fan_on
-  temp_sensor: sensor.living_room_temperature
-  tracking_entity: input_select.living_room_fan_tracker
+#living_room_fan:
+#  module: fan_control
+#  class: FanControl
+#  disabled_modes:
+#    - away
+#    - guest
+#    - quiet
+#  fan_off_temp: 69
+#  fan_on_temp: 71
+#  fan_off_trigger: living_room_fan_off
+#  fan_on_trigger: living_room_fan_on
+#  temp_sensor: sensor.living_room_temperature
+#  tracking_entity: input_select.living_room_fan_tracker
 
 fireplace_lights_1:
   module: pico_light
@@ -181,7 +181,7 @@ living_room_lights:
   light_subset: light.living_room_bulb_1
   brightness: 100
 
-kitchen_lights:
-  module: kitchen_lights
-  class: KitchenLights
+#kitchen_lights:
+#  module: kitchen_lights
+#  class: KitchenLights
 
