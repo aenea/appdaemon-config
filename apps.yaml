@@ -1,22 +1,22 @@
-#house_occupancy:
-#  module: house_occupancy
-#  class: HouseOccupancy
-#  occupancy_entity: input_boolean.home_occupancy
-#  doors_entity: group.entry_doors
-#  climate_entity: climate.home
+house_occupancy:
+  module: house_occupancy
+  class: HouseOccupancy
+  occupancy_entity: input_boolean.home_occupancy
+  doors_entity: group.entry_doors
+  climate_entity: climate.home
 
-#washing_machine_power_monitor:
-#  module: power_monitor
-#  class: PowerMonitor
-#  max_idle_seconds: 180
-#  notify: True
-#  notify_message: "The washing machine cycle has completed."
-#  notify_target: "notify/pushbullet_scott"
-#  notify_title: "Washing machine cycle complete"
-#  off_load: 2
-#  on_load: 10
-#  sensor_entity: sensor.washing_machine_outlet_power
-#  tracking_entity: input_select.washing_machine_status
+washing_machine_power_monitor:
+  module: power_monitor
+  class: PowerMonitor
+  max_idle_seconds: 180
+  notify: True
+  notify_message: "The washing machine cycle has completed."
+  notify_target: "notify/pushbullet_scott"
+  notify_title: "Washing machine cycle complete"
+  off_load: 2
+  on_load: 10
+  sensor_entity: sensor.washing_machine_outlet_power
+  tracking_entity: input_select.washing_machine_status
 
 #laundry_room_stage_light:
 #  module: stage_light
@@ -31,40 +31,40 @@
 #  tracking_entity: input_select.laundry_room_status
 #  constraint_input_boolean: input_boolean.home_occupancy,on
   
-#laundry_room_light:
-#  module: sensor_light
-#  class: SensorLight
-#  actuator_entity: group.laundry_room_lights
-#  allow_moonlight: false
-#  brightness: 100
-#  delay: 900
-#  disabled_modes:
-#    - guest
-#    - away
-#    - quiet
-#  normal_run_seconds: 600
-#  max_run_seconds: 5400
-#  moonlight_pct: 10
-#  sensor_entity: group.laundry_room_occupancy
-#  stage_entity: group.second_bathroom_occupancy
-#  tracking_entity: input_select.laundry_room_lights_tracker
+laundry_room_light:
+  module: sensor_light
+  class: SensorLight
+  actuator_entity: group.laundry_room_lights
+  allow_moonlight: false
+  brightness: 100
+  delay: 900
+  disabled_modes:
+    - guest
+    - away
+    - quiet
+  normal_run_seconds: 600
+  max_run_seconds: 5400
+  moonlight_pct: 10
+  sensor_entity: group.laundry_room_occupancy
+  stage_entity: group.second_bathroom_occupancy
+  tracking_entity: input_select.laundry_room_lights_tracker
 
-#second_bathroom_light:
-#  module: sensor_light
-#  class: SensorLight
-#  actuator_entity: group.second_bathroom_lights
-#  allow_moonlight: true
-#  brightness: null
-#  disabled_modes:
-#    - guest
-#    - away
-#    - quiet
-#  delay: 1200
-#  max_run_seconds: 5400
-#  moonlight_pct: 10
-#  sensor_entity: group.second_bathroom_occupancy
-#  stage_entity: null
-#  tracking_entity: input_select.second_bathroom_lights_tracker
+second_bathroom_light:
+  module: sensor_light
+  class: SensorLight
+  actuator_entity: group.second_bathroom_lights
+  allow_moonlight: true
+  brightness: null
+  disabled_modes:
+    - guest
+    - away
+    - quiet
+  delay: 1200
+  max_run_seconds: 5400
+  moonlight_pct: 10
+  sensor_entity: group.second_bathroom_occupancy
+  stage_entity: null
+  tracking_entity: input_select.second_bathroom_lights_tracker
 
 pantry_light:
   module: sensor_light
@@ -87,19 +87,19 @@ pantry_light:
 #  max_run_time: 1200
 #  tracking_entity: input_select.front_porch_light_status
 
-#utility_room_light:
-#  module: sensor_light
-#  class: SensorLight
-#  disabled_modes: []
-#  actuator_entity: switch.utility_room_main_lights
-#  allow_moonlight: false
-#  brightness: null
-#  delay: 0
-#  max_run_seconds: 5400
-#  moonlight_pct: null
-#  sensor_entity: binary_sensor.utility_room_door_sensor
-#  stage_entity: null
-#  tracking_entity: input_select.utility_room_lights_tracker
+utility_room_light:
+  module: sensor_light
+  class: SensorLight
+  disabled_modes: []
+  actuator_entity: switch.utility_room_main_lights
+  allow_moonlight: false
+  brightness: null
+  delay: 0
+  max_run_seconds: 5400
+  moonlight_pct: null
+  sensor_entity: binary_sensor.utility_room_door_sensor
+  stage_entity: null
+  tracking_entity: input_select.utility_room_lights_tracker
 
 kitchen_double_tap:
   module: homeseer_switch
@@ -127,19 +127,19 @@ light_control:
   ct_group_entity: group.ct_lights
   target_temp_entity: input_number.ct_target
 
-#living_room_fan:
-#  module: fan_control
-#  class: FanControl
-#  disabled_modes:
-#    - away
-#    - guest
-#    - quiet
-#  fan_off_temp: 69
-#  fan_on_temp: 71
-#  fan_off_trigger: living_room_fan_off
-#  fan_on_trigger: living_room_fan_on
-#  temp_sensor: sensor.living_room_temperature
-#  tracking_entity: input_select.living_room_fan_tracker
+living_room_fan:
+  module: fan_control
+  class: FanControl
+  disabled_modes:
+    - away
+    - guest
+    - quiet
+  fan_off_temp: 69
+  fan_on_temp: 71
+  fan_off_trigger: living_room_fan_off
+  fan_on_trigger: living_room_fan_on
+  temp_sensor: sensor.living_room_temperature
+  tracking_entity: input_select.living_room_fan_tracker
 
 fireplace_lights_1:
   module: pico_light
@@ -181,7 +181,7 @@ living_room_lights:
   light_subset: light.living_room_bulb_1
   brightness: 100
 
-#kitchen_lights:
-#  module: kitchen_lights
-#  class: KitchenLights
+kitchen_lights:
+  module: kitchen_lights
+  class: KitchenLights
 
