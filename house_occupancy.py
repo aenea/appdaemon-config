@@ -336,6 +336,10 @@ class HouseOccupancy(hass.Hass):
             )
             return
 
+        # turn off moonlighting
+        self.turn_off('input_boolean.moonlight')
+        self.log('moonlighting turned off')
+
         # turn off all the lights
         self.turn_off('group.lights_sleep_off')
         self.log('lights turned off')
