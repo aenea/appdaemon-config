@@ -57,19 +57,30 @@ class HouseOccupancy(hass.Hass):
             attribute='climate_mode'
         )
 
-        # track the quiet time sensor
+        # trigger the bed time routine when quiet mode turns on
         self.listen_state(
             self.bed_time,
-            'binary_sensor.sleeping',
+            'input_boolean.quiet_mode',
             new='on',
-            old='off'
         )
 
-        # track the bed time switch
+        self.listen_state(
+            self.quiet_mode_off,
+            'input_boolean.quiet_mode',
+            new='off'
+        )
+
+        # trigger bed time routine when the button is pressed
         self.listen_state(
             self.bed_time,
             'sensor.hallway_keypad',
             new='4'
+        )
+
+        # trigger on night mode changes
+        self.listen_state(
+            self.night_mode_change,
+            'input_boolean.night_mode'
         )
 
     @property
@@ -267,6 +278,13 @@ class HouseOccupancy(hass.Hass):
         )
         self.log('living room fan turned off')
 
+        # turn off master bedroom fan
+        self.select_option(
+            'input_select.master_bedroom_fan_tracker',
+            'off'
+        )
+        self.log('master bedroom room fan turned off')
+
         # start the dog music
         self.call_service(
             'media_player/squeezebox_call_method',
@@ -352,3 +370,27 @@ class HouseOccupancy(hass.Hass):
         self.log('living room fan turned off')
 
         self.log('bed time routine complete - ' + self.current_state)
+
+    def night_mode_change(self, entity, attribute, old, new, kwargs):
+
+        if new == 'on':
+            # turn on moonlight mode
+            self.turn_on('input_boolean.moonlight')
+        else if new == 'off':
+            # turn off moonlight mode
+            self.turn_off('input_boolean.moonlight')
+
+            # turn off the night lights
+            self.turn_off('group.night_lights')
+
+    def quiet_mode_off(self, entity, attribute, old, new, kwargs):
+
+        # turn off the night lights
+        self.turn_off('group.night_lights')
+
+        # resume the thermostat schedule
+        self.call_service(
+            'climate/ecobee_resume_program',
+            entity_id='climate.home',
+            resume_all=True
+        )

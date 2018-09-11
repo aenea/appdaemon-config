@@ -20,6 +20,59 @@ class State(hass.Hass):
             is_daylight=1
         )
 
+        # track the sleeping binary sensor
+        self.listen_state(
+            self.quiet_mode,
+            'binary_sensor.sleeping'
+        )
+
+        # track day time
+        self.run_at_sunrise(self.start_day_mode)
+
+        # track night time
+        self.run_at_sunset(self.start_night_mode)
+
+        # track presence
+        self.listen_state(
+            self.occupancy_mode,
+            'group.presence.all'
+        )
+
+    @property
+    def guest_mode(self):
+        return self.get_state('input_boolean.guest_mode')
+
+    @property
+    def moonlight(self):
+        return self.get_state('input_boolean.moonlight')
+
+    @property
+    def night_mode(self):
+        return self.get_state('input_boolean.night_mode')
+
+    @property
+    def quiet_mode(self):
+        return self.get_state('input_boolean.quiet_mode')
+
+    @property
+    def current_state(self):
+
+        return (
+            'current_state('
+            'guest_mode=%s, '
+            'moonlight=%s, '
+            'night_mode=%s, '
+            'quiet_mode=%s, '
+            ')'
+            %
+            (
+                self.guest_mode,
+                self.moonlight,
+                self.night_mode,
+                self.quiet_mode,
+            )
+        )
+
     def is_daylight(self, value):
         if self.sun_up():
             return True
@@ -96,3 +149,33 @@ class State(hass.Hass):
             entity_id='input_number.ct_target',
             value=target_temp
         )
+
+    def occupancy_mode(self, entity, attribute, old, new, kwargs):
+
+        # set the quiet mode boolean to the appropriate state
+        if new == 'home':
+            self.turn_on('input_boolean.home_occupancy')
+            self.log('home occupancy turned on ' + self.current_state)
+        else if new == 'not_home':
+            self.turn_off('input_boolean.home_occupancy')
+            self.log('home occupancy turned off ' + self.current_state)
+
+    def quiet_mode(self, entity, attribute, old, new, kwargs):
+
+        # set the quiet mode boolean to the appropriate state
+        if new == 'on':
+            self.turn_on('input_boolean.quiet_mode')
+            self.log('quiet mode turned on ' + self.current_state)
+        else if new == 'off':
+            self.turn_off('input_boolean.quiet_mode')
+            self.log('quiet mode turned off ' + self.current_state)
+
+    def start_day_mode():
+
+        self.turn_off('input_boolean.night_mode')
+        self.log('night mode turned off ' + self.current_state)
+
+    def start_night_mode():
+
+        self.turn_on('input_boolean.night_mode')
+        self.log('night mode turned on ' + self.current_state)
