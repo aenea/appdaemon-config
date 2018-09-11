@@ -35,7 +35,7 @@ class State(hass.Hass):
         # track presence
         self.listen_state(
             self.occupancy_mode,
-            'group.presence.all'
+            'group.presence_all'
         )
 
     @property
