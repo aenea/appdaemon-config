@@ -376,7 +376,7 @@ class HouseOccupancy(hass.Hass):
         if new == 'on':
             # turn on moonlight mode
             self.turn_on('input_boolean.moonlight')
-        else if new == 'off':
+        elif new == 'off':
             # turn off moonlight mode
             self.turn_off('input_boolean.moonlight')
 

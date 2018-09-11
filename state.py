@@ -156,7 +156,7 @@ class State(hass.Hass):
         if new == 'home':
             self.turn_on('input_boolean.home_occupancy')
             self.log('home occupancy turned on ' + self.current_state)
-        else if new == 'not_home':
+        elif new == 'not_home':
             self.turn_off('input_boolean.home_occupancy')
             self.log('home occupancy turned off ' + self.current_state)
 
@@ -166,7 +166,7 @@ class State(hass.Hass):
         if new == 'on':
             self.turn_on('input_boolean.quiet_mode')
             self.log('quiet mode turned on ' + self.current_state)
-        else if new == 'off':
+        elif new == 'off':
             self.turn_off('input_boolean.quiet_mode')
             self.log('quiet mode turned off ' + self.current_state)
 
