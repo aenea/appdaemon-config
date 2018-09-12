@@ -67,19 +67,19 @@ second_bathroom_light:
   stage_entity: null
   tracking_entity: input_select.second_bathroom_lights_tracker
 
-pantry_light:
-  module: sensor_light
-  class: SensorLight
-  actuator_entity: group.pantry_lights
-  allow_moonlight: false
-  brightness: null
-  disabled_modes: []
-  delay: 0
-  max_run_seconds: 5400
-  moonlight_pct: null
-  sensor_entity: binary_sensor.pantry_door_sensor
-  stage_entity: null
-  tracking_entity: input_select.pantry_lights_tracker
+#pantry_light:
+#  module: sensor_light
+#  class: SensorLight
+#  actuator_entity: group.pantry_lights
+#  allow_moonlight: false
+#  brightness: null
+#  disabled_modes: []
+#  delay: 0
+#  max_run_seconds: 5400
+#  moonlight_pct: null
+#  sensor_entity: binary_sensor.pantry_door_sensor
+#  stage_entity: null
+#  tracking_entity: input_select.pantry_lights_tracker
 
 #porch_light:
 #  module: manual_light
