@@ -1,10 +1,5 @@
 import appdaemon.plugins.hass.hassapi as hass
 import time
-#
-# switchLight App
-#
-# Args: asdf
-# asf
 
 
 class Bulb:
@@ -18,7 +13,6 @@ class Bulb:
 
 
 class PicoLight(hass.Hass):
-
 
     def initialize(self):
         self.actuator = self.args['actuator_entity']
@@ -37,16 +31,11 @@ class PicoLight(hass.Hass):
 
     def switch_on(self, entity, attribute, old, new, kwargs):
 
+        # capture button press
         self.state = new
 
-        # get the current state of the light
-        state = self.get_state(
-            self.light_group,
-            attribute='state'
-        )
-
         if self.state == '1':
-            # top button turns the light on with full brightness
+            # top button turns the light on to full brightness
             self.turn_on(self.light_group, brightness_pct='100')
         else:
             # favorite button turns on one light
@@ -54,26 +43,49 @@ class PicoLight(hass.Hass):
             lights = group_entity['attributes']['entity_id']
             count = len(lights)
 
+            # each press should turn on the next light in the light
+            # group and turn off all the other lights
             i = 0
             for light in lights:
                 if i == self.single_bulb:
                     self.turn_on(light)
                 else:
                     self.turn_off(light)
-                
+
                 i += 1
-            
+
             self.single_bulb += 1
             if self.single_bulb >= count:
                 self.single_bulb = 0
 
-
     def switch_off(self, entity, attribute, old, new, kwargs):
 
+        # capture button press
         self.state = new
 
         # turn off the light
         self.turn_off(self.light_group)
+
+    def brighter(self, entity, attribute, old, new, kwargs):
+
+        # capture button press
+        self.state = new
+
+        # increase the brightness by 5%
+        self.change_brightness(5, new)
+
+    def dimmer(self, entity, attribute, old, new, kwargs):
+
+        # capture button press
+        self.state = new
+
+        # decrease the brightness by 5%
+        self.change_brightness(-5, new)
+
+    def no_button(self, entity, attribute, old, new, kwargs):
+
+        # capture button press
+        self.state = new
 
     def change_brightness(self, change, button):
 
@@ -137,39 +149,6 @@ class PicoLight(hass.Hass):
                 # apply the new brightness level
                 self.turn_on(
                     entity_id=bulb.entity_id,
-                    brightness_pct=bulb.brightness,
-                    transition=.1
+                    brightness_pct=bulb.brightness
                 )
             time.sleep(.1)
-
-           
-
-        self.call_service(
-            'logbook/log',
-            entity_id=self.actuator,
-            domain='automation',
-            name='pico_light: ',
-            message=('{} brightness changed from {} to {}'.format(
-                self.light_group,
-                self.brightness,
-                self.brightness)
-            )
-        )
-
-    def brighter(self, entity, attribute, old, new, kwargs):
-
-        self.state = new
-
-        # increase the brightness by 5%
-        self.change_brightness(5, new)
-
-    def dimmer(self, entity, attribute, old, new, kwargs):
-
-        self.state = new
-
-        # decrease the brightness by 5%
-        self.change_brightness(-5, new)
-
-    def no_button(self, entity, attribute, old, new, kwargs):
-
-        self.state = new

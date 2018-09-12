@@ -7,26 +7,10 @@ class KitchenLights(hass.Hass):
 
         self.off_timer = None
 
-        self.listen_state(
-            self.sensor_off,
-            'group.kitchen_occupancy',
-            new='off'
-        )
-        self.listen_state(
-            self.sensor_on,
-            'group.kitchen_occupancy',
-            new='on'
-        )
-        self.listen_state(
-            self.night_mode_on,
-            'input_boolean.night_mode',
-            new='on'
-        )
-        self.listen_state(
-            self.night_mode_on,
-            'input_boolean.moonlight',
-            new='on'
-        )
+        self.listen_state(self.sensor_off, 'group.kitchen_occupancy', new='off')
+        self.listen_state(self.sensor_on, 'group.kitchen_occupancy', new='on')
+        self.listen_state(self.night_mode_on, 'input_boolean.night_mode', new='on')
+        self.listen_state(self.night_mode_on, 'input_boolean.moonlight', new='on')
 
     @property
     def guest_mode(self):
@@ -43,6 +27,40 @@ class KitchenLights(hass.Hass):
     @property
     def quiet_mode(self):
         return self.get_state('input_boolean.quiet_mode')
+
+    @property
+    def allowed_mode(self):
+
+        # is the automation mode in an allowed state?
+        if 'away' in self.disabled_modes:
+            if self.home_occupancy == 'off':
+                self.log(
+                    'automation declined for occupancy - ' +
+                    self.current_state
+                )
+                return False
+        if 'guest' in self.disabled_modes:
+            if self.guest_mode == 'on':
+                self.log(
+                    'automation declined for guest mode - ' +
+                    self.current_state
+                )
+                return False
+        if 'day' in self.disabled_modes:
+            if self.night_mode == 'off':
+                self.log(
+                    'automation declined for night mode - ' +
+                    self.current_state
+                )
+        if 'quiet' in self.disabled_modes:
+            if self.quiet_mode == 'on':
+                self.log(
+                    'automation declined for quiet mode - ' +
+                    self.current_state
+                )
+                return False
+
+        return True
 
     @property
     def current_state(self):
@@ -95,11 +113,13 @@ class KitchenLights(hass.Hass):
 
     def turn_off_lights(self, kwargs):
 
-        if self.night_mode == 'off':
-            return
-        if self.guest_mode == 'on':
-            return
-        if self.quiet_mode == 'on':
+        # is the automation in an allowed state?
+        self.disabled_modes = set(['guest', 'away', 'day', 'quiet'])
+        if self.allowed_mode is False:
+            self.log(
+                'kitchen light turn off declined - ' +
+                self.current_state
+            )
             return
 
         if self.moonlight == 'off':
@@ -107,11 +127,9 @@ class KitchenLights(hass.Hass):
 
             self.log('kitchen lights turned off - ' + self.current_state)
         else:
-            self.turn_off('group.kitchen_lights_moonlight_off')
-            self.turn_on(
-                "group.kitchen_lights_moonlight",
-                brightness_pct=10,
-                transition=20
+            self.call_service(
+                'scene.turn_on',
+                entity_id='scene.kitchen_moonlight'
             )
 
             self.log('kitchen lights moonlit - ' + self.current_state)

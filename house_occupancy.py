@@ -11,77 +11,32 @@ class HouseOccupancy(hass.Hass):
         self.doors = self.args['doors_entity']
         self.occupancy = self.args['occupancy_entity']
 
-        # react to arrivals
-        self.listen_state(
-            self.home_occupied,
-            self.occupancy,
-            new='on'
-        )
+        # react to someone arrive to an empty house
+        self.listen_state(self.home_occupied, self.occupancy, new='on')
 
-        # react to departures
-        self.listen_state(
-            self.home_unoccupied,
-            self.occupancy,
-            new='off'
-        )
+        # react to the house becoming unoccupied
+        self.listen_state(self.home_unoccupied, self.occupancy, new='off')
 
-        # set ocupancy state
-        self.listen_state(
-            self.set_occupancy_on,
-            'group.presence_all',
-            new='home'
-        )
+        # react to the arrival of individuals
+        self.listen_state(self.someone_arrives, 'device_tracker', new='home', old='not_home')
 
-        # set occupancy state
-        self.listen_state(
-            self.set_occupancy_off,
-            'group.presence_all',
-            new='not_home'
-        )
-
-        # track the arrival of individuals
-        self.listen_state(
-            self.someone_arrives,
-            'device_tracker',
-            new='home',
-            old='not_home'
-        )
-
-        # track entry door status
+        # react to entry door status
         self.listen_state(self.door_opens, self.doors, new='on')
 
-        # track thermostat climate mode changes
-        self.listen_state(
-            self.climate_mode_change,
-            self.climate,
-            attribute='climate_mode'
-        )
+        # react to thermostat climate mode changes
+        self.listen_state(self.climate_mode_change, self.climate, attribute='climate_mode')
 
         # trigger the bed time routine when quiet mode turns on
-        self.listen_state(
-            self.bed_time,
-            'input_boolean.quiet_mode',
-            new='on',
-        )
-
-        self.listen_state(
-            self.quiet_mode_off,
-            'input_boolean.quiet_mode',
-            new='off'
-        )
+        self.listen_state(self.bed_time, 'input_boolean.quiet_mode', new='on')
 
         # trigger bed time routine when the button is pressed
-        self.listen_state(
-            self.bed_time,
-            'sensor.hallway_keypad',
-            new='4'
-        )
+        self.listen_state(self.bed_time, 'sensor.hallway_keypad', new='4')
 
-        # trigger on night mode changes
-        self.listen_state(
-            self.night_mode_change,
-            'input_boolean.night_mode'
-        )
+        # react to night mode changes
+        self.listen_state(self.night_mode_change, 'input_boolean.night_mode')
+
+        # react to quiet mode turning off
+        self.listen_state(self.quiet_mode_off, 'input_boolean.quiet_mode', new='off')
 
     @property
     def allowed_mode(self):
@@ -176,14 +131,6 @@ class HouseOccupancy(hass.Hass):
                 'porch light turned off by door opening - ' +
                 self.current_state
             )
-
-    def set_occupancy_on(self, entity, attribute, old, new, kwargs):
-
-        self.turn_on(self.occupancy)
-
-    def set_occupancy_off(self, entity, attribute, old, new, kwargs):
-
-        self.turn_off(self.occupancy)
 
     def someone_arrives(self, entity, attribute, old, new, kwargs):
 
@@ -377,6 +324,15 @@ class HouseOccupancy(hass.Hass):
 
     def night_mode_change(self, entity, attribute, old, new, kwargs):
 
+        # is the automation in an allowed state?
+        self.disabled_modes = set(['guest'])
+        if self.allowed_mode is False:
+            self.log(
+                'night mode routine declined - ' +
+                self.current_state
+            )
+            return
+
         if new == 'on':
             # turn on moonlight mode
             self.turn_on('input_boolean.moonlight')
@@ -388,6 +344,15 @@ class HouseOccupancy(hass.Hass):
             self.turn_off('group.night_lights')
 
     def quiet_mode_off(self, entity, attribute, old, new, kwargs):
+
+        # is the automation in an allowed state?
+        self.disabled_modes = set(['guest'])
+        if self.allowed_mode is False:
+            self.log(
+                'quiet mode routine declined - ' +
+                self.current_state
+            )
+            return
 
         # turn off the night lights
         self.turn_off('group.night_lights')

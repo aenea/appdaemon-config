@@ -7,7 +7,7 @@ import pytz
 # home occupancy, day/night, and quiet mode
 
 
-class State(hass.Hass):
+class HomeState(hass.Hass):
 
     def initialize(self):
 
@@ -18,24 +18,6 @@ class State(hass.Hass):
             datetime.datetime.now(),
             5 * 60,
             is_daylight=1
-        )
-
-        # track the sleeping binary sensor
-        self.listen_state(
-            self.quiet_mode,
-            'binary_sensor.sleeping'
-        )
-
-        # track day time
-        self.run_at_sunrise(self.start_day_mode)
-
-        # track night time
-        self.run_at_sunset(self.start_night_mode)
-
-        # track presence
-        self.listen_state(
-            self.occupancy_mode,
-            'group.presence_all'
         )
 
     @property
@@ -149,33 +131,3 @@ class State(hass.Hass):
             entity_id='input_number.ct_target',
             value=target_temp
         )
-
-    def occupancy_mode(self, entity, attribute, old, new, kwargs):
-
-        # set the quiet mode boolean to the appropriate state
-        if new == 'home':
-            self.turn_on('input_boolean.home_occupancy')
-            self.log('home occupancy turned on ' + self.current_state)
-        elif new == 'not_home':
-            self.turn_off('input_boolean.home_occupancy')
-            self.log('home occupancy turned off ' + self.current_state)
-
-    def quiet_mode(self, entity, attribute, old, new, kwargs):
-
-        # set the quiet mode boolean to the appropriate state
-        if new == 'on':
-            self.turn_on('input_boolean.quiet_mode')
-            self.log('quiet mode turned on ' + self.current_state)
-        elif new == 'off':
-            self.turn_off('input_boolean.quiet_mode')
-            self.log('quiet mode turned off ' + self.current_state)
-
-    def start_day_mode():
-
-        self.turn_off('input_boolean.night_mode')
-        self.log('night mode turned off ' + self.current_state)
-
-    def start_night_mode():
-
-        self.turn_on('input_boolean.night_mode')
-        self.log('night mode turned on ' + self.current_state)
