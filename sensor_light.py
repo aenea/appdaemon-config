@@ -187,13 +187,13 @@ class SensorLight(hass.Hass):
         # is the automation mode in an allowed state?
         if self.allowed_mode is False:
             self.log(
-                'stage declined for automation mode ' +
+                'stage declined for automation mode - ' +
                 self.current_state
             )
             return
 
         if self.tracker_value not in ['off', 'stage']:
-            self.log('stage declined for lighting mode ' + self.current_state)
+            self.log('stage declined for lighting mode - ' + self.current_state)
             return
 
         # cancel any existing timers
