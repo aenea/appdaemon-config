@@ -110,8 +110,8 @@ kitchen_triple_tap:
   zwave_entity: zwave.kitchen_light_switch
 
 home_state:
-  module: state
-  class: State
+  module: home_state
+  class: HomeState
 
 light_control:
   module: light_control
