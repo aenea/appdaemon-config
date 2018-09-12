@@ -169,7 +169,7 @@ class HouseOccupancy(hass.Hass):
             command='power',
             parameters='0'
         )
-        self.log('dog music started')
+        self.log('dog music stopped')
 
         # set the thermostat to 'home' mode if necessary
         climate_mode = self.get_state(self.climate, attribute='climate_mode')
