@@ -56,6 +56,7 @@ class KitchenLights(hass.Hass):
                     'automation declined for night mode - ' +
                     self.current_state
                 )
+                return False
         if 'quiet' in self.disabled_modes:
             if self.quiet_mode == 'on':
                 self.log(
