@@ -22,6 +22,8 @@ class FanControl(hass.Hass):
 
         self.listen_state(self.temp_change, self.temp_sensor)
         self.listen_state(self.temp_change, 'input_boolean.home_occupancy')
+        self.listen_state(self.tracker_off, self.tracker, new='off')
+        self.listen_state(self.tracker_on, self.tracker, new='on')
 
     @property
     def allowed_mode(self):
