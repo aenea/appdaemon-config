@@ -21,6 +21,10 @@ class KitchenLights(hass.Hass):
         return self.get_state('input_boolean.moonlight')
 
     @property
+    def home_occupancy(self):
+        return self.get_state('input_boolean.home_occupancy')
+
+    @property
     def night_mode(self):
         return self.get_state('input_boolean.night_mode')
 
