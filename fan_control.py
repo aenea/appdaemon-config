@@ -147,6 +147,8 @@ class FanControl(hass.Hass):
             'ifttt/trigger',
             event=self.fan_off_trigger
         )
+        self.log(self.fan_off_trigger)
+        self.log(self.current_state)
 
     def tracker_on(self, entity, attribute, old, new, kwargs):
 
@@ -155,3 +157,6 @@ class FanControl(hass.Hass):
             'ifttt/trigger',
             event=self.fan_on_trigger
         )
+        self.log(self.fan_off_trigger)
+        self.log(self.current_state)
+

@@ -311,7 +311,7 @@ class HouseOccupancy(hass.Hass):
 
         # turn off living room fan
         self.select_option(
-            'input_select.living_room_fan_status',
+            'input_select.living_room_fan_tracker',
             'off'
         )
         self.log('living room fan turned off')
