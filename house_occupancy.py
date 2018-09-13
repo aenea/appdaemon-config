@@ -287,16 +287,12 @@ class HouseOccupancy(hass.Hass):
         self.turn_off('input_boolean.moonlight')
         self.log('moonlighting turned off')
 
-        # turn off all the lights
-        self.turn_off('group.lights_sleep_off')
-        self.log('lights turned off')
-
-        # turn on the night lights
-        self.turn_on(
-            'group.night_lights',
-            brightness_pct='2'
-        )
-        self.log('night lights turned on')
+        # turn on the bed time light scene
+        self.call_service(
+            'scene.turn_on',
+            entity_id='scene.bed_time_lights'
+        )        
+        self.log('bed time lights turned on')
 
         # turn off the remotes
         self.call_service(
