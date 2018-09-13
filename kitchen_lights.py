@@ -132,7 +132,7 @@ class KitchenLights(hass.Hass):
             self.log('kitchen lights turned off - ' + self.current_state)
         else:
             self.call_service(
-                'scene.turn_on',
+                'scene/turn_on',
                 entity_id='scene.kitchen_moonlight'
             )
 

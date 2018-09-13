@@ -289,7 +289,7 @@ class HouseOccupancy(hass.Hass):
 
         # turn on the bed time light scene
         self.call_service(
-            'scene.turn_on',
+            'scene/turn_on',
             entity_id='scene.bed_time_lights'
         )        
         self.log('bed time lights turned on')
