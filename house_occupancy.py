@@ -359,3 +359,5 @@ class HouseOccupancy(hass.Hass):
             entity_id='climate.home',
             resume_all=True
         )
+
+        self.log('left quiet mode')
