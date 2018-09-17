@@ -1,4 +1,5 @@
 import appdaemon.plugins.hass.hassapi as hass
+import datetime
 
 
 class HouseOccupancy(hass.Hass):
@@ -291,7 +292,7 @@ class HouseOccupancy(hass.Hass):
         self.call_service(
             'scene/turn_on',
             entity_id='scene.bed_time_lights'
-        )        
+        )
         self.log('bed time lights turned on')
 
         # turn off the remotes
@@ -336,8 +337,9 @@ class HouseOccupancy(hass.Hass):
             # turn off moonlight mode
             self.turn_off('input_boolean.moonlight')
 
-            # turn off the night lights
-            self.turn_off('group.night_lights')
+            # turn off the night lights if quiet mode is still active
+            if self.quiet_mode == 'on':
+                self.turn_off('group.night_lights')
 
     def quiet_mode_off(self, entity, attribute, old, new, kwargs):
 
@@ -352,6 +354,10 @@ class HouseOccupancy(hass.Hass):
 
         # turn off the night lights
         self.turn_off('group.night_lights')
+
+        # turn off night mode if it after 4am
+        if datetime.date.now().time() > datetime.time(hour=4):
+            self.turn_off('input_boolean.night_mode')
 
         # resume the thermostat schedule
         self.call_service(
