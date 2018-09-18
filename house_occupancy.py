@@ -363,7 +363,7 @@ class HouseOccupancy(hass.Hass):
         self.call_service(
             'climate/ecobee_resume_program',
             entity_id='climate.home',
-            resume_all=True
+            resume_all='true'
         )
 
         self.log('left quiet mode')
