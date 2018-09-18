@@ -354,10 +354,12 @@ class HouseOccupancy(hass.Hass):
 
         # turn off the night lights
         self.turn_off('group.night_lights')
+        self.log('night lights turned off')
 
         # turn off night mode if it after 4am
         if datetime.datetime.now().time() > datetime.time(hour=4):
             self.turn_off('input_boolean.night_mode')
+            self.log('night mode ended')
 
         # resume the thermostat schedule
         self.call_service(
@@ -365,5 +367,6 @@ class HouseOccupancy(hass.Hass):
             entity_id='climate.home',
             resume_all=True
         )
+        self.log('ecobee schedule resumed')
 
-        self.log('left quiet mode')
+        self.log('left quiet mode - ' + self.current_state)
