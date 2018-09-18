@@ -356,7 +356,7 @@ class HouseOccupancy(hass.Hass):
         self.turn_off('group.night_lights')
 
         # turn off night mode if it after 4am
-        if datetime.date.now().time() > datetime.time(hour=4):
+        if datetime.datetime.now().time() > datetime.time(hour=4):
             self.turn_off('input_boolean.night_mode')
 
         # resume the thermostat schedule
