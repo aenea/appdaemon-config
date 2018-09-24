@@ -187,7 +187,7 @@ class SensorLight(hass.Hass):
             if current_lux < self.minimum_lux:
                 self.log(
                     (
-                        'sensor on declined for lux ' +
+                        'automation declined for lux ' +
                         'current value {} - minimum value {} ' +
                         self.current_state
                     ).format(current_lux, self.minimum_lux)
