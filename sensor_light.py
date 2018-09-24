@@ -4,6 +4,10 @@ import appdaemon.plugins.hass.hassapi as hass
 class SensorLight(hass.Hass):
 
     def initialize(self):
+        if 'namespace' in self.args:
+            self.set_namespace(self.namespace)
+            self.namespace = self.args['namespace']
+            
         self.disabled_modes = [
             item.casefold() for item in self.args['disabled_modes']
         ]
