@@ -60,7 +60,7 @@ garage_light:
   delay: 600
   lux_entity: sensor.garage_lux
   max_run_seconds: 5400
-  minimum_lux: 70
+  maximum_lux: 70
   moonlight_pct: null
   namespace: garage
   sensor_entity: binary_sensor.garage_door_sensor
