@@ -63,7 +63,7 @@ garage_light:
   maximum_lux: 70
   moonlight_pct: null
   namespace: garage
-  sensor_entity: binary_sensor.garage_door_sensor
+  sensor_entity: group.garage_occupancy
   stage_entity: null
   tracking_entity: input_select.garage_lights_tracker
 
