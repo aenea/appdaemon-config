@@ -7,7 +7,7 @@ class SensorLight(hass.Hass):
         if 'namespace' in self.args:
             self.set_namespace(self.namespace)
             self.namespace = self.args['namespace']
-            
+
         self.disabled_modes = [
             item.casefold() for item in self.args['disabled_modes']
         ]
