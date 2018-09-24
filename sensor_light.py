@@ -15,14 +15,14 @@ class SensorLight(hass.Hass):
         self.stage_entity = self.args['stage_entity']
         self.actuator = self.args['actuator_entity']
         self.allow_moonlight = self.args['allow_moonlight']
-        if 'lux_sensor' in self.args:
-            self.lux_sensor = self.args['lux_sensor']
+        if 'lux_entity' in self.args:
+            self.lux_entity = self.args['lux_entity']
         else:
-            self.lux_sensor = None
-        if 'minimum_lux' in self.args:
-            self.minimum_lux = self.args['minimum_lux']
+            self.lux_entity = None
+        if 'maximum_lux' in self.args:
+            self.maximum_lux = self.args['maximum_lux']
         else:
-            self.minimum_lux = None
+            self.maximum_lux = None
         self.moonlight_pct = self.args['moonlight_pct']
         self.tracker = self.args['tracking_entity']
         self.delay = self.args['delay']
@@ -181,16 +181,17 @@ class SensorLight(hass.Hass):
         if self.allowed_mode is False:
             return
 
-        # is the lux minimum met?
-        if self.lux_sensor is not None:
-            current_lux = self.get_state(self.lux_sensor)
-            if current_lux < self.minimum_lux:
+        # If there is a maximum lux value the automation is only
+        # triggered if the current lux is less than the maximum
+        if self.lux_entity is not None:
+            current_lux = self.get_state(self.lux_entity)
+            if current_lux > self.maximum_lux:
                 self.log(
                     (
                         'automation declined for lux ' +
                         'current value {} - minimum value {} ' +
                         self.current_state
-                    ).format(current_lux, self.minimum_lux)
+                    ).format(current_lux, self.maximum_lux)
 
                 )
                 return
