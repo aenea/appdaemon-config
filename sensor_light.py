@@ -92,6 +92,7 @@ class SensorLight(hass.Hass):
         return (
             'current_state('
             'actuator_value=%s, '
+            'current_lux=%s, '
             'home_occupancy=%s, '
             'guest_mode=%s, '
             'moonlight=%s, '
@@ -102,6 +103,7 @@ class SensorLight(hass.Hass):
             %
             (
                 self.actuator_value,
+                self.current_lux,
                 self.home_occupancy,
                 self.guest_mode,
                 self.moonlight,
@@ -122,6 +124,13 @@ class SensorLight(hass.Hass):
     @property
     def guest_mode(self):
         return self.get_state('input_boolean.guest_mode')
+    
+    @property
+    def current_lux(self):
+        if self.lux_entity is not None:
+            return self.get_state(self.lux_entity)
+        else:
+            return None
 
     @property
     def moonlight(self):
