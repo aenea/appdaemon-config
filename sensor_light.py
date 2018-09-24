@@ -184,7 +184,7 @@ class SensorLight(hass.Hass):
         # If there is a maximum lux value the automation is only
         # triggered if the current lux is less than the maximum
         if self.lux_entity is not None:
-            current_lux = self.get_state(self.lux_entity)
+            current_lux = int(self.get_state(self.lux_entity))
             if current_lux > self.maximum_lux:
                 self.log(
                     (
