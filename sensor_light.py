@@ -7,6 +7,8 @@ class SensorLight(hass.Hass):
         if 'namespace' in self.args:
             self.set_namespace(self.namespace)
             self.namespace = self.args['namespace']
+        else:
+            self.namespace = 'default'
 
         self.disabled_modes = [
             item.casefold() for item in self.args['disabled_modes']
@@ -119,30 +121,30 @@ class SensorLight(hass.Hass):
 
     @property
     def home_occupancy(self):
-        return self.get_state('input_boolean.home_occupancy')
+        return self.get_state('input_boolean.home_occupancy', namespace='default')
 
     @property
     def guest_mode(self):
-        return self.get_state('input_boolean.guest_mode')
+        return self.get_state('input_boolean.guest_mode', namespace='default')
     
     @property
     def current_lux(self):
         if self.lux_entity is not None:
-            return self.get_state(self.lux_entity)
+            return int(float(self.get_state(self.lux_entity)))
         else:
             return None
 
     @property
     def moonlight(self):
-        return self.get_state('input_boolean.moonlight')
+        return self.get_state('input_boolean.moonlight', namespace='default')
 
     @property
     def night_mode(self):
-        return self.get_state('input_boolean.night_mode')
+        return self.get_state('input_boolean.night_mode', namespace='default')
 
     @property
     def quiet_mode(self):
-        return self.get_state('input_boolean.quiet_mode')
+        return self.get_state('input_boolean.quiet_mode', namespace='default')
 
     @property
     def tracker_value(self):
@@ -193,14 +195,13 @@ class SensorLight(hass.Hass):
         # If there is a maximum lux value the automation is only
         # triggered if the current lux is less than the maximum
         if self.lux_entity is not None:
-            current_lux = int(float(self.get_state(self.lux_entity)))
-            if current_lux > self.maximum_lux:
+            if self.current_lux > self.maximum_lux:
                 self.log(
                     (
                         'automation declined for lux ' +
-                        'current value {} - minimum value {} ' +
+                        'current value {} - ' +
                         self.current_state
-                    ).format(current_lux, self.maximum_lux)
+                    ).format(self.current_lux)
 
                 )
                 return
