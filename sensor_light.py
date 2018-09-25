@@ -130,7 +130,7 @@ class SensorLight(hass.Hass):
     @property
     def current_lux(self):
         if self.lux_entity is not None:
-            return self.get_state(self.lux_entity)
+            return int(float(self.get_state(self.lux_entity)))
         else:
             return None
 
@@ -195,14 +195,13 @@ class SensorLight(hass.Hass):
         # If there is a maximum lux value the automation is only
         # triggered if the current lux is less than the maximum
         if self.lux_entity is not None:
-            current_lux = int(float(self.get_state(self.lux_entity)))
-            if current_lux > self.maximum_lux:
+            if self.current_lux > self.maximum_lux:
                 self.log(
                     (
                         'automation declined for lux ' +
-                        'current value {} - minimum value {} ' +
+                        'current value {} - ' +
                         self.current_state
-                    ).format(current_lux, self.maximum_lux)
+                    ).format(self.current_lux)
 
                 )
                 return
