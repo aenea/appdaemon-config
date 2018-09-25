@@ -56,7 +56,10 @@ garage_light:
   actuator_entity: group.garage_lights
   allow_moonlight: false
   brightness: null
-  disabled_modes: []
+  disabled_modes:
+    - guest
+    - away
+    - quiet
   delay: 600
   lux_entity: sensor.garage_lux
   max_run_seconds: 5400
