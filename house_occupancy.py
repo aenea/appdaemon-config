@@ -284,6 +284,10 @@ class HouseOccupancy(hass.Hass):
             )
             return
 
+        # ensure night mode is on if appropriate
+        if self.get_state('sun.sun') == 'below_horizon':
+            self.turn_on('input_boolean.night_mode')
+
         # turn off moonlighting
         self.turn_off('input_boolean.moonlight')
         self.log('moonlighting turned off')
@@ -356,10 +360,11 @@ class HouseOccupancy(hass.Hass):
         self.turn_off('group.night_lights')
         self.log('night lights turned off')
 
-        # turn off night mode if it after 4am
+        # turn off night mode if it's after 4am
         if datetime.datetime.now().time() > datetime.time(hour=4):
-            self.turn_off('input_boolean.night_mode')
-            self.log('night mode ended')
+            if datetime.datetime.now().time() < datetime.time(hour=9):
+                self.turn_off('input_boolean.night_mode')
+                self.log('night mode ended')
 
         # resume the thermostat schedule
         self.call_service(
