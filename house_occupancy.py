@@ -33,8 +33,8 @@ class HouseOccupancy(hass.Hass):
         # trigger bed time routine when the button is pressed
         self.listen_state(self.bed_time, 'sensor.hallway_keypad', new='4')
 
-        # react to night mode changes
-        self.listen_state(self.night_mode_change, 'input_boolean.night_mode')
+        # react to night mode turning off
+        self.listen_state(self.night_mode_change, 'input_boolean.night_mode', new='off')
 
         # react to quiet mode turning off
         self.listen_state(self.quiet_mode_off, 'input_boolean.quiet_mode', new='off')
@@ -334,16 +334,12 @@ class HouseOccupancy(hass.Hass):
             )
             return
 
-        if new == 'on':
-            # turn on moonlight mode
-            self.turn_on('input_boolean.moonlight')
-        elif new == 'off':
-            # turn off moonlight mode
-            self.turn_off('input_boolean.moonlight')
+        # turn off moonlight mode
+        self.turn_off('input_boolean.moonlight')
 
-            # turn off the night lights if quiet mode is still active
-            if self.quiet_mode == 'on':
-                self.turn_off('group.night_lights')
+        # turn off the night lights if quiet mode is still active
+        if self.quiet_mode == 'on':
+            self.turn_off('group.night_lights')
 
     def quiet_mode_off(self, entity, attribute, old, new, kwargs):
 
