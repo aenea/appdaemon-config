@@ -50,25 +50,25 @@ front_porch_light:
   stage_entity: null
   tracking_entity: input_select.front_porch_lights_tracker
 
-garage_light:
-  module: sensor_light
-  class: SensorLight
-  actuator_entity: group.garage_lights
-  allow_moonlight: false
-  brightness: null
-  disabled_modes:
-    - guest
-    - away
-    - quiet
-  delay: 600
-  lux_entity: sensor.garage_lux
-  max_run_seconds: 5400
-  maximum_lux: 70
-  moonlight_pct: null
-  namespace: garage
-  sensor_entity: group.garage_occupancy
-  stage_entity: null
-  tracking_entity: input_select.garage_lights_tracker
+#garage_light:
+#  module: sensor_light
+#  class: SensorLight
+#  actuator_entity: group.garage_lights
+#  allow_moonlight: false
+#  brightness: null
+#  disabled_modes:
+#    - guest
+#    - away
+#    - quiet
+#  delay: 600
+#  lux_entity: sensor.garage_lux
+#  max_run_seconds: 5400
+#  maximum_lux: 70
+#  moonlight_pct: null
+#  namespace: garage
+#  sensor_entity: group.garage_occupancy
+#  stage_entity: null
+#  tracking_entity: input_select.garage_lights_tracker
 
 second_bathroom_light:
   module: sensor_light
