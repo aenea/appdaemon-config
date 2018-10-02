@@ -104,8 +104,7 @@ class PicoLight(hass.Hass):
                 new_brightness = brightness_pct
                 self.turn_on(
                     self.light_group,
-                    brightness_pct=brightness_pct,
-                    transition='0.1'
+                    brightness_pct=brightness_pct
                 )
             else:
                 # dimming the light - start at 95%
@@ -113,8 +112,7 @@ class PicoLight(hass.Hass):
                 new_brightness = brightness_pct
                 self.turn_on(
                     self.light_group,
-                    brightness_pct=brightness_pct,
-                    transition='0.1'
+                    brightness_pct=brightness_pct
                 )
 
         # get a list of lights in the group
@@ -149,6 +147,7 @@ class PicoLight(hass.Hass):
                 # apply the new brightness level
                 self.turn_on(
                     entity_id=bulb.entity_id,
-                    brightness_pct=bulb.brightness
+                    brightness_pct=bulb.brightness,
+                    transition=.1
                 )
-            time.sleep(.1)
+            time.sleep(.2)
