@@ -22,7 +22,7 @@ home_climate:
   module: climate
   class: Climate
   climate_entity: "home.climate"
-  disable_modes:
+  disabled_modes:
     - guest
   windows_entity: "group.windows"
   
@@ -122,20 +122,6 @@ utility_room_light:
   sensor_entity: binary_sensor.utility_room_door_sensor
   stage_entity: null
   tracking_entity: input_select.utility_room_lights_tracker
-
-kitchen_double_tap:
-  module: homeseer_switch
-  class: HomeseerSwitch
-  actuator_entity: light.kitchen_light_switch_level
-  scene_id: 7860
-  zwave_entity: zwave.kitchen_light_switch
-
-kitchen_triple_tap:
-  module: homeseer_switch
-  class: HomeseerSwitch
-  actuator_entity: light.kitchen_light_switch_level
-  scene_id: 7920
-  zwave_entity: zwave.kitchen_light_switch
 
 home_state:
   module: home_state
