@@ -108,7 +108,7 @@ class Climate(hass.Hass):
             operation_mode='auto'
         )
         self.log(
-            'all windows are closed, climate control set to auto - '
+            'all windows are closed, climate control set to auto - ' +
             self.current_state
         )
 
@@ -121,6 +121,6 @@ class Climate(hass.Hass):
             operation_mode='off'
         )
         self.log(
-            'a windows is open - climate control turned off - '
+            'a windows is open - climate control turned off - ' +
             self.current_state
         )
