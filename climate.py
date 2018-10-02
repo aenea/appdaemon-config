@@ -21,7 +21,7 @@ class Climate(hass.Hass):
             self.listen_state(self.windows_closed, self.windows_entity, new='off')
 
         # react to a window opening
-        if self.windows_entity in not None:
+        if self.windows_entity is not None:
             self.listen_state(self.window_open, self.windows_entity, new='on')
 
     @property
