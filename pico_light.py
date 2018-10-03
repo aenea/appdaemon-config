@@ -124,16 +124,19 @@ class PicoLight(hass.Hass):
         for light in lights:
             # get the current brightness
             light_state = self.get_state(light, attribute='all')
-            brightness = light_state['attributes']['brightness']
-            brightness_pct = round(
-                (float(brightness / 255) * 100), 0
-            )
 
-            t = Bulb(
-                entity_id=light,
-                brightness=brightness_pct
-            )
-            bulbs.append(t)
+            # only process lights that are currently turned on
+            if light_state['state'] == 'on':
+                brightness = light_state['attributes']['brightness']
+                brightness_pct = round(
+                    (float(brightness / 255) * 100), 0
+                )
+
+                t = Bulb(
+                    entity_id=light,
+                    brightness=brightness_pct
+                )
+                bulbs.append(t)
 
         # loop while the button is held down
         while self.state != '0':
