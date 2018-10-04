@@ -362,6 +362,11 @@ class HouseOccupancy(hass.Hass):
                 self.turn_off('input_boolean.night_mode')
                 self.log('night mode ended')
 
+                self.turn_on(
+                    entity_id='scene.morning_lights'
+                )
+                self.log('morning lights scene turned on')
+
         # resume the thermostat schedule
         self.call_service(
             'climate/ecobee_resume_program',
