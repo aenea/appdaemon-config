@@ -181,6 +181,14 @@ master_bedroom_lights:
   light_subset: group.master_bedroom_lights
   brightness: 100
 
+master_bedroom_lights:
+  module: pico_light
+  class: PicoLight
+  actuator_entity: sensor.master_bedroom_pico_2
+  light_group: group.master_bedroom_lights
+  light_subset: group.master_bedroom_lights
+  brightness: 100
+
 tv_room_lights:
   module: pico_light
   class: PicoLight
