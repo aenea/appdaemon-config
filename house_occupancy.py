@@ -357,10 +357,16 @@ class HouseOccupancy(hass.Hass):
         self.log('night lights turned off')
 
         # turn off night mode if it's after 4am
-        if datetime.datetime.now().time() > datetime.time(hour=4):
-            if datetime.datetime.now().time() < datetime.time(hour=9):
-                self.turn_off('input_boolean.night_mode')
-                self.log('night mode ended')
+        if self.night_mode == 'on':
+            if datetime.datetime.now().time() > datetime.time(hour=4):
+                if datetime.datetime.now().time() < datetime.time(hour=9):
+                    self.turn_off('input_boolean.night_mode')
+                    self.log('night mode ended')
+
+                    self.turn_on(
+                        entity_id='scene.morning_lights'
+                    )
+                    self.log('morning lights scene turned on')
 
         # resume the thermostat schedule
         self.call_service(
