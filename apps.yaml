@@ -16,7 +16,7 @@ washing_machine_power_monitor:
   off_load: 2
   on_load: 10
   sensor_entity: sensor.washing_machine_outlet_power
-  tracking_entity: input_select.washing_machine_status
+  tracking_entity: input_select.washing_machine_tracker
 
 home_climate:
   module: climate
